@@ -192,3 +192,28 @@ export const startViewTransitionSafety = (
   }
   fn();
 };
+
+/**
+ * Вычисляет размер скроллбара
+ */
+export const calcScrollbarWidth = () => {
+  const outer = document.createElement('div');
+
+  outer.style.visibility = 'hidden';
+  outer.style.width = '100px';
+  outer.style.overflow = 'scroll';
+
+  document.body.append(outer);
+
+  const inner = document.createElement('div');
+  inner.style.width = '100%';
+
+  outer.append(inner);
+
+  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+  // eslint-disable-next-line unicorn/prefer-dom-node-remove
+  outer.parentNode?.removeChild(outer);
+
+  return scrollbarWidth;
+};
