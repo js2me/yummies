@@ -1,4 +1,4 @@
-import { sleep } from './async.js';
+import { waitAsync } from './async.js';
 
 /**
  * Функция ленивой загрузки модуля, с возможностью вызова доп. попыток
@@ -23,7 +23,7 @@ export const fetchLazyModule = async <T>(
   for await (const attempt of attemptsArray) {
     try {
       if (lastError !== null) {
-        await sleep(delay);
+        await waitAsync(delay);
       }
       return await attempt();
     } catch (error) {
