@@ -19,10 +19,14 @@ export const sleep = (time: number = 0) => {
 /**
  * Создает промис, который будет ждать указанное количество ms, чтобы выполниться
  *
+ * @deprecated используй sleep
+ *
  * @param ms значение в миллисекундах
  * @returns Promise
  */
-export const waitAsync = (ms = 1000) => sleep(ms);
+export const waitAsync = async (ms = 1000) => {
+  await sleep(ms);
+};
 
 /**
  * Создает вызов requestAnimationFrame, посылая туда фукнцию {quitFn}, если она возвращает true,
