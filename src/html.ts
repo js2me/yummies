@@ -217,3 +217,23 @@ export const calcScrollbarWidth = () => {
 
   return scrollbarWidth;
 };
+
+export function getElementInnerHeight(element: HTMLElement) {
+  const { clientHeight } = element;
+  const { paddingTop, paddingBottom } = getComputedStyle(element);
+  return (
+    clientHeight -
+    Number.parseFloat(paddingTop) -
+    Number.parseFloat(paddingBottom)
+  );
+}
+
+export function getElementInnerWidth(el: HTMLElement) {
+  const { clientWidth } = el;
+  const { paddingLeft, paddingRight } = getComputedStyle(el);
+  return (
+    clientWidth -
+    Number.parseFloat(paddingLeft) -
+    Number.parseFloat(paddingRight)
+  );
+}
