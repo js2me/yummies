@@ -218,6 +218,9 @@ export const calcScrollbarWidth = () => {
   return scrollbarWidth;
 };
 
+/**
+ * Calculates the inner height of an HTML element, accounting for padding.
+ */
 export function getElementInnerHeight(element: HTMLElement) {
   const { clientHeight } = element;
   const { paddingTop, paddingBottom } = getComputedStyle(element);
@@ -228,6 +231,9 @@ export function getElementInnerHeight(element: HTMLElement) {
   );
 }
 
+/**
+ * Calculates the inner width of an HTML element, accounting for padding.
+ */
 export function getElementInnerWidth(el: HTMLElement) {
   const { clientWidth } = el;
   const { paddingLeft, paddingRight } = getComputedStyle(el);
