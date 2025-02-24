@@ -6,19 +6,13 @@
  * @param ms значение в миллисекундах
  * @returns Promise
  */
-export const sleep = (time: number = 0) => {
-  const promise = Promise.resolve();
-
-  setTimeout(() => {
-    promise.then();
-  }, time);
-
-  return promise;
-};
+export const sleep = (time: number = 0) =>
+  new Promise((resolve) => setTimeout(resolve, time));
 
 /**
  * Создает промис, который будет ждать указанное количество ms, чтобы выполниться
  *
+ * @deprecated используй {sleep}
  * @param ms значение в миллисекундах
  * @returns Promise
  */
