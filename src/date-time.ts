@@ -95,7 +95,7 @@ export const formatDate = function (
 };
 
 export const dayTimeDuration = (timeInMs: number) => {
-  let left = timeInMs;
+  let left = Math.max(timeInMs, 0);
 
   const days = Math.floor(left / unitsToMs.day);
   left = left % unitsToMs.day;

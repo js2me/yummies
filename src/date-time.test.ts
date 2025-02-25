@@ -10,6 +10,16 @@ import { unitsToMs } from './ms';
 
 describe('date-time', () => {
   describe('dayTimeDuration', () => {
+    test('-1 minute', () => {
+      expect(dayTimeDuration(-unitsToMs.min)).toStrictEqual({
+        days: 0,
+        hours: 0,
+        seconds: 0,
+        minutes: 0,
+        milliseconds: 0,
+      });
+    });
+
     test('1 minute', () => {
       expect(dayTimeDuration(unitsToMs.min)).toStrictEqual({
         days: 0,
@@ -47,6 +57,15 @@ describe('date-time', () => {
     });
   });
   describe('timeDuration', () => {
+    test('-1 minute', () => {
+      expect(timeDuration(-unitsToMs.min)).toStrictEqual({
+        hours: 0,
+        seconds: 0,
+        minutes: 0,
+        milliseconds: 0,
+      });
+    });
+
     test('1 minute', () => {
       expect(timeDuration(unitsToMs.min)).toStrictEqual({
         hours: 0,
