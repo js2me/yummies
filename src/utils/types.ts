@@ -59,13 +59,19 @@ export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
 
 export type Unpromise<T> = T extends Promise<infer TValue> ? TValue : T;
 
-export type KeyOfByValue<T, TValues> = ValueOf<{
+export type KeyOfByValue<T, TValues extends ValueOf<T>> = ValueOf<{
   [K in keyof T]: T[K] extends TValues ? K : never;
 }>;
 
-export type PickByValue<T, TValues> = Pick<T, KeyOfByValue<T, TValues>>;
+export type PickByValue<T, TValues extends ValueOf<T>> = Pick<
+  T,
+  KeyOfByValue<T, TValues>
+>;
 
-export type OmitByValue<T, TValues> = Omit<T, KeyOfByValue<T, TValues>>;
+export type OmitByValue<T, TValues extends ValueOf<T>> = Omit<
+  T,
+  KeyOfByValue<T, TValues>
+>;
 
 export type AllPropertiesOptional<T> = keyof T extends never
   ? true
