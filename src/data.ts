@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash-es';
 
-import { AnyObject } from './utils/types';
+import { AnyObject } from './utils/types.js';
 
 export const isShallowEqual = (a: unknown, b: unknown) => {
   if (a === b) {

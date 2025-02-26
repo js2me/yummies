@@ -26,6 +26,8 @@
   },
   "include": [
     "src/**/*.test.ts",
+    "tests",
+    "src/lib",
     "src/**/*.test.tsx",
     "node_modules"
   ],

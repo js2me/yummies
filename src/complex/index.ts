@@ -1,2 +1,2 @@
-export * from './modules-factory';
-export * from './counter';
+export * from './modules-factory.js';
+export * from './counter.js';

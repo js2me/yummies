@@ -5,8 +5,8 @@ import {
   dayTimeDuration,
   timeDuration,
   getFormatDuration,
-} from './date-time';
-import { unitsToMs } from './ms';
+} from './date-time.js';
+import { unitsToMs } from './ms.js';
 
 describe('date-time', () => {
   describe('dayTimeDuration', () => {
