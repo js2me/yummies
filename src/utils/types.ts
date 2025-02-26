@@ -63,6 +63,10 @@ export type KeyOfByValue<T, TValues> = ValueOf<{
   [K in keyof T]: T[K] extends TValues ? K : never;
 }>;
 
+export type PickByValue<T, TValues> = Pick<T, KeyOfByValue<T, TValues>>;
+
+export type OmitByValue<T, TValues> = Omit<T, KeyOfByValue<T, TValues>>;
+
 export type AllPropertiesOptional<T> = keyof T extends never
   ? true
   : {
