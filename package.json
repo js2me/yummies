@@ -1,6 +1,6 @@
 {
   "name": "yummies",
-  "version": "3.0.28",
+  "version": "3.0.29",
   "scripts": {
     "clean": "rimraf dist",
     "lint:check": "eslint . --fix",
