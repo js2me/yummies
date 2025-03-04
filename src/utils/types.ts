@@ -59,6 +59,10 @@ export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
 
 export type Unpromise<T> = T extends Promise<infer TValue> ? TValue : T;
 
+export type MaybeValues<T extends AnyObject> = {
+  [K in keyof T]: Maybe<T[K]>;
+};
+
 export type KeyOfByValue<T, TValues extends ValueOf<T>> = ValueOf<{
   [K in keyof T]: T[K] extends TValues ? K : never;
 }>;
