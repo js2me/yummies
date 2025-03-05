@@ -1,60 +1,71 @@
 import { AnyFunction, AnyObject } from './utils/types.js';
 
-// Based on https://gist.github.com/jonbretman/7259628
-function getType(value: unknown) {
-  // handle corner cases for old IE and PhantomJS
-  if (value === undefined) {
-    return 'undefined';
-  }
+const enum Type {
+  Null = 'null',
+  Undefined = 'undefined',
+  NaN = 'nan',
+  Object = '[object Object]',
+  Array = '[object Array]',
+  String = '[object String]',
+  Number = '[object Number]',
+  Boolean = '[object Boolean]',
+  Function = '[object Function]',
+  RegExp = '[object RegExp]',
+  Symbol = '[object Symbol]',
+  Infinite = 'infinite',
+  Element = 'element',
+}
 
+function getType(value: unknown): Type {
+  if (value === undefined) {
+    return Type.Undefined;
+  }
   if (value === null) {
-    return 'null';
+    return Type.Null;
   }
 
   // handle DOM elements
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (value && (value.nodeType === 1 || value.nodeType === 9)) {
-    return 'element';
+    return Type.Element;
   }
 
-  const toStringResult = Object.prototype.toString.call(value);
-
-  const type = toStringResult.slice('[object '.length, -1).toLowerCase();
+  const stringifiedValue = Object.prototype.toString.call(value);
 
   // handle NaN and Infinity
-  if (type === 'number') {
+  if (stringifiedValue === Type.Number) {
     if (Number.isNaN(value as number)) {
-      return 'nan';
+      return Type.NaN;
     }
     if (!Number.isFinite(value as number)) {
-      return 'infinity';
+      return Type.Infinite;
     }
   }
 
-  return type;
+  return stringifiedValue as Type;
 }
 
 const createTypeGuard =
-  <T>(type: string) =>
+  <T>(type: Type) =>
   (value: unknown): value is T =>
     getType(value) === type;
 
 const isDefined = <T>(value: T | undefined | null): value is T => value != null;
 
 export const typeGuard = {
-  isNull: createTypeGuard<null>('null'),
-  isUndefined: createTypeGuard<undefined>('undefined'),
-  isObject: createTypeGuard<AnyObject>('object'),
-  isArray: createTypeGuard<unknown[]>('array'),
-  isString: createTypeGuard<string>('string'),
-  isNumber: createTypeGuard<number>('number'),
-  isBoolean: createTypeGuard<boolean>('boolean'),
-  isFunction: createTypeGuard<AnyFunction>('function'),
-  isRegExp: createTypeGuard<boolean>('regexp'),
-  isElement: createTypeGuard<HTMLElement>('element'),
-  isNaN: createTypeGuard<number>('nan'),
-  isInfinite: createTypeGuard<number>('infinite'),
-  isSymbol: createTypeGuard<symbol>('symbol'),
+  isNull: createTypeGuard<null>(Type.Null),
+  isUndefined: createTypeGuard<undefined>(Type.Undefined),
+  isObject: createTypeGuard<AnyObject>(Type.Object),
+  isArray: createTypeGuard<unknown[]>(Type.Array),
+  isString: createTypeGuard<string>(Type.String),
+  isNumber: createTypeGuard<number>(Type.Number),
+  isBoolean: createTypeGuard<boolean>(Type.Boolean),
+  isFunction: createTypeGuard<AnyFunction>(Type.Function),
+  isRegExp: createTypeGuard<boolean>(Type.RegExp),
+  isElement: createTypeGuard<HTMLElement>(Type.Element),
+  isNaN: createTypeGuard<number>(Type.NaN),
+  isInfinite: createTypeGuard<number>(Type.Infinite),
+  isSymbol: createTypeGuard<symbol>(Type.Symbol),
   isDefined,
 };
