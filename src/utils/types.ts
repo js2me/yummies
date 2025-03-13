@@ -110,3 +110,12 @@ export type IsObjectEmpty<T extends AnyObject> = T extends EmptyObject
 export type IsEmptyArray<T extends readonly any[]> = T extends []
   ? true
   : false;
+
+export type Params<T extends (...args: any) => any> = T extends {
+  (...args: infer P1): any;
+  (...args: infer P2): any;
+}
+  ? P1 | P2
+  : T extends (...args: infer P) => any
+    ? P
+    : never;
