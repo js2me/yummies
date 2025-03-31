@@ -1,5 +1,8 @@
 import { AnyObject } from '../utils/types.js';
 
+/**
+ * Создает глобальный конфиг, который может быть доступен в любой точке в коде
+ */
 export const createGlobalConfig = <T extends AnyObject>(
   defaultValue: T,
   accessSymbol: any = Symbol(),
