@@ -111,3 +111,30 @@ export const rotateImage = (image: HTMLImageElement, angle: number) => {
   cropImageFromCanvas(context);
   return renderImage(canvas.toDataURL('image/png'));
 };
+
+interface DecodedDataUrl {
+  mimeType?: string;
+  data?: string;
+}
+
+/*
+ * Returning object which contains base64 data and mime type of passed data url string.
+ * */
+export function decodeDataUrl(url: string): DecodedDataUrl {
+  const regex = /^data:(.*);base64,\s?(.*)$/;
+  const matches = new RegExp(regex).exec(url);
+
+  return {
+    mimeType: matches?.[1],
+    data: matches?.[2],
+  };
+}
+
+export const isHttpUrl = (url: string): boolean => {
+  return url.startsWith('https://') || url.startsWith('http://');
+};
+
+export const isBase64Image = (str: string): boolean => {
+  const { mimeType, data } = decodeDataUrl(str);
+  return !!(data && mimeType?.startsWith('image/'));
+};
