@@ -84,8 +84,5 @@ export function setAbortableInterval(
 
   signal?.addEventListener('abort', handleAbort, { once: true });
 
-  timer = setInterval(() => {
-    signal?.removeEventListener('abort', handleAbort);
-    callback();
-  }, delayInMs);
+  timer = setInterval(callback, delayInMs);
 }
