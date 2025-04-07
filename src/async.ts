@@ -43,3 +43,49 @@ export const endlessRAF = (
     raf();
   }
 };
+
+export function setAbortableTimeout(
+  callback: VoidFunction,
+  delayInMs?: number,
+  signal?: AbortSignal,
+) {
+  let internalTimer: number | null = null;
+
+  const handleAbort = () => {
+    if (internalTimer == null) {
+      return;
+    }
+    clearTimeout(internalTimer);
+    internalTimer = null;
+  };
+
+  signal?.addEventListener('abort', handleAbort, { once: true });
+
+  internalTimer = setTimeout(() => {
+    signal?.removeEventListener('abort', handleAbort);
+    callback();
+  }, delayInMs);
+}
+
+export function setAbortableInterval(
+  callback: VoidFunction,
+  delayInMs?: number,
+  signal?: AbortSignal,
+) {
+  let timer: number | null = null;
+
+  const handleAbort = () => {
+    if (timer == null) {
+      return;
+    }
+    clearInterval(timer);
+    timer = null;
+  };
+
+  signal?.addEventListener('abort', handleAbort, { once: true });
+
+  timer = setInterval(() => {
+    signal?.removeEventListener('abort', handleAbort);
+    callback();
+  }, delayInMs);
+}
