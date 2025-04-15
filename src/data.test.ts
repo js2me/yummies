@@ -81,5 +81,21 @@ describe('data tests', () => {
     it('first is object, second is undefined', () => {
       expect(isShallowEqual({ a: 1 }, undefined)).toBeFalsy();
     });
+
+    it('two objects with different class but same keys and values', () => {
+      class A {
+        constructor(
+          public a: number,
+          public b: number,
+        ) {}
+      }
+      class B {
+        constructor(
+          public a: number,
+          public b: number,
+        ) {}
+      }
+      expect(isShallowEqual(new A(1, 2), new B(1, 2))).toBeFalsy();
+    });
   });
 });

@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import { AnyObject } from './utils/types.js';
 
 export const isShallowEqual = (a: unknown, b: unknown): boolean => {
@@ -12,22 +13,38 @@ export const isShallowEqual = (a: unknown, b: unknown): boolean => {
     return false;
   }
 
+  if (a.constructor !== b.constructor) return false;
+
   const isArrayA = Array.isArray(a);
-  const isArrayB = Array.isArray(b);
 
-  if (isArrayA !== isArrayB) return false;
+  if (isArrayA !== Array.isArray(b)) return false;
 
-  if (isArrayA && isArrayB) {
-    return a.length === b.length && a.every((item, index) => item === b[index]);
+  if (isArrayA) {
+    const arrA = a as unknown[];
+    const arrB = b as unknown[];
+    if (arrA.length !== arrB.length) return false;
+
+    for (const [i, element] of arrA.entries()) {
+      if (element !== arrB[i]) return false;
+    }
+    return true;
   }
+
+  if (a instanceof Date) return a.getTime() === (b as Date).getTime();
+
+  if (a instanceof RegExp) return a.toString() === (b as RegExp).toString();
 
   const aKeys = Object.keys(a);
   const bKeys = Object.keys(b);
+
   if (aKeys.length !== bKeys.length) return false;
 
-  // eslint-disable-next-line no-prototype-builtins
-  const hasAllKeys = aKeys.every((key) => (b as AnyObject).hasOwnProperty(key));
-  if (!hasAllKeys) return false;
+  const bObj = b as AnyObject;
+  for (const key of aKeys) {
+    if (!bObj.hasOwnProperty(key) || (a as AnyObject)[key] !== bObj[key]) {
+      return false;
+    }
+  }
 
-  return aKeys.every((key) => (a as AnyObject)[key] === (b as AnyObject)[key]);
+  return true;
 };
