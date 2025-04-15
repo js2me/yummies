@@ -1,11 +1,7 @@
-import { isEqual } from 'lodash-es';
-
 import { AnyObject } from './utils/types.js';
 
-export const isShallowEqual = (a: unknown, b: unknown) => {
-  if (a === b) {
-    return true;
-  }
+export const isShallowEqual = (a: unknown, b: unknown): boolean => {
+  if (a === b) return true;
 
   if (
     typeof a !== 'object' ||
@@ -16,11 +12,22 @@ export const isShallowEqual = (a: unknown, b: unknown) => {
     return false;
   }
 
+  const isArrayA = Array.isArray(a);
+  const isArrayB = Array.isArray(b);
+
+  if (isArrayA !== isArrayB) return false;
+
+  if (isArrayA && isArrayB) {
+    return a.length === b.length && a.every((item, index) => item === b[index]);
+  }
+
   const aKeys = Object.keys(a);
   const bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) return false;
 
-  return (
-    isEqual(aKeys, bKeys) &&
-    aKeys.every((key) => (a as AnyObject)[key] === (b as AnyObject)[key])
-  );
+  // eslint-disable-next-line no-prototype-builtins
+  const hasAllKeys = aKeys.every((key) => (b as AnyObject).hasOwnProperty(key));
+  if (!hasAllKeys) return false;
+
+  return aKeys.every((key) => (a as AnyObject)[key] === (b as AnyObject)[key]);
 };

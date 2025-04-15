@@ -1,5 +1,4 @@
 import insane, { SanitizeOptions } from 'insane';
-import { clamp } from 'lodash-es';
 
 import { blobToUrl } from './media.js';
 import { Maybe } from './utils/types.js';
@@ -78,9 +77,8 @@ export const globalScrollIntoViewForY = (node: HTMLElement) => {
   const nodeBounding = node.getBoundingClientRect();
   const scrollPagesCount = scrollContainer.scrollHeight / pageHeight;
 
-  const scrollPageNumber = clamp(
-    nodeBounding.top / pageHeight,
-    1,
+  const scrollPageNumber = Math.min(
+    Math.max(nodeBounding.top / pageHeight, 1),
     scrollPagesCount,
   );
 
