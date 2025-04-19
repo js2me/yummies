@@ -1,11 +1,11 @@
 import { AnyObject } from '../utils/types.js';
 
-const createGlobalPoint = (accessSymbol: any) => {
+const createGlobalPoint = <TValue>(accessSymbol: any) => {
   const _globalThis = globalThis as AnyObject;
 
   return {
-    get: () => _globalThis[accessSymbol],
-    set: (value: any) => (_globalThis[accessSymbol] = value),
+    get: (): TValue => _globalThis[accessSymbol],
+    set: (value: any): TValue => (_globalThis[accessSymbol] = value),
   };
 };
 
@@ -16,7 +16,7 @@ export const createGlobalConfig = <T extends AnyObject>(
   defaultValue: T,
   accessSymbol: any = Symbol(),
 ) => {
-  const globalPoint = createGlobalPoint(accessSymbol);
+  const globalPoint = createGlobalPoint<T>(accessSymbol);
   return globalPoint.get() || globalPoint.set(defaultValue);
 };
 
@@ -24,7 +24,7 @@ export const createGlobalDynamicConfig = <T extends AnyObject>(
   updateFn?: (value: Partial<T>) => Partial<T>,
   accessSymbol: any = Symbol(),
 ) => {
-  const globalPoint = createGlobalPoint(accessSymbol);
+  const globalPoint = createGlobalPoint<T>(accessSymbol);
 
   return {
     ...globalPoint,
