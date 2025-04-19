@@ -5,7 +5,7 @@ const createGlobalPoint = <TValue>(accessSymbol: any) => {
 
   return {
     get: (): TValue => _globalThis[accessSymbol],
-    set: (value: any): TValue => (_globalThis[accessSymbol] = value),
+    set: (value: TValue): TValue => (_globalThis[accessSymbol] = value),
   };
 };
 
@@ -21,15 +21,25 @@ export const createGlobalConfig = <T extends AnyObject>(
 };
 
 export const createGlobalDynamicConfig = <T extends AnyObject>(
-  updateFn?: (value: Partial<T>) => Partial<T>,
+  fallbackFn: (currentValue: Partial<T> | null | undefined) => T,
   accessSymbol: any = Symbol(),
 ) => {
-  const globalPoint = createGlobalPoint<T>(accessSymbol);
+  const globalPoint = createGlobalPoint<T | null | undefined>(accessSymbol);
+
+  const getValue = () => {
+    const currentValue = globalPoint.get();
+    if (currentValue == null) {
+      return globalPoint.set(fallbackFn(null))!;
+    }
+    return currentValue;
+  };
 
   return {
-    ...globalPoint,
+    get: getValue,
+    set: globalPoint.set,
     update: (value: Partial<T>) => {
-      Object.assign(globalPoint.get(), updateFn ? updateFn(value) : value);
+      const currentValue = getValue();
+      Object.assign(currentValue, value);
     },
   };
 };
