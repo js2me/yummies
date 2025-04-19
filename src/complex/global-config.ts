@@ -1,4 +1,4 @@
-import { AnyObject } from '../utils/types.js';
+import { AnyObject, Maybe } from '../utils/types.js';
 
 const createGlobalPoint = <TValue>(accessSymbol: any) => {
   const _globalThis = globalThis as AnyObject;
@@ -21,7 +21,7 @@ export const createGlobalConfig = <T extends AnyObject>(
 };
 
 export const createGlobalDynamicConfig = <T extends AnyObject>(
-  fallbackFn: (currentValue: Partial<T> | null | undefined) => T,
+  processFn: (change: Maybe<Partial<T>>, current: Maybe<T>) => T,
   accessSymbol: any = Symbol(),
 ) => {
   const globalPoint = createGlobalPoint<T | null | undefined>(accessSymbol);
@@ -29,7 +29,7 @@ export const createGlobalDynamicConfig = <T extends AnyObject>(
   const getValue = () => {
     const currentValue = globalPoint.get();
     if (currentValue == null) {
-      return globalPoint.set(fallbackFn(null))!;
+      return globalPoint.set(processFn(null, null))!;
     }
     return currentValue;
   };
@@ -39,7 +39,7 @@ export const createGlobalDynamicConfig = <T extends AnyObject>(
     set: globalPoint.set,
     update: (value: Partial<T>) => {
       const currentValue = getValue();
-      Object.assign(currentValue, value);
+      Object.assign(currentValue, processFn(value, currentValue));
     },
   };
 };
