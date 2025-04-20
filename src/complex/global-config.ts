@@ -27,11 +27,7 @@ export const createGlobalDynamicConfig = <T extends AnyObject>(
   const globalPoint = createGlobalPoint<T | null | undefined>(accessSymbol);
 
   const getValue = () => {
-    const currentValue = globalPoint.get();
-    if (currentValue == null) {
-      return globalPoint.set(processFn(null, null))!;
-    }
-    return currentValue;
+    return globalPoint.get() ?? globalPoint.set(processFn(null, null))!;
   };
 
   return {
