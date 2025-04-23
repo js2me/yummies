@@ -35,22 +35,22 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "insane": "^2.6.2",
-    "nanoid": "^5.0.9",
+    "nanoid": "^5.1.5",
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
-    "@types/node": "^20.17.11",
-    "@vitejs/plugin-react-swc": "^3.8.0",
-    "@vitest/coverage-istanbul": "^3.0.5",
+    "@types/node": "^20.17.30",
+    "@vitejs/plugin-react-swc": "^3.9.0",
+    "@vitest/coverage-istanbul": "^3.1.2",
     "eslint": "^8.57.1",
     "js2me-eslint-config": "^1.0.7",
-    "js2me-exports-post-build-script": "^2.0.17",
-    "jsdom": "^26.0.0",
+    "js2me-exports-post-build-script": "^2.0.18",
+    "jsdom": "^26.1.0",
     "nodemon": "^3.1.9",
     "rimraf": "^6.0.1",
-    "typescript": "^5.7.2",
-    "unplugin-swc": "^1.5.1",
-    "vitest": "^3.0.5"
+    "typescript": "^5.8.3",
+    "unplugin-swc": "^1.5.2",
+    "vitest": "^3.1.2"
   },
   "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"
 }
