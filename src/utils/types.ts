@@ -83,7 +83,9 @@ export type AllPropertiesOptional<T> = keyof T extends never
         [K in keyof T]-?: undefined extends T[K] ? never : K;
       } extends { [K in keyof T]: never }
     ? true
-    : false;
+    : T extends EmptyObject
+      ? true
+      : false;
 
 export type RecordEntries<T extends AnyObject> =
   T extends Record<infer Keys, infer Values>
