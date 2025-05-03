@@ -5,37 +5,6 @@ import { describe, expect, test } from 'vitest';
 import { typeGuard } from './index.js';
 
 describe('typeGuard', () => {
-  test('isArray', () => {
-    expect(typeGuard.isArray([1, 2, 3])).toBe(true);
-    expect(typeGuard.isArray({})).toBe(false);
-    expect(typeGuard.isArray(1)).toBe(false);
-    expect(typeGuard.isArray('asdfvasd')).toBe(false);
-    expect(typeGuard.isArray(true)).toBe(false);
-    expect(typeGuard.isArray(undefined)).toBe(false);
-    expect(typeGuard.isArray(null)).toBe(false);
-  });
-
-  test('isObject', () => {
-    expect(typeGuard.isObject({})).toBe(true);
-    expect(typeGuard.isObject(null)).toBe(false);
-    expect(typeGuard.isObject(undefined)).toBe(false);
-    expect(typeGuard.isObject([])).toBe(false);
-    expect(typeGuard.isObject(1)).toBe(false);
-    expect(typeGuard.isObject('barbvaz')).toBe(false);
-    expect(typeGuard.isObject(true)).toBe(false);
-  });
-
-  test('isString', () => {
-    expect(typeGuard.isString('sadf')).toBe(true);
-    expect(typeGuard.isString('')).toBe(true);
-    expect(typeGuard.isString(null)).toBe(false);
-    expect(typeGuard.isString(undefined)).toBe(false);
-    expect(typeGuard.isString([])).toBe(false);
-    expect(typeGuard.isString(1)).toBe(false);
-    expect(typeGuard.isString(true)).toBe(false);
-    expect(typeGuard.isString(Symbol())).toBe(false);
-  });
-
   test('isNumber', () => {
     expect(typeGuard.isNumber(1)).toBe(true);
     expect(typeGuard.isNumber(1.1)).toBe(true);
@@ -49,6 +18,17 @@ describe('typeGuard', () => {
     expect(typeGuard.isNumber(Number.MIN_SAFE_INTEGER)).toBe(true);
     expect(typeGuard.isNumber(Infinity)).toBe(false);
     expect(typeGuard.isNumber(-Infinity)).toBe(false);
+  });
+
+  test('isString', () => {
+    expect(typeGuard.isString('sadf')).toBe(true);
+    expect(typeGuard.isString('')).toBe(true);
+    expect(typeGuard.isString(null)).toBe(false);
+    expect(typeGuard.isString(undefined)).toBe(false);
+    expect(typeGuard.isString([])).toBe(false);
+    expect(typeGuard.isString(1)).toBe(false);
+    expect(typeGuard.isString(true)).toBe(false);
+    expect(typeGuard.isString(Symbol())).toBe(false);
   });
 
   test('isBoolean', () => {
@@ -79,6 +59,16 @@ describe('typeGuard', () => {
     expect(typeGuard.isRegExp('bbaa')).toBe(false);
     expect(typeGuard.isRegExp('/bbaa/')).toBe(false);
     expect(typeGuard.isRegExp({})).toBe(false);
+  });
+
+  test('isObject', () => {
+    expect(typeGuard.isObject({})).toBe(true);
+    expect(typeGuard.isObject(null)).toBe(false);
+    expect(typeGuard.isObject(undefined)).toBe(false);
+    expect(typeGuard.isObject([])).toBe(false);
+    expect(typeGuard.isObject(1)).toBe(false);
+    expect(typeGuard.isObject('barbvaz')).toBe(false);
+    expect(typeGuard.isObject(true)).toBe(false);
   });
 
   test('isElement', () => {
@@ -125,5 +115,15 @@ describe('typeGuard', () => {
     expect(typeGuard.isDefined([])).toBe(true);
     expect(typeGuard.isDefined(new Date())).toBe(true);
     expect(typeGuard.isDefined(Symbol())).toBe(true);
+  });
+
+  test('isArray', () => {
+    expect(typeGuard.isArray([1, 2, 3])).toBe(true);
+    expect(typeGuard.isArray({})).toBe(false);
+    expect(typeGuard.isArray(1)).toBe(false);
+    expect(typeGuard.isArray('asdfvasd')).toBe(false);
+    expect(typeGuard.isArray(true)).toBe(false);
+    expect(typeGuard.isArray(undefined)).toBe(false);
+    expect(typeGuard.isArray(null)).toBe(false);
   });
 });
