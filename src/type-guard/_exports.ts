@@ -150,4 +150,3 @@ export const isInfinite = createTypeGuard<number>(Type.Infinite);
  * @returns boolean
  */
 export const isSymbol = createTypeGuard<symbol>(Type.Symbol);
-
