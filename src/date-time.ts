@@ -4,7 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime.js';
 
 import { unitsToMs } from './ms.js';
 import { declension } from './text.js';
-import { typeGuard } from './type-guard.js';
+import { typeGuard } from './type-guard/index.js';
 import { Maybe } from './utils/types.js';
 
 import 'dayjs/locale/ru';

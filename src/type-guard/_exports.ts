@@ -1,4 +1,5 @@
-import { AnyFunction, AnyObject } from './utils/types.js';
+/* eslint-disable sonarjs/no-globals-shadowing */
+import { AnyFunction, AnyObject } from '../utils/types.js';
 
 const enum Type {
   Null = 'null',
@@ -51,21 +52,19 @@ const createTypeGuard =
   (value: unknown): value is T =>
     getType(value) === type;
 
-const isDefined = <T>(value: T | undefined | null): value is T => value != null;
+export const isDefined = <T>(value: T | undefined | null): value is T =>
+  value != null;
 
-export const typeGuard = {
-  isNull: createTypeGuard<null>(Type.Null),
-  isUndefined: createTypeGuard<undefined>(Type.Undefined),
-  isObject: createTypeGuard<AnyObject>(Type.Object),
-  isArray: createTypeGuard<unknown[]>(Type.Array),
-  isString: createTypeGuard<string>(Type.String),
-  isNumber: createTypeGuard<number>(Type.Number),
-  isBoolean: createTypeGuard<boolean>(Type.Boolean),
-  isFunction: createTypeGuard<AnyFunction>(Type.Function),
-  isRegExp: createTypeGuard<boolean>(Type.RegExp),
-  isElement: createTypeGuard<HTMLElement>(Type.Element),
-  isNaN: createTypeGuard<number>(Type.NaN),
-  isInfinite: createTypeGuard<number>(Type.Infinite),
-  isSymbol: createTypeGuard<symbol>(Type.Symbol),
-  isDefined,
-};
+export const isNull = createTypeGuard<null>(Type.Null);
+export const isUndefined = createTypeGuard<undefined>(Type.Undefined);
+export const isObject = createTypeGuard<AnyObject>(Type.Object);
+export const isArray = createTypeGuard<unknown[]>(Type.Array);
+export const isString = createTypeGuard<string>(Type.String);
+export const isNumber = createTypeGuard<number>(Type.Number);
+export const isBoolean = createTypeGuard<boolean>(Type.Boolean);
+export const isFunction = createTypeGuard<AnyFunction>(Type.Function);
+export const isRegExp = createTypeGuard<boolean>(Type.RegExp);
+export const isElement = createTypeGuard<HTMLElement>(Type.Element);
+export const isNaN = createTypeGuard<number>(Type.NaN);
+export const isInfinite = createTypeGuard<number>(Type.Infinite);
+export const isSymbol = createTypeGuard<symbol>(Type.Symbol);
