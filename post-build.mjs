@@ -11,6 +11,13 @@ postBuildScript({
     $(`cp dist/utils/types.d.ts dist/utility-types.d.ts`);
     $(`sed -i 's/^export type/type/' dist/utility-types.d.ts`);
 
+    targetPackageJson.update({
+      exports: {
+        ...targetPackageJson.data.exports,
+        './utility-types': './utility-types.d.ts'
+      }
+    })
+
     if (process.env.PUBLISH) {
       publishScript({
         nextVersion: versionsDiff?.next ?? packageJson.version,
