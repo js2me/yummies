@@ -152,3 +152,19 @@ export type ExtractObjects<T> = T extends infer U
   : never;
 
 export type OverrideKey<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>;
+
+export type IfEquals<X, Y> =
+  (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
+    ? true
+    : false;
+
+export type WritableKeys<T> = {
+  [K in keyof T]: IfEquals<
+    { [Q in K]: T[K] },
+    { -readonly [Q in K]: T[K] }
+  > extends true
+    ? K
+    : never;
+}[keyof T];
+
+export type NonReadonly<T> = Pick<T, WritableKeys<T>>;
