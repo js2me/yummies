@@ -150,3 +150,5 @@ export type ExtractObjects<T> = T extends infer U
     ? U
     : never
   : never;
+
+export type OverrideKey<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>;
