@@ -67,19 +67,13 @@ export type MaybeValues<T extends AnyObject> = {
   [K in keyof T]: Maybe<T[K]>;
 };
 
-export type KeyOfByValue<T, TValues extends ValueOf<T>> = ValueOf<{
+export type KeyOfByValue<T, TValues> = ValueOf<{
   [K in keyof T]: T[K] extends TValues ? K : never;
 }>;
 
-export type PickByValue<T, TValues extends ValueOf<T>> = Pick<
-  T,
-  KeyOfByValue<T, TValues>
->;
+export type PickByValue<T, TValues> = Pick<T, KeyOfByValue<T, TValues>>;
 
-export type OmitByValue<T, TValues extends ValueOf<T>> = Omit<
-  T,
-  KeyOfByValue<T, TValues>
->;
+export type OmitByValue<T, TValues> = Omit<T, KeyOfByValue<T, TValues>>;
 
 export type AllPropertiesOptional<T> = keyof T extends never
   ? true
