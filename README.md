@@ -91,10 +91,10 @@ Or specified in `tsconfig.json` in the `"types"` field
 }
 ```
 Alternatively, you can use the "library" approach, where you need exported types.  
-For this, you can use the `yummies/utils/types` import.
+For this, you can use the `yummies` or `yummies/utils/types` import.
 
 ```ts
-import { AnyObject } from 'yummies/utils/types';
+import { AnyObject } from 'yummies';
 ```
 
 
