@@ -163,6 +163,22 @@ export type WritableKeys<T> = {
 
 export type NonReadonly<T> = Pick<T, WritableKeys<T>>;
 
+export type IsArray<T> = T extends object
+  ? // eslint-disable-next-line @typescript-eslint/ban-types
+    T extends Function
+    ? false
+    : T extends any[]
+      ? true
+      : false
+  : false;
+
+export type IsFunction<T> = T extends object
+  ? // eslint-disable-next-line @typescript-eslint/ban-types
+    T extends Function
+    ? true
+    : false
+  : false;
+
 export type IsObject<T> = T extends object
   ? // eslint-disable-next-line @typescript-eslint/ban-types
     T extends Function
