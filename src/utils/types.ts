@@ -162,3 +162,19 @@ export type WritableKeys<T> = {
 }[keyof T];
 
 export type NonReadonly<T> = Pick<T, WritableKeys<T>>;
+
+export type IsObject<T> = T extends object
+  ? // eslint-disable-next-line @typescript-eslint/ban-types
+    T extends Function
+    ? false
+    : T extends any[]
+      ? false
+      : true
+  : false;
+
+export type CopyObject<T> =
+  IsObject<T> extends true
+    ? {
+        [K in keyof T]: IsObject<T[K]> extends true ? CopyObject<T[K]> : T[K];
+      }
+    : T;
