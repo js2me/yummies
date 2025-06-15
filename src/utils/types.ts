@@ -194,3 +194,5 @@ export type CopyObject<T> =
         [K in keyof T]: IsObject<T[K]> extends true ? CopyObject<T[K]> : T[K];
       }
     : T;
+
+export type MaybePromise<T> = T | Promise<T>;
