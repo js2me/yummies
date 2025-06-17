@@ -18,6 +18,8 @@ export const getComputedColor = (color?: string): string | null => {
   const match =
     /rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*\d+[.d+]*)*\)/g.exec(rgbcolor);
 
+  d.remove();
+
   if (!match) return null;
 
   return `${match[1]}, ${match[2]}, ${match[3]}`;
