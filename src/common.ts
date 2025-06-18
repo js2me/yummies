@@ -5,9 +5,12 @@ import { MaybeFn } from './utils/types.js';
  */
 export type FnValue<TValue, TArgs extends any[] = []> = MaybeFn<TValue, TArgs>;
 
-export const resolveFnValue = <TValue, TArgs extends any[] = []>(
-  // eslint-disable-next-line sonarjs/deprecation
-  fn: FnValue<TValue, TArgs>,
+/**
+ * Calls the provided function with the given arguments if it is a function;
+ * otherwise, returns the value directly.
+ */
+export const callFunction = <TValue, TArgs extends any[] = []>(
+  fn: MaybeFn<TValue, TArgs>,
   ...args: TArgs
 ) => {
   if (typeof fn === 'function') {
@@ -16,3 +19,8 @@ export const resolveFnValue = <TValue, TArgs extends any[] = []>(
 
   return fn;
 };
+
+/**
+ * @deprecated use {callFunction}
+ */
+export const resolveFnValue = callFunction;
