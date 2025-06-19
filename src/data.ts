@@ -48,3 +48,11 @@ export const isShallowEqual = (a: unknown, b: unknown): boolean => {
 
   return true;
 };
+
+export const flatMapDeep = <TSource, TNewValue>(
+  arr: TSource | TSource[],
+  fn: (value: TSource, i: number, arr: TSource[]) => TNewValue,
+): TNewValue[] =>
+  Array.isArray(arr)
+    ? arr.flatMap((c: TSource): TNewValue[] => flatMapDeep(c, fn))
+    : [fn(arr, 0, [arr])];
