@@ -16,23 +16,25 @@ dayjs.locale('ru');
 const NO_VALUE = '–'; // en-dash
 
 const toLibFormat = function (
-  value: Maybe<string | number | Dayjs>,
+  value: Maybe<RawDateToFormat>,
   asTime?: boolean,
-): Dayjs | undefined {
+): Dayjs {
   if (typeGuard.isNumber(value)) {
     if (asTime) {
       return dayjs.duration(value) as unknown as Dayjs;
     }
     return dayjs(value);
-  } else if (typeGuard.isString(value)) {
-    return dayjs(value);
   } else if (dayjs.isDayjs(value)) {
     return value;
+  } else {
+    return dayjs(value);
   }
 };
 
+export type RawDateToFormat = Date | string | number | Dayjs;
+
 export const formatDate = function (
-  value: Maybe<string | number | Dayjs>,
+  value: Maybe<RawDateToFormat>,
   settings?: Maybe<{
     format?:
       | 'human'
@@ -55,7 +57,7 @@ export const formatDate = function (
 
   value = toLibFormat(value, asTime);
 
-  if (typeGuard.isUndefined(value)) {
+  if (typeGuard.isUndefined(value) || !value.isValid()) {
     return NO_VALUE;
   }
 
@@ -123,7 +125,7 @@ export const dayTimeDuration = (timeInMs: number) => {
 type DateChangeParam = [amount: number, unit?: Maybe<ManipulateType>];
 
 export const changeDate = (
-  date: Maybe<Date | number | string>,
+  date: Maybe<RawDateToFormat>,
   ...args: [
     ...DateChangeParam,
     ...Partial<DateChangeParam>,
@@ -133,7 +135,7 @@ export const changeDate = (
     ...Partial<DateChangeParam>,
   ]
 ) => {
-  let wrappedDate = dayjs(date);
+  let wrappedDate = toLibFormat(date);
 
   for (let i = 0; i < args.length; i += 2) {
     const amount = args[i] as DateChangeParam[0];
