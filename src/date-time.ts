@@ -7,7 +7,7 @@ import { declension } from './text.js';
 import { typeGuard } from './type-guard/index.js';
 import { Maybe } from './utils/types.js';
 
-import 'dayjs/locale/ru';
+import 'dayjs/locale/ru.js';
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
