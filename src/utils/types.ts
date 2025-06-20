@@ -145,7 +145,19 @@ export type ExtractObjects<T> = T extends infer U
     : never
   : never;
 
-export type OverrideKey<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>;
+/**
+ * Replace value in object by key
+ *
+ * @example
+ * ```ts
+ * type Test = { foo: string; bar?: number };
+ * type FixedTest = OverrideKey<Test, 'bar', string>
+ * // { foo: string; bar?: string }
+ * ```
+ */
+export type OverrideKey<T, K extends keyof T, V> = {
+  [KK in keyof T]: KK extends K ? V : T[KK];
+};
 
 export type IfEquals<X, Y> =
   (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
