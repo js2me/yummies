@@ -1,20 +1,20 @@
 import { typeGuard } from './type-guard/index.js';
 import { Maybe } from './utils/types.js';
 
-type ErrorToTextEnhancer = (error: any) => string;
-type ErrorToTextFormatErrorFn = (error: Error) => string;
+type GetErrorTextEnhancer = (error: any) => string;
+type GetErrorTextFormatErrorFn = (error: Error) => string;
 
 /**
  * Universal function for transforming any errors into readable error text
  *
  * This function can be enhanced with custom handlers using:
- * - `errorToText.unknownErrorText`
- * - `errorToText.formatError`
- * - `errorToText.enhance`
+ * - `getErrorText.unknownErrorText`
+ * - `getErrorText.formatError`
+ * - `getErrorText.enhance`
  */
-export const errorToText = (error: unknown) => {
+export const getErrorText = (error: unknown) => {
   if (!error) {
-    return errorToText.unknownErrorText;
+    return getErrorText.unknownErrorText;
   }
 
   if (typeGuard.isString(error)) {
@@ -22,16 +22,16 @@ export const errorToText = (error: unknown) => {
   }
 
   if (error instanceof Error) {
-    return errorToText.formatError?.(error) ?? error.message;
+    return getErrorText.formatError?.(error) ?? error.message;
   }
 
-  if (errorToText.enhance) {
-    return errorToText.enhance(error);
+  if (getErrorText.enhance) {
+    return getErrorText.enhance(error);
   } else {
-    return errorToText.unknownErrorText;
+    return getErrorText.unknownErrorText;
   }
 };
 
-errorToText.unknownErrorText = '';
-errorToText.formatError = null as Maybe<ErrorToTextFormatErrorFn>;
-errorToText.enhance = null as Maybe<ErrorToTextEnhancer>;
+getErrorText.unknownErrorText = '';
+getErrorText.formatError = null as Maybe<GetErrorTextFormatErrorFn>;
+getErrorText.enhance = null as Maybe<GetErrorTextEnhancer>;
