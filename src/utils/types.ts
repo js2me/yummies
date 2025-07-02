@@ -208,3 +208,10 @@ export type CopyObject<T> =
     : T;
 
 export type MaybePromise<T> = T | Promise<T>;
+
+export type WithRequired<TTarget, TKey extends keyof TTarget> = TTarget & {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  [_ in TKey]: {};
+};
+
+export type IndexKeys<T extends any[]> = Extract<keyof T, `${number}`>;
