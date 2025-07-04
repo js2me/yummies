@@ -215,3 +215,5 @@ export type WithRequired<TTarget, TKey extends keyof TTarget> = TTarget & {
 };
 
 export type IndexKeys<T extends any[]> = Extract<keyof T, `${number}`>;
+
+export type Defined<T> = Exclude<T, undefined>;
