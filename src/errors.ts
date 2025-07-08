@@ -18,7 +18,7 @@ export const getErrorText = (error: unknown) => {
   }
 
   if (typeGuard.isString(error)) {
-    return error;
+    return error || getErrorText.unknownErrorText;
   }
 
   if (error instanceof Error) {
