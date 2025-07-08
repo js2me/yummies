@@ -26,7 +26,7 @@ export const getErrorText = (error: unknown) => {
   }
 
   if (getErrorText.enhance) {
-    return getErrorText.enhance(error);
+    return getErrorText.enhance(error) ?? getErrorText.unknownErrorText;
   } else {
     return getErrorText.unknownErrorText;
   }
