@@ -1,5 +1,11 @@
 # yummies
 
+## 4.3.1
+
+### Patch Changes
+
+- [`6804f06`](https://github.com/js2me/yummies/commit/6804f06dd510e8feecc3ee3557e8051a48ac0e0d) Thanks [@js2me](https://github.com/js2me)! - fix getErrorText fallback unknown error text after empty enhance method call
+
 ## 4.3.0
 
 ### Minor Changes
