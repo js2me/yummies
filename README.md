@@ -101,3 +101,8 @@ import { AnyObject } from 'yummies';
 ## [yummies/complex](src/complex/index.ts)  
 
 Additional set of complex utilities  
+
+
+## Contribution Guide    
+
+Want to contribute ? [Follow this guide](https://github.com/js2me/yummies/blob/master/CONTRIBUTING.md)  
