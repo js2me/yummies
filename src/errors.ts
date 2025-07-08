@@ -22,7 +22,10 @@ export const getErrorText = (error: unknown) => {
   }
 
   if (error instanceof Error) {
-    return getErrorText.formatError?.(error) ?? error.message;
+    return (
+      (getErrorText.formatError?.(error) ?? error.message) ||
+      getErrorText.unknownErrorText
+    );
   }
 
   if (getErrorText.enhance) {
