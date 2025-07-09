@@ -1,5 +1,11 @@
 # yummies
 
+## 4.4.0
+
+### Minor Changes
+
+- [`88b2b77`](https://github.com/js2me/yummies/commit/88b2b771b6ae8841f423eee14284c59af74381e6) Thanks [@js2me](https://github.com/js2me)! - added `round` number util
+
 ## 4.3.1
 
 ### Patch Changes
