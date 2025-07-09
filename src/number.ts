@@ -5,6 +5,10 @@
  * round(191.212999999999999999999999, 4) // 191.213
  */
 export function round(value: number, decimalPlaces: number = 0): number {
+  if (!decimalPlaces) {
+    return Math.round(value);
+  }
+
   const factor = 10 ** decimalPlaces;
   return Math.round(value * factor) / factor;
 }
