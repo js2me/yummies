@@ -1,5 +1,11 @@
 # yummies
 
+## 4.5.0
+
+### Minor Changes
+
+- [`4adf401`](https://github.com/js2me/yummies/commit/4adf4010dd1e83589a6d4a432abdae8f59ac4b97) Thanks [@js2me](https://github.com/js2me)! - rename AllPropertiesOptional -> IsPartial, add PartialIf type
+
 ## 4.4.0
 
 ### Minor Changes
