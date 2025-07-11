@@ -75,7 +75,7 @@ export type PickByValue<T, TValues> = Pick<T, KeyOfByValue<T, TValues>>;
 
 export type OmitByValue<T, TValues> = Omit<T, KeyOfByValue<T, TValues>>;
 
-export type AllPropertiesOptional<T> = keyof T extends never
+export type IsPartial<T> = keyof T extends never
   ? true
   : {
         [K in keyof T]-?: undefined extends T[K] ? never : K;
@@ -84,6 +84,15 @@ export type AllPropertiesOptional<T> = keyof T extends never
     : T extends EmptyObject
       ? true
       : false;
+
+/**
+ * @deprecated use `IsPartial<T>` . Better naming
+ */
+export type AllPropertiesOptional<T> = IsPartial<T>;
+
+export type PartialIf<TCondition, TObject> = TCondition extends true
+  ? Partial<TObject>
+  : TObject;
 
 export type RecordEntries<T extends AnyObject> =
   T extends Record<infer Keys, infer Values>
@@ -96,8 +105,7 @@ export type RenameKey<
   TObject,
   TOldKey extends keyof TObject,
   TNewKey extends string,
-> = Omit<TObject, TOldKey> &
-  AllPropertiesOptional<Pick<TObject, TOldKey>> extends true
+> = Omit<TObject, TOldKey> & IsPartial<Pick<TObject, TOldKey>> extends true
   ? { [K in TNewKey]?: TObject[TOldKey] }
   : { [K in TNewKey]: TObject[TOldKey] };
 

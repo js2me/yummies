@@ -1,9 +1,4 @@
-import {
-  AllPropertiesOptional,
-  AnyObject,
-  Class,
-  EmptyObject,
-} from '../utils/types.js';
+import { IsPartial, AnyObject, Class, EmptyObject } from '../utils/types.js';
 
 type ModuleLoaderConfig<TPredefinedDeps extends AnyObject = EmptyObject> = {
   factory<TInstance, TDeps extends TPredefinedDeps>(
@@ -54,9 +49,7 @@ export class ModulesFactory<TPredefinedDeps extends AnyObject = EmptyObject> {
    */
   create<TInstance, TDeps extends TPredefinedDeps = TPredefinedDeps>(
     Constructor: Class<TInstance, [TDeps]>,
-    ...args: AllPropertiesOptional<
-      Omit<TDeps, keyof TPredefinedDeps>
-    > extends true
+    ...args: IsPartial<Omit<TDeps, keyof TPredefinedDeps>> extends true
       ? [extraDeps?: Omit<TDeps, keyof TPredefinedDeps>]
       : [extraDeps: Omit<TDeps, keyof TPredefinedDeps>]
   ) {
