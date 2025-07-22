@@ -243,3 +243,9 @@ export function getElementInnerWidth(el: HTMLElement) {
     Number.parseFloat(paddingRight)
   );
 }
+
+export const isPrefersDarkTheme = () =>
+  !!globalThis.matchMedia?.('(prefers-color-scheme: dark)')?.matches;
+
+export const isPrefersLightTheme = () =>
+  !!globalThis.matchMedia?.('(prefers-color-scheme: light)')?.matches;
