@@ -1,5 +1,11 @@
 # yummies
 
+## 4.5.1
+
+### Patch Changes
+
+- [`589e900`](https://github.com/js2me/yummies/commit/589e9006c9224ef81fd4c4b9baf95455205a1609) Thanks [@js2me](https://github.com/js2me)! - added (html) `isPreferesDarkTheme`, `isPrefersLightTheme`
+
 ## 4.5.0
 
 ### Minor Changes
