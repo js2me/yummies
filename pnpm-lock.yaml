@@ -55,8 +55,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(eslint@8.57.1)(prettier@3.3.3)(typescript@5.8.3)
       js2me-exports-post-build-script:
-        specifier: ^4.1.5
-        version: 4.1.5
+        specifier: ^5.0.1
+        version: 5.0.1
       jsdom:
         specifier: ^26.1.0
         version: 26.1.0
@@ -2890,8 +2890,8 @@ packages:
       eslint: ^8.57.0
       prettier: ^3.3.3
 
-  js2me-exports-post-build-script@4.1.5:
-    resolution: {integrity: sha512-wg8Hw3Bac4dlUW/y04Vs+aZrJbLtsdxFM44pAMBWRIPxmDrAGK+/xmZG0CVciK4JIjpObPNDVZFhuaQK+SrbuQ==}
+  js2me-exports-post-build-script@5.0.1:
+    resolution: {integrity: sha512-rMsfnLkhlbtdwHLycWqVtwy7bCPIrqTQMrKFtwDKf/ZwI2660catZdlVJepBW5+HjGnjzt8F34XPjAeLi0PiZQ==}
 
   jsdom@26.1.0:
     resolution: {integrity: sha512-Cvc9WUhxSMEo4McES3P7oK3QaXldCfNWp7pl2NNeiIFlCoLr3kfq9kb1fxftiwk1FLV7CvpvDfonxtzUDeSOPg==}
@@ -7588,7 +7588,7 @@ snapshots:
       - supports-color
       - typescript
 
-  js2me-exports-post-build-script@4.1.5:
+  js2me-exports-post-build-script@5.0.1:
     dependencies:
       gh-release: 7.0.2
       simple-git: 3.27.0
