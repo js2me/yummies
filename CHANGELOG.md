@@ -1,5 +1,11 @@
 # yummies
 
+## 4.6.1
+
+### Patch Changes
+
+- [`9499c77`](https://github.com/js2me/yummies/commit/9499c77f10f8f84c615321c4aea01e508b0e8740) Thanks [@js2me](https://github.com/js2me)! - fix cva typings
+
 ## 4.6.0
 
 ### Minor Changes
