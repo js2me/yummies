@@ -21,3 +21,5 @@ export const cva = ((...args: any[]) => {
   const schema = cvaLib(...args);
   return (...inputArgs: any[]) => twMerge(schema(...inputArgs));
 }) as any as typeof cvaLib;
+
+export type { VariantProps } from 'class-variance-authority';
