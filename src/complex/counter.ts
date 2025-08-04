@@ -1,24 +1,29 @@
 export interface CounterFn<TProcessedValue = number> {
   (): TProcessedValue;
+  counter: number;
+  value: TProcessedValue;
   reset(): void;
 }
 
 export const createCounter = <TProcessedValue = number>(
   processValue?: (value: number) => TProcessedValue,
+  initial: number = 0,
 ): CounterFn<TProcessedValue> => {
-  let counter = 0;
+  const initialValue = processValue?.(initial) ?? (initial as TProcessedValue);
 
-  let incrementFn;
+  const incrementFn: CounterFn<TProcessedValue> = (() => {
+    const nextCounter = incrementFn.counter++;
+    incrementFn.value =
+      processValue?.(nextCounter) ?? (nextCounter as TProcessedValue);
+    return incrementFn.value;
+  }) as any;
 
-  if (processValue) {
-    incrementFn = () => processValue(counter++);
-  } else {
-    incrementFn = () => counter++ as TProcessedValue;
-  }
-
-  (incrementFn as CounterFn<TProcessedValue>).reset = () => {
-    counter = 0;
+  incrementFn.reset = () => {
+    incrementFn.counter = initial;
+    incrementFn.value = initialValue;
   };
+
+  incrementFn.reset();
 
   return incrementFn as CounterFn<TProcessedValue>;
 };
