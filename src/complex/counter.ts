@@ -9,19 +9,18 @@ export const createCounter = <TProcessedValue = number>(
   processValue?: (value: number) => TProcessedValue,
   initial: number = 0,
 ): CounterFn<TProcessedValue> => {
-  const incrementFn: CounterFn<TProcessedValue> = (() => {
-    const nextCounter = incrementFn.counter++;
-    incrementFn.value =
-      processValue?.(nextCounter) ?? (nextCounter as TProcessedValue);
-    return incrementFn.value;
+  const fn: CounterFn<TProcessedValue> = (() => {
+    const nextCounter = ++fn.counter;
+    fn.value = processValue?.(nextCounter) ?? (nextCounter as TProcessedValue);
+    return fn.value;
   }) as any;
 
-  incrementFn.reset = () => {
-    incrementFn.counter = initial;
-    incrementFn.value = processValue?.(initial) ?? (initial as TProcessedValue);
+  fn.reset = () => {
+    fn.counter = initial;
+    fn.value = processValue?.(initial) ?? (initial as TProcessedValue);
   };
 
-  incrementFn.reset();
+  fn.reset();
 
-  return incrementFn as CounterFn<TProcessedValue>;
+  return fn as CounterFn<TProcessedValue>;
 };
