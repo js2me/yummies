@@ -1,5 +1,11 @@
 # yummies
 
+## 4.7.1
+
+### Patch Changes
+
+- fix createCounter complex util work
+
 ## 4.7.0
 
 ### Minor Changes
