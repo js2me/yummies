@@ -17,10 +17,13 @@ export const createCounter = <TProcessedValue = number>(
     return fn.value;
   };
 
-  const fn: CounterFn<TProcessedValue> = (() => fn.increment()) as any;
+  const increment = () => update(++fn.counter);
+  const decrement = () => update(--fn.counter);
 
-  fn.increment = () => update(++fn.counter);
-  fn.decrement = () => update(--fn.counter);
+  const fn: CounterFn<TProcessedValue> = increment as any;
+
+  fn.increment = increment;
+  fn.decrement = decrement;
 
   fn.reset = () => {
     fn.counter = initial;
