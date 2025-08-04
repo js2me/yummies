@@ -1,5 +1,15 @@
 # yummies
 
+## 4.8.0
+
+### Minor Changes
+
+- [`7b5168f`](https://github.com/js2me/yummies/commit/7b5168f5fe16b37ce122ee5aa6cbc0a0dc41fae5) Thanks [@js2me](https://github.com/js2me)! - added decrement for `createCounter`
+
+### Patch Changes
+
+- [`d5aba14`](https://github.com/js2me/yummies/commit/d5aba14d3fc40e2fe390d35b4cf0056c76e37cbc) Thanks [@js2me](https://github.com/js2me)! - rename `CounterFn` -> `Counter` (mark deprecations)
+
 ## 4.7.1
 
 ### Patch Changes
