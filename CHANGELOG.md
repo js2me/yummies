@@ -1,5 +1,11 @@
 # yummies
 
+## 4.7.0
+
+### Minor Changes
+
+- [`59c85ad`](https://github.com/js2me/yummies/commit/59c85ad60a5cb8a03b501a0b8476a0bb94dc5abf) Thanks [@js2me](https://github.com/js2me)! - improve `createCounter` fn (add `value`, `counter` properties)
+
 ## 4.6.1
 
 ### Patch Changes
