@@ -135,14 +135,18 @@ export const isElement = createTypeGuard<HTMLElement>(Type.Element);
  * @param value the value to check
  * @returns boolean
  */
-export const isNaN = createTypeGuard<number>(Type.NaN);
+export const isNaN = createTypeGuard<number>(Type.NaN) as (
+  value: unknown,
+) => boolean;
 
 /**
  * Check if a value is infinity
  * @param value the value to check
  * @returns boolean
  */
-export const isInfinite = createTypeGuard<number>(Type.Infinite);
+export const isInfinite = createTypeGuard<number>(Type.Infinite) as (
+  value: unknown,
+) => boolean;
 
 /**
  * Check if a value is a symbol
