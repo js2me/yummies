@@ -121,7 +121,7 @@ export const isFunction = createTypeGuard<AnyFunction>(Type.Function);
  * @param value the value to check
  * @returns boolean
  */
-export const isRegExp = createTypeGuard<boolean>(Type.RegExp);
+export const isRegExp = createTypeGuard<RegExp>(Type.RegExp);
 
 /**
  * Check if a value is a DOM element
