@@ -1,5 +1,11 @@
 # yummies
 
+## 4.9.0
+
+### Minor Changes
+
+- [`0e77d75`](https://github.com/js2me/yummies/commit/0e77d75bac1ea494a445fd16b7096bbbd212f79b) Thanks [@js2me](https://github.com/js2me)! - update tailwind-merge to latest
+
 ## 4.8.0
 
 ### Minor Changes
