@@ -1,5 +1,13 @@
 # yummies
 
+## 4.9.1
+
+### Patch Changes
+
+- [`3313f7c`](https://github.com/js2me/yummies/commit/3313f7c8aa7fcdd929230e84f81b95782e483449) Thanks [@js2me](https://github.com/js2me)! - fix isRegExp type guard
+
+- [`2c674e2`](https://github.com/js2me/yummies/commit/2c674e26cf1137f174cdac81e13fdd4fd612ccbc) Thanks [@js2me](https://github.com/js2me)! - remove isNaN and isInfinite as type guard works because they crash code
+
 ## 4.9.0
 
 ### Minor Changes
