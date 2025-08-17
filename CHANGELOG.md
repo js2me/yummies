@@ -1,5 +1,11 @@
 # yummies
 
+## 4.10.0
+
+### Minor Changes
+
+- [`c4bc839`](https://github.com/js2me/yummies/commit/c4bc8399f16800225b83789d2fb5c989e7e81c4e) Thanks [@js2me](https://github.com/js2me)! - added `ExtractEnumValues` type
+
 ## 4.9.1
 
 ### Patch Changes
