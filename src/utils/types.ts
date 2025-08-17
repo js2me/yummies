@@ -10,6 +10,9 @@ export type ExtractEnumKeys<T> = ValueOf<{
   [key in keyof T]: key extends string ? key : never;
 }>;
 
+/** Converts enum values to union */
+export type ExtractEnumValues<T> = `${T & string}` | (T & number);
+
 export type Maybe<T> = Nullable<T> | undefined;
 
 export type Nullable<T> = T | null;
