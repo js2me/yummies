@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/todo-tag */
 import { degToRad } from './math.js';
 
 export function blobToBase64(blob: Blob): Promise<string> {
@@ -37,7 +36,6 @@ export const imageToBlob = (
   const array = new Uint8Array(buf);
 
   for (let index = 0; index < bytes.length; index++) {
-    // eslint-disable-next-line unicorn/prefer-code-point
     array[index] = bytes.charCodeAt(index);
   }
 
@@ -67,7 +65,7 @@ function cropImageFromCanvas(context: CanvasRenderingContext2D) {
   const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
   let x: number;
   let y: number;
-  let index;
+  let index: number;
 
   for (y = 0; y < h; y++) {
     for (x = 0; x < w; x++) {
@@ -78,12 +76,8 @@ function cropImageFromCanvas(context: CanvasRenderingContext2D) {
       }
     }
   }
-  pix.x.sort(function (a, b) {
-    return a - b;
-  });
-  pix.y.sort(function (a, b) {
-    return a - b;
-  });
+  pix.x.sort((a, b) => a - b);
+  pix.y.sort((a, b) => a - b);
   const n = pix.x.length - 1;
 
   w = 1 + pix.x[n] - pix.x[0];

@@ -1,7 +1,5 @@
-/* eslint-disable unicorn/no-useless-undefined */
-import { expect, it } from 'vitest';
-
 import { describe } from 'node:test';
+import { expect, it } from 'vitest';
 
 import { isShallowEqual } from './data';
 

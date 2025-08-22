@@ -1,7 +1,6 @@
-/* eslint-disable sonarjs/no-globals-shadowing */
-import { AnyFunction, AnyObject } from '../utils/types.js';
+import type { AnyFunction, AnyObject } from '../utils/types.js';
 
-const enum Type {
+enum Type {
   Null = 'null',
   Undefined = 'undefined',
   NaN = 'nan',
@@ -26,7 +25,6 @@ function getType(value: unknown): Type {
   }
 
   // handle DOM elements
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (value && (value.nodeType === 1 || value.nodeType === 9)) {
     return Type.Element;

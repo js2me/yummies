@@ -1,5 +1,5 @@
 import { cva as cvaLib } from 'class-variance-authority';
-import clsx, { ClassValue } from 'clsx';
+import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 type ClassProp = {

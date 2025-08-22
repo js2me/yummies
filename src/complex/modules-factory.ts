@@ -1,11 +1,15 @@
-import { IsPartial, AnyObject, Class, EmptyObject } from '../utils/types.js';
+import type {
+  AnyObject,
+  Class,
+  EmptyObject,
+  IsPartial,
+} from '../utils/types.js';
 
 type ModuleLoaderConfig<TPredefinedDeps extends AnyObject = EmptyObject> = {
   factory<TInstance, TDeps extends TPredefinedDeps>(
     moduleClass: Class<TInstance, [TDeps]>,
     deps: TDeps,
   ): TInstance;
-  // eslint-disable-next-line @typescript-eslint/ban-types
 } & (TPredefinedDeps extends EmptyObject
   ? { deps?: TPredefinedDeps }
   : { deps: TPredefinedDeps });

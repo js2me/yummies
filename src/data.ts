@@ -1,5 +1,4 @@
-/* eslint-disable no-prototype-builtins */
-import { AnyObject } from './utils/types.js';
+import type { AnyObject } from './utils/types.js';
 
 export const isShallowEqual = (a: unknown, b: unknown): boolean => {
   if (a === b) return true;
@@ -41,7 +40,7 @@ export const isShallowEqual = (a: unknown, b: unknown): boolean => {
 
   const bObj = b as AnyObject;
   for (const key of aKeys) {
-    if (!bObj.hasOwnProperty(key) || (a as AnyObject)[key] !== bObj[key]) {
+    if (!Object.hasOwn(bObj, key) || (a as AnyObject)[key] !== bObj[key]) {
       return false;
     }
   }
@@ -56,3 +55,11 @@ export const flatMapDeep = <TSource, TNewValue>(
   Array.isArray(arr)
     ? arr.flatMap((c: TSource): TNewValue[] => flatMapDeep(c, fn))
     : [fn(arr, 0, [arr])];
+
+export const safeJsonParse = (json: string) => {
+  try {
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
+};

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Создает промис, который будет ждать указанное количество ms, чтобы выполниться
  *

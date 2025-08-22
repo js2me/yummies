@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
 export interface Counter<TValue = number> {
   (): TValue;
   counter: number;

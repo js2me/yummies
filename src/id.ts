@@ -78,5 +78,4 @@ export const generateLinearNumericId = createLinearNumericIdGenerator();
  * Generates execution stack based pseudo-id (just sliced string from error stack)
  */
 export const generateStackBasedId = () =>
-  // eslint-disable-next-line unicorn/error-message
   new Error().stack!.split('\n').slice(1, 4).join('');

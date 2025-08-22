@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/pseudo-random */
 export const getRandomFloat = <T extends number = number>(
   min = 0,
   max = 1,

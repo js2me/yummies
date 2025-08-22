@@ -1,11 +1,12 @@
-import dayjs, { Dayjs, ManipulateType } from 'dayjs';
+import dayjs, { type Dayjs, type ManipulateType } from 'dayjs';
 import duration from 'dayjs/plugin/duration.js';
 import relativeTime from 'dayjs/plugin/relativeTime.js';
 
+import { format } from './format/index.js';
 import { unitsToMs } from './ms.js';
 import { declension } from './text.js';
 import { typeGuard } from './type-guard/index.js';
-import { Maybe } from './utils/types.js';
+import type { Maybe } from './utils/types.js';
 
 import 'dayjs/locale/ru.js';
 
@@ -13,12 +14,10 @@ dayjs.extend(relativeTime);
 dayjs.extend(duration);
 dayjs.locale('ru');
 
-const NO_VALUE = '–'; // en-dash
-
-const toLibFormat = function (
+const toLibFormat = (
   value: Maybe<RawDateToFormat>,
   asTime?: boolean,
-): Dayjs {
+): Dayjs => {
   if (typeGuard.isNumber(value)) {
     if (asTime) {
       return dayjs.duration(value) as unknown as Dayjs;
@@ -33,7 +32,7 @@ const toLibFormat = function (
 
 export type RawDateToFormat = Date | string | number | Dayjs;
 
-export const formatDate = function (
+export const formatDate = (
   value: Maybe<RawDateToFormat>,
   settings?: Maybe<{
     format?:
@@ -50,7 +49,7 @@ export const formatDate = function (
     pattern?: string;
     asTime?: boolean;
   }>,
-) {
+) => {
   const dateFormat = settings?.format;
   const datePattern = settings?.pattern;
   const asTime = settings?.asTime;
@@ -58,7 +57,7 @@ export const formatDate = function (
   value = toLibFormat(value, asTime);
 
   if (typeGuard.isUndefined(value) || !value.isValid()) {
-    return NO_VALUE;
+    return format.NO_VALUE;
   }
 
   if (datePattern) {

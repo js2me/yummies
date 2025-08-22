@@ -45,7 +45,7 @@ export const splitTextByLines = (
     if (currentLine === '') {
       currentLine = word;
     } else if (currentLine.length + 1 + word.length <= lineLingth) {
-      currentLine += ' ' + word;
+      currentLine += ` ${word}`;
     } else {
       lines.push(currentLine);
       currentLine = word;

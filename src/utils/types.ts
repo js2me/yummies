@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Extract all values from object or array
  */
@@ -32,7 +30,9 @@ export type AnyPrimitive = string | number | boolean | null | undefined;
 export type AnyFunction = (...args: any) => any;
 
 export type UnionToIntersection<U> = (
-  U extends any ? (k: U) => void : never
+  U extends any
+    ? (k: U) => void
+    : never
 ) extends (k: infer I) => void
   ? I
   : never;
@@ -97,12 +97,14 @@ export type PartialIf<TCondition, TObject> = TCondition extends true
   ? Partial<TObject>
   : TObject;
 
-export type RecordEntries<T extends AnyObject> =
-  T extends Record<infer Keys, infer Values>
+export type RecordEntries<T extends AnyObject> = T extends Record<
+  infer Keys,
+  infer Values
+>
+  ? [Keys, Values][]
+  : T extends Partial<Record<infer Keys, infer Values>>
     ? [Keys, Values][]
-    : T extends Partial<Record<infer Keys, infer Values>>
-      ? [Keys, Values][]
-      : never;
+    : never;
 
 export type RenameKey<
   TObject,
@@ -170,10 +172,11 @@ export type OverrideKey<T, K extends keyof T, V> = {
   [KK in keyof T]: KK extends K ? V : T[KK];
 };
 
-export type IfEquals<X, Y> =
-  (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
-    ? true
-    : false;
+export type IfEquals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <
+  T,
+>() => T extends Y ? 1 : 2
+  ? true
+  : false;
 
 export type WritableKeys<T> = {
   [K in keyof T]: IfEquals<
@@ -187,8 +190,7 @@ export type WritableKeys<T> = {
 export type NonReadonly<T> = Pick<T, WritableKeys<T>>;
 
 export type IsArray<T> = T extends object
-  ? // eslint-disable-next-line @typescript-eslint/ban-types
-    T extends Function
+  ? T extends Function
     ? false
     : T extends any[]
       ? true
@@ -196,32 +198,28 @@ export type IsArray<T> = T extends object
   : false;
 
 export type IsFunction<T> = T extends object
-  ? // eslint-disable-next-line @typescript-eslint/ban-types
-    T extends Function
+  ? T extends Function
     ? true
     : false
   : false;
 
 export type IsObject<T> = T extends object
-  ? // eslint-disable-next-line @typescript-eslint/ban-types
-    T extends Function
+  ? T extends Function
     ? false
     : T extends any[]
       ? false
       : true
   : false;
 
-export type CopyObject<T> =
-  IsObject<T> extends true
-    ? {
-        [K in keyof T]: IsObject<T[K]> extends true ? CopyObject<T[K]> : T[K];
-      }
-    : T;
+export type CopyObject<T> = IsObject<T> extends true
+  ? {
+      [K in keyof T]: IsObject<T[K]> extends true ? CopyObject<T[K]> : T[K];
+    }
+  : T;
 
 export type MaybePromise<T> = T | Promise<T>;
 
 export type WithRequired<TTarget, TKey extends keyof TTarget> = TTarget & {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   [_ in TKey]: {};
 };
 

@@ -1,7 +1,7 @@
-import insane, { SanitizeOptions } from 'insane';
+import insane, { type SanitizeOptions } from 'insane';
 
 import { blobToUrl } from './media.js';
-import { Maybe } from './utils/types.js';
+import type { Maybe } from './utils/types.js';
 
 /**
  * Вытаскивает RGB из любого цвета
@@ -212,7 +212,6 @@ export const calcScrollbarWidth = () => {
 
   const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
 
-  // eslint-disable-next-line unicorn/prefer-dom-node-remove
   outer.parentNode?.removeChild(outer);
 
   return scrollbarWidth;

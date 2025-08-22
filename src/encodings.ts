@@ -1,4 +1,4 @@
-import { AnyObject } from './utils/types.js';
+import type { AnyObject } from './utils/types.js';
 
 const DMap: AnyObject = {
   0: 0,
@@ -261,13 +261,9 @@ const DMap: AnyObject = {
 export function unicodeToWin1251(s: string) {
   const L = [];
   for (let i = 0; i < s.length; i++) {
-    // eslint-disable-next-line unicorn/prefer-code-point
     const ord = s.charCodeAt(i);
     if (!(ord in DMap))
-      throw new Error(
-        'Character ' + s.charAt(i) + " isn't supported by win1251!",
-      );
-    // eslint-disable-next-line unicorn/prefer-code-point
+      throw new Error(`Character ${s.charAt(i)} isn't supported by win1251!`);
     L.push(String.fromCharCode(DMap[ord]));
   }
   return L.join('');

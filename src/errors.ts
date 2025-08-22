@@ -1,5 +1,5 @@
 import { typeGuard } from './type-guard/index.js';
-import { Maybe } from './utils/types.js';
+import type { Maybe } from './utils/types.js';
 
 type GetErrorTextEnhancer = (error: any) => string;
 type GetErrorTextFormatErrorFn = (error: Error) => string;

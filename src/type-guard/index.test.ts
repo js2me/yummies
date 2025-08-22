@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-number-properties */
-/* eslint-disable unicorn/no-useless-undefined */
 import { describe, expect, test } from 'vitest';
 
 import { typeGuard } from './index.js';

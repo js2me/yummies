@@ -3,8 +3,8 @@ import { describe, expect, test } from 'vitest';
 import {
   changeDate,
   dayTimeDuration,
-  timeDuration,
   getFormatDuration,
+  timeDuration,
 } from './date-time.js';
 import { unitsToMs } from './ms.js';
 

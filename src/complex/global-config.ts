@@ -1,11 +1,25 @@
-import { AnyObject, Maybe } from '../utils/types.js';
+import type { AnyObject, Maybe } from '../utils/types.js';
 
-const createGlobalPoint = <TValue>(accessSymbol: any) => {
+const createGlobalPoint = <TValue>(accessSymbol?: keyof any) => {
+  if (accessSymbol == null) {
+    let storedValue: TValue | undefined;
+    return {
+      get: (): TValue => storedValue!,
+      set: (value: TValue): TValue => {
+        storedValue = value;
+        return value;
+      },
+    };
+  }
+
   const _globalThis = globalThis as AnyObject;
 
   return {
     get: (): TValue => _globalThis[accessSymbol],
-    set: (value: TValue): TValue => (_globalThis[accessSymbol] = value),
+    set: (value: TValue): TValue => {
+      _globalThis[accessSymbol] = value;
+      return value;
+    },
   };
 };
 
@@ -14,7 +28,7 @@ const createGlobalPoint = <TValue>(accessSymbol: any) => {
  */
 export const createGlobalConfig = <T extends AnyObject>(
   defaultValue: T,
-  accessSymbol: any = Symbol(),
+  accessSymbol?: keyof any,
 ) => {
   const globalPoint = createGlobalPoint<T>(accessSymbol);
   return globalPoint.get() || globalPoint.set(defaultValue);
@@ -22,7 +36,7 @@ export const createGlobalConfig = <T extends AnyObject>(
 
 export const createGlobalDynamicConfig = <T extends AnyObject>(
   processFn: (change: Maybe<Partial<T>>, current: Maybe<T>) => T,
-  accessSymbol: any = Symbol(),
+  accessSymbol?: keyof any,
 ) => {
   const globalPoint = createGlobalPoint<T | null | undefined>(accessSymbol);
 

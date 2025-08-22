@@ -1,4 +1,4 @@
-import { Maybe } from './utils/types.js';
+import type { Maybe } from './utils/types.js';
 
 export function degToRad(deg: number) {
   return deg * (Math.PI / 180);
