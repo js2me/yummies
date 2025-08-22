@@ -1,5 +1,11 @@
 # yummies
 
+## 4.11.0
+
+### Minor Changes
+
+- [`ec70c99`](https://github.com/js2me/yummies/commit/ec70c99dac0caa551848ffc2e1627a2e86fbc1ab) Thanks [@js2me](https://github.com/js2me)! - added `format.*` and `parser.*` number\string utilites
+
 ## 4.10.0
 
 ### Minor Changes
