@@ -1,5 +1,11 @@
 # yummies
 
+## 4.11.1
+
+### Patch Changes
+
+- [`319db7a`](https://github.com/js2me/yummies/commit/319db7a7aa1437416192cc7f43946db61ab2cfb4) Thanks [@js2me](https://github.com/js2me)! - fixed format number
+
 ## 4.11.0
 
 ### Minor Changes
