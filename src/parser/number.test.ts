@@ -2,6 +2,14 @@ import { describe, expect, test } from 'vitest';
 import { number } from './number';
 
 describe('parser.number', () => {
+  test('empty string should return 0', () => {
+    expect(number('')).toBe(0);
+  });
+
+  test('empty string with fallback should return fallback', () => {
+    expect(number('', { fallback: 'kek' })).toBe('kek');
+  });
+
   test('Checking the logic of the function', () => {
     expect(number(1)).toBe(1);
     expect(number(100)).toBe(100);

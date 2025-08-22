@@ -27,15 +27,19 @@ export const number = <TFallback = number>(
     ...userSettings,
   };
 
-  const fallback =
-    settings && 'fallback' in settings ? (settings.fallback as TFallback) : 0;
+  const fallback = settings?.fallback ?? 0;
 
   let result: number;
 
   if (typeGuard.isNumber(input)) {
     result = input;
   } else if (typeGuard.isString(input)) {
-    result = Number(skipSpaces(input).replace(',', '.'));
+    const formattedInput = skipSpaces(input).replace(',', '.');
+    if (formattedInput === '') {
+      result = fallback as any;
+    } else {
+      result = Number(formattedInput);
+    }
   } else {
     result = fallback as any;
   }
