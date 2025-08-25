@@ -1,5 +1,11 @@
 # yummies
 
+## 4.12.1
+
+### Patch Changes
+
+- [`7fed8c3`](https://github.com/js2me/yummies/commit/7fed8c3fc80a6fe242fbdd15256ffbac790b55ac) Thanks [@js2me](https://github.com/js2me)! - make context property is optional for `lazyObserve`
+
 ## 4.12.0
 
 ### Minor Changes
