@@ -5,7 +5,7 @@ export const lazyObserve = <TMetaData = void>({
   property,
   onStart,
   onEnd,
-  endDelay = 50,
+  endDelay = 0,
 }: {
   context: any;
   property: any | any[];
