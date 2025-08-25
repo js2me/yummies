@@ -1,5 +1,11 @@
 # yummies
 
+## 4.12.2
+
+### Patch Changes
+
+- [`53bd560`](https://github.com/js2me/yummies/commit/53bd560a125f12e1c0d77342aac30cd2c09e1f19) Thanks [@js2me](https://github.com/js2me)! - fixed `getMobxAdministration` bad resolve typings
+
 ## 4.12.1
 
 ### Patch Changes
