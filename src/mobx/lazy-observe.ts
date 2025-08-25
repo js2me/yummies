@@ -7,7 +7,7 @@ export const lazyObserve = <TMetaData = void>({
   onEnd,
   endDelay = 0,
 }: {
-  context: any;
+  context?: any;
   property: any | any[];
   onStart: () => TMetaData;
   onEnd: (metaData: TMetaData, cleanupFn: VoidFunction) => void;
@@ -17,6 +17,18 @@ export const lazyObserve = <TMetaData = void>({
   let metaData: TMetaData | undefined;
   const properties = Array.isArray(property) ? property : [property];
   let isObserving = false;
+
+  const start = () => {
+    if (isObserving) {
+      return;
+    }
+    isObserving = true;
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = undefined;
+    }
+    metaData = onStart();
+  };
 
   const cleanup = () => {
     if (!isObserving) {
@@ -34,19 +46,13 @@ export const lazyObserve = <TMetaData = void>({
   };
 
   properties.forEach((property) => {
-    onBecomeObserved(context, property, () => {
-      if (isObserving) {
-        return;
-      }
-      isObserving = true;
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = undefined;
-      }
-      metaData = onStart();
-    });
-
-    onBecomeUnobserved(context, property, cleanup);
+    if (context) {
+      onBecomeObserved(context, property, start);
+      onBecomeUnobserved(context, property, cleanup);
+    } else {
+      onBecomeObserved(property, start);
+      onBecomeUnobserved(property, cleanup);
+    }
   });
 
   return cleanup;
