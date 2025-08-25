@@ -1,5 +1,11 @@
 # yummies
 
+## 4.12.0
+
+### Minor Changes
+
+- [`b3b73cb`](https://github.com/js2me/yummies/commit/b3b73cbd853cc92d4dff093194925359c72a4e2f) Thanks [@js2me](https://github.com/js2me)! - added mobx utilities
+
 ## 4.11.1
 
 ### Patch Changes
