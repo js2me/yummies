@@ -1,5 +1,11 @@
 # yummies
 
+## 4.13.0
+
+### Minor Changes
+
+- [`ed2c909`](https://github.com/js2me/yummies/commit/ed2c909b90a0a048c3d04330a5e1282063454084) Thanks [@js2me](https://github.com/js2me)! - added `yummies/react` set of React hooks
+
 ## 4.12.2
 
 ### Patch Changes
