@@ -1,5 +1,11 @@
 # yummies
 
+## 4.14.0
+
+### Minor Changes
+
+- [`bf68b60`](https://github.com/js2me/yummies/commit/bf68b600620724334e83f8fe7a99502d79f67aaa) Thanks [@js2me](https://github.com/js2me)! - added `applyObservable` for mobx utils
+
 ## 4.13.0
 
 ### Minor Changes
