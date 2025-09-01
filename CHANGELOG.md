@@ -1,5 +1,11 @@
 # yummies
 
+## 4.14.1
+
+### Patch Changes
+
+- [`d5220ae`](https://github.com/js2me/yummies/commit/d5220aea466c099ca80ef892e62f7c83d6a3df5a) Thanks [@js2me](https://github.com/js2me)! - fix missing import for applyObservable
+
 ## 4.14.0
 
 ### Minor Changes
