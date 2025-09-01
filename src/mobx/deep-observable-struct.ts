@@ -61,7 +61,7 @@ export class DeepObservableStruct<TData extends AnyObject> {
 
     Object.keys(newData).forEach((newDataKey) => {
       if (!this.data[newDataKey]) {
-        // @ts-ignore
+        // @ts-expect-error
         this.data[newDataKey] = newData[newDataKey];
       }
     });

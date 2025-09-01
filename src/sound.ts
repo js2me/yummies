@@ -10,6 +10,6 @@ export const playSound = async (
   audio.muted = !volume;
   await audio.play();
   audio.remove();
-  // @ts-ignore
+  // @ts-expect-error
   audio = null;
 };

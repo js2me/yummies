@@ -25,7 +25,7 @@ function getType(value: unknown): Type {
   }
 
   // handle DOM elements
-  // @ts-ignore
+  // @ts-expect-error
   if (value && (value.nodeType === 1 || value.nodeType === 9)) {
     return Type.Element;
   }
