@@ -1,5 +1,11 @@
 # yummies
 
+## 5.0.0
+
+### Major Changes
+
+- [`d9c2c4e`](https://github.com/js2me/yummies/commit/d9c2c4ecae0e0aad3225fa05dd6224b525890a03) Thanks [@js2me](https://github.com/js2me)! - replaced `sanitizeHtml` lib for use (insane -> dompurify)
+
 ## 4.14.1
 
 ### Patch Changes
