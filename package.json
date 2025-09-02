@@ -47,11 +47,10 @@
 		}
 	},
 	"dependencies": {
-		"@types/insane": "^1.0.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.13",
-		"insane": "^2.6.2",
+		"dompurify": "^3.2.6",
 		"nanoid": "^5.1.5",
 		"tailwind-merge": "^3.3.1"
 	},

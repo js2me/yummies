@@ -1,4 +1,4 @@
-import insane, { type SanitizeOptions } from 'insane';
+import DOMPurify, { type Config as DOMPurifyConfig } from 'dompurify';
 
 import { blobToUrl } from './media.js';
 import type { Maybe } from './utils/types.js';
@@ -90,16 +90,8 @@ export const globalScrollIntoViewForY = (node: HTMLElement) => {
   });
 };
 
-const sanitizeDefaults: SanitizeOptions = {
-  allowedAttributes: {
-    a: ['href', 'name', 'target'],
-    img: ['src'],
-    span: ['class'],
-    code: ['class'],
-  },
-  allowedClasses: {},
-  allowedSchemes: ['http', 'https', 'mailto'],
-  allowedTags: [
+const sanitizeDefaults: DOMPurifyConfig = {
+  ALLOWED_TAGS: [
     'a',
     'article',
     'b',
@@ -142,15 +134,11 @@ const sanitizeDefaults: SanitizeOptions = {
     'u',
     'ul',
   ],
-  filter: undefined,
-  transformText: undefined,
+  ALLOWED_ATTR: ['href', 'target', 'name', 'src', 'class'],
 };
 
-export const sanitizeHtml = (
-  html: Maybe<string>,
-  config?: Partial<SanitizeOptions>,
-) => {
-  return insane(html ?? '', {
+export const sanitizeHtml = (html: Maybe<string>, config?: DOMPurifyConfig) => {
+  return DOMPurify.sanitize(html || '', {
     ...sanitizeDefaults,
     ...config,
   });
