@@ -1,5 +1,11 @@
 # yummies
 
+## 5.1.0
+
+### Minor Changes
+
+- [`0f570aa`](https://github.com/js2me/yummies/commit/0f570aa4d48bbab978a78f760ff1d42bb1baba80) Thanks [@js2me](https://github.com/js2me)! - add JSDOC for utils types
+
 ## 5.0.0
 
 ### Major Changes
