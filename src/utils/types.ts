@@ -25,18 +25,18 @@ export type ExtractEnumKeys<T> = ValueOf<{
 export type ExtractEnumValues<T> = `${T & string}` | (T & number);
 
 /**
- * Represents a type that can be either the specified type or undefined.
+ * Represents a type that can be either the specified type or `undefined` or `null`.
  *
- * @template T - The type to make possibly undefined
- * @returns T or undefined
+ * @template T - The input type
+ * @returns T or `undefined` or `null`
  */
 export type Maybe<T> = Nullable<T> | undefined;
 
 /**
- * Represents a type that can be either the specified type or null.
+ * Represents a type that can be either the specified type or `null`.
  *
- * @template T - The type to make possibly null
- * @returns T or null
+ * @template T - The type to make possibly `null`
+ * @returns `T` or `null`
  */
 export type Nullable<T> = T | null;
 
@@ -55,11 +55,27 @@ export type AnyObject = Record<keyof any, any>;
 export type EmptyObject = Record<keyof any, never>;
 
 /**
- * Represents any primitive type (string, number, boolean, null, or undefined).
+ * Represents all primitive types in TypeScript.
  *
  * @returns Union of all primitive types
  */
-export type AnyPrimitive = string | number | boolean | null | undefined;
+export type Primitive =
+  | null
+  | undefined
+  | string
+  | number
+  | boolean
+  | symbol
+  | bigint;
+
+/**
+ * Represents any primitive type (string, number, boolean, null, or undefined).
+ *
+ * @deprecated use `Primitive` type
+ *
+ * @returns Union of all primitive types
+ */
+export type AnyPrimitive = Primitive;
 
 /**
  * Represents any function type.
@@ -90,12 +106,12 @@ export type UnionToIntersection<U> = (
 export type FalsyValues = undefined | null | '' | false | 0;
 
 /**
- * Represents a type that can be either the specified type, undefined, or a falsy value.
+ * Represents a type that can be either the specified type, undefined, or any other falsy value.
  *
  * @template T - The type to make possibly falsy
  * @returns T, undefined, or a falsy value
  */
-export type MaybeFalsy<T> = Maybe<T> | FalsyValues;
+export type MaybeFalsy<T> = T | FalsyValues;
 
 /**
  * Represents a type that can be either the specified type or a function returning that type.
@@ -302,20 +318,6 @@ export type Params<T extends (...args: any) => any> = T extends {
   : T extends (...args: infer P) => any
     ? P
     : never;
-
-/**
- * Represents all primitive types in TypeScript.
- *
- * @returns Union of all primitive types
- */
-export type Primitive =
-  | null
-  | undefined
-  | string
-  | number
-  | boolean
-  | symbol
-  | bigint;
 
 /**
  * Represents browser native object types.
