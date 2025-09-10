@@ -407,6 +407,21 @@ export type WritableKeys<T> = {
 }[keyof T];
 
 /**
+ * Gets the readonly keys of a type.
+ *
+ * @template T - The type to extract readonly keys from
+ * @returns Union of keys that are readonly
+ */
+export type ReadonlyKeys<T> = {
+  [P in keyof T]-?: IfEquals<
+    { [Q in P]: T[P] },
+    { -readonly [Q in P]: T[P] }
+  > extends true
+    ? never
+    : P;
+}[keyof T];
+
+/**
  * Gets the non-readonly properties of a type.
  *
  * @template T - The type to extract non-readonly properties from
