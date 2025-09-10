@@ -1,5 +1,11 @@
 # yummies
 
+## 5.2.0
+
+### Minor Changes
+
+- [`5412878`](https://github.com/js2me/yummies/commit/541287858790a1090e3f892d101979b7679e44a1) Thanks [@js2me](https://github.com/js2me)! - added `ReadonlyKeys` type"
+
 ## 5.1.0
 
 ### Minor Changes
