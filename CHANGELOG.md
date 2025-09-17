@@ -1,5 +1,11 @@
 # yummies
 
+## 5.3.0
+
+### Minor Changes
+
+- [`05bc4cc`](https://github.com/js2me/yummies/commit/05bc4cc4a87b1db950b23dc5a53e793a11f6bf80) Thanks [@js2me](https://github.com/js2me)! - added `createEnhancedAtom` for mobx utilities
+
 ## 5.2.0
 
 ### Minor Changes
