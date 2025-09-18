@@ -12,7 +12,7 @@ export interface IEnhancedAtom<TMeta extends AnyObject = AnyObject>
  */
 export const createEnhancedAtom = <TMeta extends AnyObject>(
   name: string,
-  onBecomeObservedHandler: (atom: IEnhancedAtom<TMeta>) => void,
+  onBecomeObservedHandler?: (atom: IEnhancedAtom<TMeta>) => void,
   onBecomeUnobservedHandler?: (atom: IEnhancedAtom<TMeta>) => void,
   meta?: TMeta,
 ): IEnhancedAtom<TMeta> => {
