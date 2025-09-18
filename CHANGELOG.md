@@ -1,5 +1,11 @@
 # yummies
 
+## 5.3.2
+
+### Patch Changes
+
+- [`fd831ba`](https://github.com/js2me/yummies/commit/fd831ba541ac842cd39b8b2665d81d15b194282c) Thanks [@js2me](https://github.com/js2me)! - fixed bounded method for report (enhancedAtom)
+
 ## 5.3.1
 
 ### Patch Changes
