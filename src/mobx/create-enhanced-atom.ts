@@ -22,7 +22,7 @@ export const createEnhancedAtom = <TMeta extends AnyObject>(
     onBecomeUnobservedHandler && (() => onBecomeUnobservedHandler?.(atom)),
   ) as IEnhancedAtom<TMeta>;
   atom.meta = meta ?? ({} as TMeta);
-  atom.reportChanged.bind(atom);
-  atom.reportObserved.bind(atom);
+  atom.reportChanged = atom.reportChanged.bind(atom);
+  atom.reportObserved = atom.reportObserved.bind(atom);
   return atom;
 };
