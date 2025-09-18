@@ -1,5 +1,11 @@
 # yummies
 
+## 5.3.1
+
+### Patch Changes
+
+- [`4a37b3c`](https://github.com/js2me/yummies/commit/4a37b3c83761de9feddfa2f38683aa13951820bf) Thanks [@js2me](https://github.com/js2me)! - fixed required handler for createEnhancedAtom
+
 ## 5.3.0
 
 ### Minor Changes
