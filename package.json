@@ -69,7 +69,8 @@
       "./sound": "./src/sound.ts",
       "./storage": "./src/storage.ts",
       "./text": "./src/text.ts",
-      "./vibrate": "./src/vibrate.ts"
+      "./vibrate": "./src/vibrate.ts",
+      "./utility-types": "./src/utils/types.ts"
     }
   },
   "peerDependenciesMeta": {
@@ -263,6 +264,11 @@
       "types": "./dist/vibrate.d.cts",
       "import": "./dist/vibrate.js",
       "require": "./dist/vibrate.cjs"
+    },
+    "./utility-types": {
+      "types": "./utility-types.d.ts",
+      "import": "./dist/utils/types.js",
+      "require": "./dist/utils/types.cjs"
     }
   }
 }
