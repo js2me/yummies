@@ -1,5 +1,11 @@
 # yummies
 
+## 5.4.1
+
+### Patch Changes
+
+- [`15b8d1b`](https://github.com/js2me/yummies/commit/15b8d1b442ca324b8812b7ec997cc69b3e4885c6) Thanks [@js2me](https://github.com/js2me)! - fix missing css exports
+
 ## 5.4.0
 
 ### Minor Changes
