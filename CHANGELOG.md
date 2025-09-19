@@ -1,5 +1,11 @@
 # yummies
 
+## 5.4.0
+
+### Minor Changes
+
+- [`37613c9`](https://github.com/js2me/yummies/commit/37613c9246c1908dfc5c37cafd0cffd9a7291455) Thanks [@js2me](https://github.com/js2me)! - refactor switch bundler to zshy
+
 ## 5.3.2
 
 ### Patch Changes
