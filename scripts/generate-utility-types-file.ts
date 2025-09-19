@@ -4,7 +4,6 @@ import { join } from "node:path";
 import { PackageJsonManager } from 'js2me-exports-post-build-script/utils/package-json-manager';
 import { $ } from "js2me-exports-post-build-script/utils";
 
-
 function generateUtilityTypesFile() {
   $(`cp dist/utils/types.d.ts dist/utility-types.d.ts`, undefined, true);
   $(`sed -i 's/^export type/type/' dist/utility-types.d.ts`, undefined, true);
