@@ -50,6 +50,7 @@
       "./async": "./src/async.ts",
       "./common": "./src/common.ts",
       "./cookie": "./src/cookie.ts",
+      "./css": "./src/css.ts",
       "./data": "./src/data.ts",
       "./date-time": "./src/date-time.ts",
       "./device": "./src/device.ts",
@@ -162,6 +163,11 @@
       "types": "./dist/cookie.d.cts",
       "import": "./dist/cookie.js",
       "require": "./dist/cookie.cjs"
+    },
+    "./css": {
+      "types": "./dist/css.d.cts",
+      "import": "./dist/css.js",
+      "require": "./dist/css.cjs"
     },
     "./data": {
       "types": "./dist/data.d.cts",
