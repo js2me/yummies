@@ -263,9 +263,6 @@
       "types": "./dist/vibrate.d.cts",
       "import": "./dist/vibrate.js",
       "require": "./dist/vibrate.cjs"
-    },
-    "./utility-types": {
-      "types": "./dist/utility-types.d.ts"
     }
   }
 }
