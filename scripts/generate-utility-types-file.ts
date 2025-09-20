@@ -11,16 +11,11 @@ function generateUtilityTypesFile() {
   const pckgJson = new PackageJsonManager(
     join(process.cwd(), "./package.json")
   );
-
-  console.log(join(process.cwd(), "./package.json"))
   
-  pckgJson.data.files.push('utility-types.d.ts');
-  pckgJson.data.exports['./utility-types']['types'] = './utility-types.d.ts';
-  pckgJson.data.exports['./utils/types'] = {
-    "import": "./dist/utils/types.js",
-    "default": "./dist/utils/types.js",
-    "types": "./dist/utils/types.d.ts"
+  if (!pckgJson.data.files.includes('utility-types.d.ts')) {
+    pckgJson.data.files.push('utility-types.d.ts'); 
   }
+  pckgJson.data.exports['./utility-types']['types'] = './utility-types.d.ts';
 
   pckgJson.syncWithFs();
 
