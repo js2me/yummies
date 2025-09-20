@@ -14,7 +14,13 @@ function generateUtilityTypesFile() {
 
   console.log(join(process.cwd(), "./package.json"))
   
+  pckgJson.data.files.push('utility-types.d.ts');
   pckgJson.data.exports['./utility-types']['types'] = './utility-types.d.ts';
+  pckgJson.data.exports['./utils/types'] = {
+    "import": "./dist/utils/types.js",
+    "default": "./dist/utils/types.js",
+    "types": "./dist/utils/types.d.ts"
+  }
 
   pckgJson.syncWithFs();
 

@@ -24,7 +24,6 @@
   "author": "js2me",
   "license": "MIT",
   "description": "",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/js2me/yummies/issues"
   },
@@ -110,8 +109,10 @@
     "zshy": "^0.4.2"
   },
   "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903",
+  "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "utility-types.d.ts"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -146,9 +147,9 @@
       "require": "./dist/type-guard/index.cjs"
     },
     "./utils/types": {
-      "types": "./dist/utils/types.d.cts",
       "import": "./dist/utils/types.js",
-      "require": "./dist/utils/types.cjs"
+      "default": "./dist/utils/types.js",
+      "types": "./dist/utils/types.d.ts"
     },
     "./async": {
       "types": "./dist/async.d.cts",
