@@ -1,5 +1,11 @@
 # yummies
 
+## 5.4.6
+
+### Patch Changes
+
+- [`18f0ea5`](https://github.com/js2me/yummies/commit/18f0ea588a10e07498593cf5986a1eeccc0d4eeb) Thanks [@js2me](https://github.com/js2me)! - revert back zshy
+
 ## 5.4.5
 
 ### Patch Changes
