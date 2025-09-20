@@ -8,6 +8,8 @@ function generateUtilityTypesFile() {
   $(`cp dist/utils/types.d.ts utility-types.d.ts`, undefined, true);
   $(`sed -i 's/^export type/type/' utility-types.d.ts`, undefined, true);
 
+  $(`cp -r dist/utils utils`, undefined, true);
+
   const pckgJson = new PackageJsonManager(
     join(process.cwd(), "./package.json")
   );
@@ -15,6 +17,10 @@ function generateUtilityTypesFile() {
   if (!pckgJson.data.files.includes('utility-types.d.ts')) {
     pckgJson.data.files.push('utility-types.d.ts'); 
   }
+  if (!pckgJson.data.files.includes('utils')) {
+    pckgJson.data.files.push('utils'); 
+  }
+
   pckgJson.data.exports['./utility-types']['types'] = './utility-types.d.ts';
 
   pckgJson.syncWithFs();
