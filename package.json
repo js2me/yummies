@@ -112,6 +112,7 @@
   "type": "module",
   "files": [
     "dist",
+    "utility-types.d.ts",
     "utility-types.d.ts"
   ],
   "exports": {
