@@ -1,6 +1,6 @@
 {
   "name": "yummies",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "scripts": {
     "prepare": "pnpm dev:install-hooks",
     "clean": "rm -rf dist",
@@ -112,6 +112,7 @@
   "type": "module",
   "files": [
     "dist",
+    "utility-types.d.ts",
     "utility-types.d.ts"
   ],
   "exports": {
