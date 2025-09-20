@@ -1,5 +1,11 @@
 # yummies
 
+## 5.4.4
+
+### Patch Changes
+
+- [`642160b`](https://github.com/js2me/yummies/commit/642160ba216ee9ba0c05b4872ded3cfe3bf61a6a) Thanks [@js2me](https://github.com/js2me)! - try to fix utils/types export
+
 ## 5.4.3
 
 ### Patch Changes
