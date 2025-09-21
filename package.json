@@ -9,7 +9,7 @@
     "check": "npm run lint:check && npm run ts:check",
     "prebuild": "npm run clean && npm run check",
     "build:watch": "pnpm build && nodemon --watch src --ext ts --exec \"pnpm build\"",
-    "build": "tsc && tsx scripts/post-build",
+    "build": "tsc && tsx post-build",
     "pub": "PUBLISH=true pnpm build",
     "pub:patch": "PUBLISH_VERSION=patch pnpm pub",
     "pub:minor": "PUBLISH_VERSION=minor pnpm pub",
