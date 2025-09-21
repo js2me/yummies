@@ -1,5 +1,11 @@
 # yummies
 
+## 5.4.7
+
+### Patch Changes
+
+- [`b8518d0`](https://github.com/js2me/yummies/commit/b8518d0fad92f939957c261bff4e9f38afd386a8) Thanks [@js2me](https://github.com/js2me)! - fix publish
+
 ## 5.4.6
 
 ### Patch Changes
