@@ -1,5 +1,11 @@
 # yummies
 
+## 5.4.8
+
+### Patch Changes
+
+- [`e2d34ac`](https://github.com/js2me/yummies/commit/e2d34acb51dbeeab6ceed4deb292330025d3a6d3) Thanks [@js2me](https://github.com/js2me)! - improved bundler (using zshy for better tree shaking)
+
 ## 5.4.7
 
 ### Patch Changes
