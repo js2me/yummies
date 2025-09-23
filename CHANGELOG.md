@@ -1,5 +1,11 @@
 # yummies
 
+## 5.4.9
+
+### Patch Changes
+
+- [`95817d7`](https://github.com/js2me/yummies/commit/95817d7bce5b31c45a40dce12850eaacba331ec3) Thanks [@js2me](https://github.com/js2me)! - fixed zshy build
+
 ## 5.4.8
 
 ### Patch Changes

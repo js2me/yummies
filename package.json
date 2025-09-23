@@ -1,6 +1,6 @@
 {
   "name": "yummies",
-  "version": "5.4.8",
+  "version": "5.4.9",
   "scripts": {
     "prepare": "pnpm dev:install-hooks",
     "clean": "rm -rf dist",
@@ -20,7 +20,11 @@
     "dev": "pnpm test:watch",
     "dev:install-hooks": "if [ -z \"$CI\" ]; then lefthook install; fi"
   },
-  "keywords": ["javascript", "typescript", "utilities"],
+  "keywords": [
+    "javascript",
+    "typescript",
+    "utilities"
+  ],
   "author": "js2me",
   "license": "MIT",
   "description": "Frontend utilities for JavaScript projects with open source code",
