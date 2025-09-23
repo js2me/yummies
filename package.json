@@ -9,7 +9,7 @@
     "check": "npm run lint:check && npm run ts:check",
     "prebuild": "npm run clean && npm run check",
     "build:watch": "pnpm build && nodemon --watch src --ext ts --exec \"pnpm build\"",
-    "build": "zshy && sborshik fill-dist && tsx scripts/generate-utility-types-file",
+    "build": "sborshik build --fillDist && tsx scripts/generate-utility-types-file",
     "pub": "pnpm build && sborshik publish --openDistDir",
     "pub:patch": "PUBLISH_VERSION=patch pnpm pub",
     "pub:minor": "PUBLISH_VERSION=minor pnpm pub",
@@ -20,10 +20,10 @@
     "dev": "pnpm test:watch",
     "dev:install-hooks": "if [ -z \"$CI\" ]; then lefthook install; fi"
   },
-  "keywords": [],
+  "keywords": ["javascript", "typescript", "utilities"],
   "author": "js2me",
   "license": "MIT",
-  "description": "",
+  "description": "Frontend utilities for JavaScript projects with open source code",
   "bugs": {
     "url": "https://github.com/js2me/yummies/issues"
   },
@@ -98,7 +98,7 @@
     "@vitest/coverage-istanbul": "^3.1.2",
     "commitfmt": "^1.0.4",
     "js2me-biome-config": "^1.0.3",
-    "sborshik": "^1.0.5",
+    "sborshik": "^1.0.10",
     "jsdom": "^26.1.0",
     "lefthook": "^1.11.16",
     "nodemon": "^3.1.9",
