@@ -1,5 +1,11 @@
 # yummies
 
+## 5.5.0
+
+### Minor Changes
+
+- [`4d2b072`](https://github.com/js2me/yummies/commit/4d2b0724037bef822aad835186299624d6536e0f) Thanks [@js2me](https://github.com/js2me)! - added `loadCssFile` util
+
 ## 5.4.9
 
 ### Patch Changes
