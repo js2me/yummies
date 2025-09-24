@@ -1,6 +1,7 @@
 import { cva as cvaLib } from 'class-variance-authority';
 import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import type { Maybe } from './utils/types.js';
 
 type ClassProp = {
   class?: ClassValue;
@@ -58,3 +59,50 @@ export const cva = ((...args: any[]) => {
 
 export type { VariantProps } from 'class-variance-authority';
 export type { ClassValue } from 'clsx';
+
+/**
+ * Load CSS file by providing `url`.
+ *
+ * **NOTE:** If `id` is provided, it will remove the existing link element with the same `id` before creating a new one.
+ */
+export const loadCssFile = (url: string, attrubutes?: Record<string, any>) =>
+  new Promise((resolve, reject) => {
+    let link: Maybe<HTMLLinkElement>;
+
+    if (attrubutes?.id) {
+      link = document.getElementById(attrubutes.id) as HTMLLinkElement | null;
+
+      if (link) {
+        link.remove();
+      }
+    }
+
+    link = document.createElement('link');
+
+    const handleLoad = () => {
+      resolve(undefined);
+      link!.removeEventListener('load', handleLoad);
+      link!.removeEventListener('error', handleError);
+    };
+
+    const handleError = () => {
+      reject(undefined);
+      link!.removeEventListener('load', handleLoad);
+      link!.removeEventListener('error', handleError);
+    };
+
+    link.addEventListener('load', handleLoad);
+    link.addEventListener('error', handleError);
+
+    link.setAttribute('href', url);
+
+    if (!attrubutes?.rel) {
+      link.setAttribute('rel', 'stylesheet');
+    }
+
+    Object.entries(attrubutes || {}).forEach(([key, value]) => {
+      link.setAttribute(key, value);
+    });
+
+    document.head.appendChild(link);
+  });
