@@ -1,5 +1,15 @@
 # yummies
 
+## 5.6.0
+
+### Minor Changes
+
+- [`a18d8fd`](https://github.com/js2me/yummies/commit/a18d8fdbaa8608c424f9b287c9f02ea5a84eab7d) Thanks [@js2me](https://github.com/js2me)! - added endDelay for lazyObserver `false` value
+
+### Patch Changes
+
+- [`a18d8fd`](https://github.com/js2me/yummies/commit/a18d8fdbaa8608c424f9b287c9f02ea5a84eab7d) Thanks [@js2me](https://github.com/js2me)! - fix `lazyObserver` (endDelay -> defaults 0 -> false)
+
 ## 5.5.0
 
 ### Minor Changes
