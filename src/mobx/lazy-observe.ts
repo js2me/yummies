@@ -9,8 +9,8 @@ export const lazyObserve = <TMetaData = void>({
 }: {
   context?: any;
   property: any | any[];
-  onStart: () => TMetaData;
-  onEnd: (metaData: TMetaData, cleanupFn: VoidFunction) => void;
+  onStart?: () => TMetaData;
+  onEnd?: (metaData: TMetaData, cleanupFn: VoidFunction) => void;
   endDelay?: number | false;
 }) => {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -27,7 +27,7 @@ export const lazyObserve = <TMetaData = void>({
       clearTimeout(timeoutId);
       timeoutId = undefined;
     }
-    metaData = onStart();
+    metaData = onStart?.();
   };
 
   const cleanup = () => {
@@ -36,7 +36,7 @@ export const lazyObserve = <TMetaData = void>({
     }
 
     if (endDelay === false) {
-      onEnd(metaData!, cleanup);
+      onEnd?.(metaData!, cleanup);
       metaData = undefined;
       return;
     }
@@ -46,7 +46,7 @@ export const lazyObserve = <TMetaData = void>({
       timeoutId = undefined;
     }
     timeoutId = setTimeout(() => {
-      onEnd(metaData!, cleanup);
+      onEnd?.(metaData!, cleanup);
       timeoutId = undefined;
       metaData = undefined;
     }, endDelay);
