@@ -5,13 +5,13 @@ export const lazyObserve = <TMetaData = void>({
   property,
   onStart,
   onEnd,
-  endDelay = 0,
+  endDelay = false,
 }: {
   context?: any;
   property: any | any[];
   onStart: () => TMetaData;
   onEnd: (metaData: TMetaData, cleanupFn: VoidFunction) => void;
-  endDelay?: number;
+  endDelay?: number | false;
 }) => {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
   let metaData: TMetaData | undefined;
@@ -34,6 +34,13 @@ export const lazyObserve = <TMetaData = void>({
     if (!isObserving) {
       return;
     }
+
+    if (endDelay === false) {
+      onEnd(metaData!, cleanup);
+      metaData = undefined;
+      return;
+    }
+
     if (timeoutId) {
       clearTimeout(timeoutId);
       timeoutId = undefined;
