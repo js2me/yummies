@@ -1,5 +1,11 @@
 # yummies
 
+## 5.7.0
+
+### Minor Changes
+
+- [`c7fb459`](https://github.com/js2me/yummies/commit/c7fb4590888439ad7323894e72a64cb58864bb82) Thanks [@js2me](https://github.com/js2me)! - onStart onEnd are optional for `lazyObserve` function (mobx util)
+
 ## 5.6.0
 
 ### Minor Changes
