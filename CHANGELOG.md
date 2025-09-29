@@ -1,5 +1,11 @@
 # yummies
 
+## 5.7.1
+
+### Patch Changes
+
+- [`e908005`](https://github.com/js2me/yummies/commit/e908005a4c37f93ebf5a1b91108ae04eef013029) Thanks [@js2me](https://github.com/js2me)! - fix `lazyObserve` mobx util
+
 ## 5.7.0
 
 ### Minor Changes
