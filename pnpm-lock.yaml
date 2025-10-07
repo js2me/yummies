@@ -73,8 +73,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       sborshik:
-        specifier: ^1.0.22
-        version: 1.0.22(@algolia/client-search@5.39.0)(@types/node@20.17.30)(@types/react@18.3.24)(postcss@8.5.6)(react@19.1.1)(search-insights@2.17.3)(typescript@5.8.3)
+        specifier: ^1.0.25
+        version: 1.0.25(@algolia/client-search@5.39.0)(@types/node@20.17.30)(@types/react@18.3.24)(postcss@8.5.6)(react@19.1.1)(search-insights@2.17.3)(typescript@5.8.3)
       tsx:
         specifier: ^4.20.5
         version: 4.20.5
@@ -3042,8 +3042,8 @@ packages:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
 
-  sborshik@1.0.22:
-    resolution: {integrity: sha512-KgRLcrPCaCRxOvAp9IjATdUKAEECWEXr8XJh/qLmk5bwSFVLN6e19miW8+9rHNaryDkB8XlC6fPBc9FISZMBcg==}
+  sborshik@1.0.25:
+    resolution: {integrity: sha512-vXaRJUsvRqr5228vH1ABtJKV0bsxMMeHjryy9fx8Fk29oh7ChPU5K6SfUHsWpLNV8bNc4PsuNsvqBFGNdn58ww==}
     hasBin: true
 
   search-insights@2.17.3:
@@ -6812,7 +6812,7 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
 
-  sborshik@1.0.22(@algolia/client-search@5.39.0)(@types/node@20.17.30)(@types/react@18.3.24)(postcss@8.5.6)(react@19.1.1)(search-insights@2.17.3)(typescript@5.8.3):
+  sborshik@1.0.25(@algolia/client-search@5.39.0)(@types/node@20.17.30)(@types/react@18.3.24)(postcss@8.5.6)(react@19.1.1)(search-insights@2.17.3)(typescript@5.8.3):
     dependencies:
       '@types/jsdom': 27.0.0
       cac: 6.7.14
