@@ -20,7 +20,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry:  Object.assign({}, ...entries.map(entry => ({ [entry.entryName]: entry.entryPath }))), 
-      formats: ['es'],
+      formats: ['es', 'cjs'],
     },
     rollupOptions :{
       external: [...entries.map(entry => entry.libName), ...Object.keys(packageJson.peerDependencies)],

@@ -27,13 +27,20 @@ function prepareDist() {
       })
       const dirLibsSet = new Set(dirLibsPaths)
       Object.keys(pckgJson.data.exports).forEach(exportPath=> {
-        if (dirLibsSet.has(exportPath) && typeof pckgJson.data.exports[exportPath] === 'object') {
+        if (typeof pckgJson.data.exports[exportPath] !== 'object') {
+          return;
+        }
+
+        if (!pckgJson.data.exports[exportPath].require) {
+          pckgJson.data.exports[exportPath].require = pckgJson.data.exports[exportPath].import.replace('.js', '.cjs')
+        }
+
+        if (dirLibsSet.has(exportPath)) {
           pckgJson.data.exports[exportPath].types = `${exportPath}/index.d.ts`
         }
       })
 
       pckgJson.syncWithFs();
-      console.log('dd', pckgJson.data, tsconfig);
     },
     filesToCopy: ['LICENSE', 'README.md'],
   })
