@@ -1,5 +1,11 @@
 # yummies
 
+## 5.9.0
+
+### Minor Changes
+
+- [`80464b7`](https://github.com/js2me/yummies/commit/80464b7aa941dfbd75c8fd82c41167331402ac96) Thanks [@js2me](https://github.com/js2me)! - added cjs (require import) support
+
 ## 5.8.0
 
 ### Minor Changes
