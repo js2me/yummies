@@ -1,5 +1,0 @@
----
-"yummies": minor
----
-
-improved bundle
