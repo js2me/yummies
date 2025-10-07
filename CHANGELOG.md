@@ -1,5 +1,11 @@
 # yummies
 
+## 5.8.0
+
+### Minor Changes
+
+- [`1fac2a7`](https://github.com/js2me/yummies/commit/1fac2a7f888fd1a78f9311ff942d477776f8c996) Thanks [@js2me](https://github.com/js2me)! - rework bundle, add treeshaking for sub-libs
+
 ## 5.7.1
 
 ### Patch Changes
