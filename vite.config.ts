@@ -23,7 +23,7 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions :{
-      external: [...entries.map(entry => entry.libName), ...Object.keys(packageJson.peerDependencies), ...Object.keys(packageJson.dependencies)],
+      external: [...entries.map(entry => entry.libName), ...Object.keys(packageJson.peerDependencies)],
       output: {
         chunkFileNames: '~[name]-[hash].js',
       }
