@@ -1,4 +1,4 @@
-import type { Maybe } from '../utils/types.js';
+import type { Maybe } from 'yummies/utils/types';
 
 import { type NumberParserSettings, number } from './number.js';
 

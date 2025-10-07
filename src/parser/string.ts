@@ -1,5 +1,5 @@
-import { typeGuard } from '../type-guard/index.js';
-import type { Maybe } from '../utils/types.js';
+import { typeGuard } from 'yummies/type-guard';
+import type { Maybe } from 'yummies/utils/types';
 
 export interface StringParserSettings<TFallback = string> {
   fallback?: TFallback;

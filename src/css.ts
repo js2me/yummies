@@ -1,7 +1,7 @@
 import { cva as cvaLib } from 'class-variance-authority';
 import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import type { Maybe } from './utils/types.js';
+import type { Maybe } from 'yummies/utils/types';
 
 type ClassProp = {
   class?: ClassValue;

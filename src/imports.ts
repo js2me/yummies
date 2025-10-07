@@ -1,4 +1,4 @@
-import { sleep } from './async.js';
+import { sleep } from 'yummies/async';
 
 /**
  * Функция ленивой загрузки модуля, с возможностью вызова доп. попыток

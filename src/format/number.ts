@@ -1,7 +1,6 @@
-import { number as toNumber } from '../parser/number.js';
-import { typeGuard } from '../type-guard/index.js';
-import type { Maybe } from '../utils/types.js';
-
+import { parser } from 'yummies/parser';
+import { typeGuard } from 'yummies/type-guard';
+import type { Maybe } from 'yummies/utils/types';
 import { NO_VALUE } from './constants.js';
 
 export interface NumberFormatSettings {
@@ -54,7 +53,7 @@ export const number = (
   let value: Maybe<number>;
 
   if (typeGuard.isString(rawValue)) {
-    value = toNumber(value, { fallback: undefined });
+    value = parser.number(value, { fallback: undefined });
   } else {
     value = rawValue;
   }

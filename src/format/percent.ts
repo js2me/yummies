@@ -1,6 +1,6 @@
+import type { Maybe } from 'yummies/utils/types';
 import { type NumberParserSettings, number } from '../parser/number.js';
 import { typeGuard } from '../type-guard/index.js';
-import type { Maybe } from '../utils/types.js';
 
 import { NO_VALUE } from './constants.js';
 

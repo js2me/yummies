@@ -1,5 +1,5 @@
 import { makeObservable } from 'mobx';
-import type { AnyObject } from '../utils/types.js';
+import type { AnyObject } from 'yummies/utils/types';
 
 export type ObservableAnnotationsArray = [string, any][];
 

@@ -3,7 +3,7 @@ import type {
   Class,
   EmptyObject,
   IsPartial,
-} from '../utils/types.js';
+} from 'yummies/utils/types';
 
 type ModuleLoaderConfig<TPredefinedDeps extends AnyObject = EmptyObject> = {
   factory<TInstance, TDeps extends TPredefinedDeps>(

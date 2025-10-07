@@ -1,4 +1,4 @@
-import { degToRad } from './math.js';
+import { degToRad } from 'yummies/math';
 
 export function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {

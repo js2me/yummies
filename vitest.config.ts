@@ -3,6 +3,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	plugins: [
+		// @ts-ignore
 		react({
 			tsDecorators: true,
 		}),

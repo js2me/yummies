@@ -1,4 +1,4 @@
-import type { AnyObject } from './utils/types.js';
+import type { AnyObject } from 'yummies/utils/types';
 
 export const parseCookie = (cookiesString = document.cookie) => {
   return cookiesString

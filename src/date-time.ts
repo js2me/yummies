@@ -1,12 +1,11 @@
 import dayjs, { type Dayjs, type ManipulateType } from 'dayjs';
 import duration from 'dayjs/plugin/duration.js';
 import relativeTime from 'dayjs/plugin/relativeTime.js';
-
+import type { Maybe } from 'yummies/utils/types';
 import { format } from './format/index.js';
 import { unitsToMs } from './ms.js';
 import { declension } from './text.js';
 import { typeGuard } from './type-guard/index.js';
-import type { Maybe } from './utils/types.js';
 
 import 'dayjs/locale/ru.js';
 

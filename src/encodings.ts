@@ -1,4 +1,4 @@
-import type { AnyObject } from './utils/types.js';
+import type { AnyObject } from 'yummies/utils/types';
 
 const DMap: AnyObject = {
   0: 0,

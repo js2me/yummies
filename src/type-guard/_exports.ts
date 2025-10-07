@@ -1,4 +1,4 @@
-import type { AnyFunction, AnyObject } from '../utils/types.js';
+import type { AnyFunction, AnyObject } from 'yummies/utils/types';
 
 enum Type {
   Null = 'null',

@@ -1,4 +1,4 @@
-import type { Maybe } from './utils/types.js';
+import type { Maybe } from 'yummies/utils/types';
 
 export function degToRad(deg: number) {
   return deg * (Math.PI / 180);

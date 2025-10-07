@@ -1,4 +1,4 @@
-import type { MaybeFn } from './utils/types.js';
+import type { MaybeFn } from 'yummies/utils/types';
 
 /**
  * @deprecated use {MaybeFn} type

@@ -1,6 +1,6 @@
-import { skipSpaces } from '../format/skip-spaces.js';
-import { typeGuard } from '../type-guard/index.js';
-import type { Maybe } from '../utils/types.js';
+import { format } from 'yummies/format';
+import { typeGuard } from 'yummies/type-guard';
+import type { Maybe } from 'yummies/utils/types';
 
 export interface NumberParserSettings<TFallback = number> {
   digits?: number;
@@ -34,7 +34,7 @@ export const number = <TFallback = number>(
   if (typeGuard.isNumber(input)) {
     result = input;
   } else if (typeGuard.isString(input)) {
-    const formattedInput = skipSpaces(input).replace(',', '.');
+    const formattedInput = format.skipSpaces(input).replace(',', '.');
     if (formattedInput === '') {
       result = fallback as any;
     } else {

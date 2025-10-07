@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
+import type { AnyObject } from 'yummies/utils/types';
 import { typeGuard } from '../type-guard/index.js';
-import type { AnyObject } from '../utils/types.js';
 
 export class DeepObservableStruct<TData extends AnyObject> {
   data: TData;
