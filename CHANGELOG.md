@@ -1,5 +1,11 @@
 # yummies
 
+## 5.11.1
+
+### Patch Changes
+
+- [`f85f0f4`](https://github.com/js2me/yummies/commit/f85f0f46ad65dc9520bc7dd0158c5ad1f454d21f) Thanks [@js2me](https://github.com/js2me)! - fix missing typings of grouped utils
+
 ## 5.11.0
 
 ### Minor Changes
