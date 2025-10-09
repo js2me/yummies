@@ -1,5 +1,11 @@
 # yummies
 
+## 5.11.0
+
+### Minor Changes
+
+- [`bf02911`](https://github.com/js2me/yummies/commit/bf029111c3d8b1808c3da52cb593b88adcef3e13) Thanks [@js2me](https://github.com/js2me)! - try to improve bundle treeshaking
+
 ## 5.10.0
 
 ### Minor Changes
