@@ -1,11 +1,11 @@
+import { parser } from 'yummies/parser';
+import { typeGuard } from 'yummies/type-guard';
 import type { Maybe } from 'yummies/utils/types';
-import { type NumberParserSettings, number } from '../parser/number.js';
-import { typeGuard } from '../type-guard/index.js';
 
 import { NO_VALUE } from './constants.js';
 
 export interface PercentFormatSettings
-  extends Omit<NumberParserSettings, 'fallback'> {
+  extends Omit<parser.NumberParserSettings, 'fallback'> {
   divider?: string;
   delimiter?: string;
   symbol?: string;
@@ -21,7 +21,7 @@ export const percent = (
   value: Maybe<number | string>,
   settings?: PercentFormatSettings,
 ) => {
-  const numericValue = number(value, {
+  const numericValue = parser.number(value, {
     ...settings,
     digits: settings?.digits ?? 2,
     fallback: Number.NaN,

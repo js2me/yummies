@@ -29,12 +29,6 @@ export default defineConfig({
       }
     }
   },
-  resolve: {
-    // alias: Object.assign({}, ...exports.map(exportPath => {
-    //   return {
-    //     [`yummies/${exportPath.replace('/index.ts', '').replace('.ts', '').replace('./src/', '')}`]: resolve(__dirname, exportPath),
-    //   }
-    // })),
-  },
+  resolve: {},
   plugins: [dts()]
 })
