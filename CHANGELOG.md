@@ -1,5 +1,11 @@
 # yummies
 
+## 5.11.2
+
+### Patch Changes
+
+- [`1392213`](https://github.com/js2me/yummies/commit/1392213a7c67c35a0fc2e5c2661f9f858deb6f3b) Thanks [@js2me](https://github.com/js2me)! - [internal] - unify build lib config
+
 ## 5.11.1
 
 ### Patch Changes
