@@ -515,3 +515,12 @@ export type IndexKeys<T extends any[]> = Extract<keyof T, `${number}`>;
  * @returns T with undefined removed
  */
 export type Defined<T> = Exclude<T, undefined>;
+
+/**
+ * Check existing key in object (T)
+ */
+export type HasSpecificKey<T, TKey extends string> = string extends keyof T
+  ? false
+  : TKey extends keyof T
+    ? true
+    : false;

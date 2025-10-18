@@ -183,14 +183,14 @@ export const startViewTransitionSafety = (
 /**
  * Вычисляет размер скроллбара
  */
-export const calcScrollbarWidth = () => {
+export const calcScrollbarWidth = (elementToAppend = document.body) => {
   const outer = document.createElement('div');
 
   outer.style.visibility = 'hidden';
   outer.style.width = '100px';
   outer.style.overflow = 'scroll';
 
-  document.body.append(outer);
+  elementToAppend.append(outer);
 
   const inner = document.createElement('div');
   inner.style.width = '100%';
