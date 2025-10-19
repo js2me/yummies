@@ -524,3 +524,10 @@ export type HasSpecificKey<T, TKey extends string> = string extends keyof T
   : TKey extends keyof T
     ? true
     : false;
+
+/**
+ * Checks type is any
+ *
+ * Returns true if T is any
+ */
+export type IsAny<T> = 0 extends 1 & T ? true : false;
