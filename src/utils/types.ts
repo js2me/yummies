@@ -528,8 +528,7 @@ export type HasKey<T, TKey extends string> = string extends keyof T
 /**
  * @deprecated use `HasKey`
  */
-export type HasSpecificKey<T, TKey extends string> =
-  HasKey<T, Key>
+export type HasSpecificKey<T, TKey extends string> = HasKey<T, TKey>;
 
 /**
  * Checks type is any
