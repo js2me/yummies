@@ -536,3 +536,5 @@ export type HasSpecificKey<T, TKey extends string> = HasKey<T, TKey>;
  * Returns true if T is any
  */
 export type IsAny<T> = 0 extends 1 & T ? true : false;
+
+export type IsUnknown<T> = [unknown] extends [T] ? true : false;
