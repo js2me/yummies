@@ -1,5 +1,15 @@
 # yummies
 
+## 5.12.0
+
+### Minor Changes
+
+- [`fb32136`](https://github.com/js2me/yummies/commit/fb321368e68ffd8c4e61e72d92b8c9bfe7b288a5) Thanks [@js2me](https://github.com/js2me)! - added `IsUnknown` type
+
+### Patch Changes
+
+- [`6aad5b8`](https://github.com/js2me/yummies/commit/6aad5b80bb0300791311885b1cc9512f78984664) Thanks [@js2me](https://github.com/js2me)! - added type `isAny<T>`
+
 ## 5.11.2
 
 ### Patch Changes
