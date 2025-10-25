@@ -1,44 +1,47 @@
-import type { AnyFunction, AnyObject } from 'yummies/utils/types';
+import type { AnyFunction, AnyObject, ValueOf } from 'yummies/utils/types';
 
-enum Type {
-  Null = 'null',
-  Undefined = 'undefined',
-  NaN = 'nan',
-  Object = '[object Object]',
-  Array = '[object Array]',
-  String = '[object String]',
-  Number = '[object Number]',
-  Boolean = '[object Boolean]',
-  Function = '[object Function]',
-  RegExp = '[object RegExp]',
-  Symbol = '[object Symbol]',
-  Infinite = 'infinite',
-  Element = 'element',
-}
+const TYPE = {
+  Null: 'null',
+  Undefined: 'undefined',
+  NaN: 'nan',
+  Object: '[object Object]',
+  Array: '[object Array]',
+  String: '[object String]',
+  Number: '[object Number]',
+  Boolean: '[object Boolean]',
+  Function: '[object Function]',
+  AsyncFunction: '[object AsyncFunction]',
+  RegExp: '[object RegExp]',
+  Symbol: '[object Symbol]',
+  Infinite: 'infinite',
+  Element: 'element',
+};
+
+type Type = ValueOf<typeof TYPE>;
 
 function getType(value: unknown): Type {
   if (value === undefined) {
-    return Type.Undefined;
+    return TYPE.Undefined;
   }
   if (value === null) {
-    return Type.Null;
+    return TYPE.Null;
   }
 
   // handle DOM elements
   // @ts-expect-error
   if (value && (value.nodeType === 1 || value.nodeType === 9)) {
-    return Type.Element;
+    return TYPE.Element;
   }
 
   const stringifiedValue = Object.prototype.toString.call(value);
 
   // handle NaN and Infinity
-  if (stringifiedValue === Type.Number) {
+  if (stringifiedValue === TYPE.Number) {
     if (Number.isNaN(value as number)) {
-      return Type.NaN;
+      return TYPE.NaN;
     }
     if (!Number.isFinite(value as number)) {
-      return Type.Infinite;
+      return TYPE.Infinite;
     }
   }
 
@@ -46,9 +49,9 @@ function getType(value: unknown): Type {
 }
 
 const createTypeGuard =
-  <T>(type: Type) =>
+  <T>(...types: Type[]) =>
   (value: unknown): value is T =>
-    getType(value) === type;
+    types.includes(getType(value));
 
 /**
  * Check if a value is not null or undefined
@@ -63,77 +66,80 @@ export const isDefined = <T>(value: T | undefined | null): value is T =>
  * @param value the value to check
  * @returns boolean
  */
-export const isNull = createTypeGuard<null>(Type.Null);
+export const isNull = createTypeGuard<null>(TYPE.Null);
 
 /**
  * Check if a value is undefined
  * @param value the value to check
  * @returns boolean
  */
-export const isUndefined = createTypeGuard<undefined>(Type.Undefined);
+export const isUndefined = createTypeGuard<undefined>(TYPE.Undefined);
 
 /**
  * Check if a value is an object
  * @param value the value to check
  * @returns boolean
  */
-export const isObject = createTypeGuard<AnyObject>(Type.Object);
+export const isObject = createTypeGuard<AnyObject>(TYPE.Object);
 
 /**
  * Check if a value is an array
  * @param value the value to check
  * @returns boolean
  */
-export const isArray = createTypeGuard<unknown[]>(Type.Array);
+export const isArray = createTypeGuard<unknown[]>(TYPE.Array);
 
 /**
  * Check if a value is a string
  * @param value the value to check
  * @returns boolean
  */
-export const isString = createTypeGuard<string>(Type.String);
+export const isString = createTypeGuard<string>(TYPE.String);
 
 /**
  * Check if a value is a number
  * @param value the value to check
  * @returns boolean
  */
-export const isNumber = createTypeGuard<number>(Type.Number);
+export const isNumber = createTypeGuard<number>(TYPE.Number);
 
 /**
  * Check if a value is a boolean
  * @param value the value to check
  * @returns boolean
  */
-export const isBoolean = createTypeGuard<boolean>(Type.Boolean);
+export const isBoolean = createTypeGuard<boolean>(TYPE.Boolean);
 
 /**
  * Check if a value is a function
  * @param value the value to check
  * @returns boolean
  */
-export const isFunction = createTypeGuard<AnyFunction>(Type.Function);
+export const isFunction = createTypeGuard<AnyFunction>(
+  TYPE.Function,
+  TYPE.AsyncFunction,
+);
 
 /**
  * Check if a value is a regular expression
  * @param value the value to check
  * @returns boolean
  */
-export const isRegExp = createTypeGuard<RegExp>(Type.RegExp);
+export const isRegExp = createTypeGuard<RegExp>(TYPE.RegExp);
 
 /**
  * Check if a value is a DOM element
  * @param value the value to check
  * @returns boolean
  */
-export const isElement = createTypeGuard<HTMLElement>(Type.Element);
+export const isElement = createTypeGuard<HTMLElement>(TYPE.Element);
 
 /**
  * Check if a value is NaN
  * @param value the value to check
  * @returns boolean
  */
-export const isNaN = createTypeGuard<number>(Type.NaN) as (
+export const isNaN = createTypeGuard<number>(TYPE.NaN) as (
   value: unknown,
 ) => boolean;
 
@@ -142,7 +148,7 @@ export const isNaN = createTypeGuard<number>(Type.NaN) as (
  * @param value the value to check
  * @returns boolean
  */
-export const isInfinite = createTypeGuard<number>(Type.Infinite) as (
+export const isInfinite = createTypeGuard<number>(TYPE.Infinite) as (
   value: unknown,
 ) => boolean;
 
@@ -151,4 +157,4 @@ export const isInfinite = createTypeGuard<number>(Type.Infinite) as (
  * @param value the value to check
  * @returns boolean
  */
-export const isSymbol = createTypeGuard<symbol>(Type.Symbol);
+export const isSymbol = createTypeGuard<symbol>(TYPE.Symbol);
