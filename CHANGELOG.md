@@ -1,5 +1,11 @@
 # yummies
 
+## 5.12.1
+
+### Patch Changes
+
+- [`89da151`](https://github.com/js2me/yummies/commit/89da15109251fac720cac741b5efc3180853d802) Thanks [@js2me](https://github.com/js2me)! - fixed typeGuard (async function)
+
 ## 5.12.0
 
 ### Minor Changes
