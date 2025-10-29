@@ -28,15 +28,20 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
     actionFn.listeners.forEach((listener) => {
       listener(actionFn.current);
     });
-
-    if (actionFn.current) {
-      cfg?.onSet?.(actionFn.current);
-    } else {
-      cfg?.onUnset?.();
-    }
   }) as Ref<T, TMeta>;
 
   actionFn.listeners = cfg?.onChange ? [cfg.onChange] : [];
+
+  if (cfg?.onSet || cfg?.onUnset) {
+    actionFn.listeners.push((value) => {
+      if (value) {
+        cfg.onSet?.(value);
+      } else {
+        cfg.onUnset?.();
+      }
+    });
+  }
+
   actionFn.current = null;
   actionFn.meta = cfg?.meta ?? ({} as TMeta);
 
