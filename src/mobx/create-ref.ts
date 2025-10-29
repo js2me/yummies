@@ -1,11 +1,14 @@
 import { action, makeObservable, observable } from 'mobx';
 import type { AnyObject, Maybe } from 'yummies/utils/types';
 
+export type RefChangeListener<T> = (value: T | null) => void;
+
 /**
  * Alternative to React.createRef but works in MobX world.
  * Typically it the should be the same React.LegacyRef (fn style)
  */
 export type Ref<T = any, TMeta = AnyObject> = ((element: Maybe<T>) => void) & {
+  listeners: RefChangeListener<T>[];
   current: T | null;
   meta: TMeta;
 };
@@ -16,10 +19,16 @@ export type Ref<T = any, TMeta = AnyObject> = ((element: Maybe<T>) => void) & {
 export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
   onSet?: (node: T) => void;
   onUnset?: () => void;
+  onChange?: RefChangeListener<T>;
   meta?: TMeta;
 }): Ref<T, TMeta> => {
-  const actionFn = action((value: T | null) => {
-    actionFn.current = value;
+  const actionFn = action((value: Maybe<T>) => {
+    actionFn.current = value ?? null;
+
+    actionFn.listeners.forEach((listener) => {
+      listener(actionFn.current);
+    });
+
     if (actionFn.current) {
       cfg?.onSet?.(actionFn.current);
     } else {
@@ -27,6 +36,7 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
     }
   }) as Ref<T, TMeta>;
 
+  actionFn.listeners = cfg?.onChange ? [cfg.onChange] : [];
   actionFn.current = null;
   actionFn.meta = cfg?.meta ?? ({} as TMeta);
 
@@ -38,6 +48,8 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
   return actionFn;
 };
 
-export const isRef = <T>(value: any): value is Ref<T> => {
+export const isRef = <T, TMeta = AnyObject>(
+  value: any,
+): value is Ref<T, TMeta> => {
   return typeof value === 'function' && 'current' in value;
 };
