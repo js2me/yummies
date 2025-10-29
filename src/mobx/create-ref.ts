@@ -37,3 +37,7 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
 
   return actionFn;
 };
+
+export const isRef = <T>(value: any): value is Ref<T> => {
+  return typeof value === 'function' && 'current' in value;
+};
