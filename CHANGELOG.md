@@ -1,5 +1,13 @@
 # yummies
 
+## 5.14.0
+
+### Minor Changes
+
+- [`a8cd8fc`](https://github.com/js2me/yummies/commit/a8cd8fcef9704e651ff34c533ab7e9f9240d50b6) Thanks [@js2me](https://github.com/js2me)! - added `isRef` fn`
+
+- [`735498a`](https://github.com/js2me/yummies/commit/735498ab9fe9bdc61ca5f7693ce4543d1c6c773c) Thanks [@js2me](https://github.com/js2me)! - added `listeners` field for `createRef`
+
 ## 5.13.0
 
 ### Minor Changes
