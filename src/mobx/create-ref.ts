@@ -13,45 +13,51 @@ export type RefChangeListener<T> = (value: T | null) => void;
  * Alternative to React.createRef but works in MobX world.
  * Typically it the should be the same React.LegacyRef (fn style)
  */
-export type Ref<T = any, TMeta = AnyObject> = ((element: Maybe<T>) => void) & {
-  listeners: Set<RefChangeListener<T>>;
-  current: T | null;
-  meta: TMeta;
-};
+export interface Ref<T = any, TMeta = AnyObject> {
+  (element: Maybe<T>): void;
 
-/**
- * Creates ref thing to attach HTMLElements in React and all other
- */
-export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
+  listeners: Set<RefChangeListener<NoInfer<T>>>;
+  current: NoInfer<T> | null;
+  meta: TMeta;
+}
+
+export interface CreateRefConfig<T = any, TMeta = AnyObject> {
   onSet?: (node: T) => void;
   onUnset?: () => void;
   onChange?: RefChangeListener<T>;
   meta?: TMeta;
   initial?: Maybe<T>;
   comparer?: IEqualsComparer<T | null>;
-}): Ref<T, TMeta> => {
+}
+
+/**
+ * Creates ref thing to attach HTMLElements in React and all other
+ */
+export const createRef = <T = any, TMeta = AnyObject>(
+  cfg?: CreateRefConfig<T, TMeta>,
+): Ref<T, TMeta> => {
   const comparer = cfg?.comparer ?? mobxComparer.default;
 
-  const actionFn = ((value: Maybe<T>) => {
+  const ref = ((value: Maybe<T>) => {
     const nextValue = value ?? null;
 
-    if (comparer(actionFn.current, nextValue)) {
+    if (comparer(ref.current, nextValue)) {
       return;
     }
 
     runInAction(() => {
-      actionFn.current = nextValue;
+      ref.current = nextValue;
 
-      actionFn.listeners.forEach((listener) => {
-        listener(actionFn.current);
+      ref.listeners.forEach((listener) => {
+        listener(ref.current);
       });
     });
   }) as Ref<T, TMeta>;
 
-  actionFn.listeners = new Set(cfg?.onChange ? [cfg.onChange] : []);
+  ref.listeners = new Set(cfg?.onChange ? [cfg.onChange] : []);
 
   if (cfg?.onSet || cfg?.onUnset) {
-    actionFn.listeners.add((value) => {
+    ref.listeners.add((value) => {
       if (value) {
         cfg.onSet?.(value);
       } else {
@@ -60,19 +66,26 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
     });
   }
 
-  actionFn.current = cfg?.initial ?? null;
-  actionFn.meta = cfg?.meta ?? ({} as TMeta);
+  ref.current = cfg?.initial ?? null;
+  ref.meta = cfg?.meta ?? ({} as TMeta);
 
-  makeObservable(actionFn, {
+  makeObservable(ref, {
     current: observable.ref,
     meta: observable,
   });
 
-  return actionFn;
+  return ref;
 };
 
-export const isRef = <T, TMeta = AnyObject>(
-  value: any,
+export const isRef = <T, TMeta = any>(
+  value: T | Ref<T, TMeta>,
 ): value is Ref<T, TMeta> => {
   return typeof value === 'function' && 'current' in value;
+};
+
+export const toRef = <T, TMeta = any>(
+  value: T | Ref<T, TMeta>,
+  cfg?: Omit<CreateRefConfig<T, TMeta>, 'initial'>,
+): Ref<T, TMeta> => {
+  return isRef(value) ? value : createRef({ initial: value, ...cfg });
 };
