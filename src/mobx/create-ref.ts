@@ -21,6 +21,7 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
   onUnset?: () => void;
   onChange?: RefChangeListener<T>;
   meta?: TMeta;
+  initial?: Maybe<T>;
 }): Ref<T, TMeta> => {
   const actionFn = action((value: Maybe<T>) => {
     actionFn.current = value ?? null;
@@ -42,7 +43,7 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
     });
   }
 
-  actionFn.current = null;
+  actionFn.current = cfg?.initial ?? null;
   actionFn.meta = cfg?.meta ?? ({} as TMeta);
 
   makeObservable(actionFn, {
