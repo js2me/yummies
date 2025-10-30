@@ -1,5 +1,11 @@
 # yummies
 
+## 5.14.2
+
+### Patch Changes
+
+- [`41080c5`](https://github.com/js2me/yummies/commit/41080c5abd2aef6c8f91b188e463326be3f1b09e) Thanks [@js2me](https://github.com/js2me)! - replaced listeners to Set (createRef)
+
 ## 5.14.1
 
 ### Patch Changes
