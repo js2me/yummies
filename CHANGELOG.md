@@ -1,5 +1,11 @@
 # yummies
 
+## 5.15.0
+
+### Minor Changes
+
+- [`f0a80ab`](https://github.com/js2me/yummies/commit/f0a80ab2d579fca847410683e123b6d2c0026c4c) Thanks [@js2me](https://github.com/js2me)! - added comparer for `createRef`
+
 ## 5.14.2
 
 ### Patch Changes
