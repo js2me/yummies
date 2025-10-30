@@ -1,4 +1,10 @@
-import { action, makeObservable, observable } from 'mobx';
+import {
+  action,
+  type IEqualsComparer,
+  makeObservable,
+  comparer as mobxComparer,
+  observable,
+} from 'mobx';
 import type { AnyObject, Maybe } from 'yummies/utils/types';
 
 export type RefChangeListener<T> = (value: T | null) => void;
@@ -22,9 +28,18 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
   onChange?: RefChangeListener<T>;
   meta?: TMeta;
   initial?: Maybe<T>;
+  comparer?: IEqualsComparer<T | null>;
 }): Ref<T, TMeta> => {
+  const comparer = cfg?.comparer ?? mobxComparer.default;
+
   const actionFn = action((value: Maybe<T>) => {
-    actionFn.current = value ?? null;
+    const nextValue = value ?? null;
+
+    if (comparer(actionFn.current, nextValue)) {
+      return;
+    }
+
+    actionFn.current = nextValue;
 
     actionFn.listeners.forEach((listener) => {
       listener(actionFn.current);
