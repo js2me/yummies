@@ -1,9 +1,9 @@
 import {
-  action,
   type IEqualsComparer,
   makeObservable,
   comparer as mobxComparer,
   observable,
+  runInAction,
 } from 'mobx';
 import type { AnyObject, Maybe } from 'yummies/utils/types';
 
@@ -32,17 +32,19 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
 }): Ref<T, TMeta> => {
   const comparer = cfg?.comparer ?? mobxComparer.default;
 
-  const actionFn = action((value: Maybe<T>) => {
+  const actionFn = ((value: Maybe<T>) => {
     const nextValue = value ?? null;
 
     if (comparer(actionFn.current, nextValue)) {
       return;
     }
 
-    actionFn.current = nextValue;
+    runInAction(() => {
+      actionFn.current = nextValue;
 
-    actionFn.listeners.forEach((listener) => {
-      listener(actionFn.current);
+      actionFn.listeners.forEach((listener) => {
+        listener(actionFn.current);
+      });
     });
   }) as Ref<T, TMeta>;
 
