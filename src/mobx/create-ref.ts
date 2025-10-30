@@ -8,7 +8,7 @@ export type RefChangeListener<T> = (value: T | null) => void;
  * Typically it the should be the same React.LegacyRef (fn style)
  */
 export type Ref<T = any, TMeta = AnyObject> = ((element: Maybe<T>) => void) & {
-  listeners: RefChangeListener<T>[];
+  listeners: Set<RefChangeListener<T>>;
   current: T | null;
   meta: TMeta;
 };
@@ -31,10 +31,10 @@ export const createRef = <T = HTMLElement, TMeta = AnyObject>(cfg?: {
     });
   }) as Ref<T, TMeta>;
 
-  actionFn.listeners = cfg?.onChange ? [cfg.onChange] : [];
+  actionFn.listeners = new Set(cfg?.onChange ? [cfg.onChange] : []);
 
   if (cfg?.onSet || cfg?.onUnset) {
-    actionFn.listeners.push((value) => {
+    actionFn.listeners.add((value) => {
       if (value) {
         cfg.onSet?.(value);
       } else {
