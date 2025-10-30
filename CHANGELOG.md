@@ -1,5 +1,11 @@
 # yummies
 
+## 5.15.1
+
+### Patch Changes
+
+- [`ec2deed`](https://github.com/js2me/yummies/commit/ec2deed00819f578e63fa63094cb37f061a02930) Thanks [@js2me](https://github.com/js2me)! - fixed `createRef` typings
+
 ## 5.15.0
 
 ### Minor Changes
