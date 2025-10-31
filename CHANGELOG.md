@@ -1,5 +1,20 @@
 # yummies
 
+## 6.0.0
+
+### Major Changes
+
+- [`0c14e66`](https://github.com/js2me/yummies/commit/0c14e66f2f2b3b594299a4d681a4be31c8f20910) Thanks [@js2me](https://github.com/js2me)! - Modified imports for yummies/utils/types and yummies/utility-types
+
+  Migration:
+
+  1. Replace all imports `yummies/utility-types` to `yummies/types.global`
+  2. Replace all imports `yummies/utils/types` to `yummies/types`
+
+### Minor Changes
+
+- [`020a829`](https://github.com/js2me/yummies/commit/020a82981722904441abd880b8a574782375ef5a) Thanks [@js2me](https://github.com/js2me)! - changed bundle and collecting .d.ts files for bundle
+
 ## 5.15.1
 
 ### Patch Changes
