@@ -71,18 +71,19 @@ Utility for type checks
 ## [yummies/vibrate](src/vibrate.ts)  
 Utilities for working with vibrate api  
 
-## [yummies/utility-types](src/utils/types.ts)  
+## [yummies/types.global](src/types.ts)  
+## [yummies/types](src/types.ts)  
 TypeScript utility types that simplify writing TypeScript code.  
 They can be imported globally using the `d.ts` file, embedding it in the environment  
 ```ts
-import 'yummies/utility-types';
+import 'yummies/types.global';
 ```  
 Or specified in `tsconfig.json` in the `"types"` field    
 ```json
 {
   "compilerOptions": {
     "types": [
-      "yummies/utility-types"
+      "yummies/types.global"
     ],
     "target": "...blabla",
     ...
@@ -91,7 +92,7 @@ Or specified in `tsconfig.json` in the `"types"` field
 }
 ```
 Alternatively, you can use the "library" approach, where you need exported types.  
-For this, you can use the `yummies` or `yummies/utils/types` import.
+For this, you can use the `yummies` or `yummies/types` import.
 
 ```ts
 import { AnyObject } from 'yummies';
@@ -102,6 +103,11 @@ import { AnyObject } from 'yummies';
 
 Additional set of complex utilities  
 
+
+## Migration from 5.x to 6.x   
+
+1. Replace all imports `yummies/utility-types` to `yummies/types.global`   
+2. Replace all imports `yummies/utils/types` to `yummies/types`  
 
 ## Contribution Guide    
 

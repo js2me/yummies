@@ -9,7 +9,7 @@
     "check": "npm run lint:check && npm run ts:check",
     "prebuild": "npm run clean && npm run check",
     "build:watch": "pnpm build && nodemon --watch src --ext ts --exec \"pnpm build\"",
-    "build": "vite build && tsx scripts/generate-utility-types-file",
+    "build": "vite build",
     "pub": "pnpm build && sborshik publish --useDistDir",
     "pub:patch": "PUBLISH_VERSION=patch pnpm pub",
     "pub:minor": "PUBLISH_VERSION=minor pnpm pub",
@@ -58,7 +58,7 @@
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.2",
+    "@biomejs/biome": "2.3.2",
     "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.29.5",
     "@types/node": "^20.17.30",
@@ -66,18 +66,19 @@
     "@vitejs/plugin-react-swc": "^3.9.0",
     "@vitest/coverage-istanbul": "^3.1.2",
     "commitfmt": "^1.0.4",
-    "js2me-biome-config": "^1.0.3",
+    "js2me-biome-config": "^1.0.7",
     "jsdom": "^26.1.0",
     "lefthook": "^1.11.16",
     "nodemon": "^3.1.9",
     "rimraf": "^6.0.1",
-    "sborshik": "^1.0.33",
-    "tsx": "^4.20.5",
+    "rollup": "^4.52.5",
+    "rollup-plugin-dts": "^6.2.3",
+    "sborshik": "^1.8.9",
     "typescript": "^5.8.3",
+    "unplugin-dts": "1.0.0-beta.6",
     "vite": "^7.1.9",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.1.2",
-    "zshy": "^0.4.2"
+    "vitest": "^3.1.2"
   },
   "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903",
   "type": "module"

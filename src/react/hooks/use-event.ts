@@ -5,7 +5,7 @@
  * https://github.com/reactjs/rfcs/blob/useevent/text/0000-useevent.md
  */
 import { useCallback, useLayoutEffect, useRef } from 'react';
-import type { AnyFunction } from 'yummies/utils/types';
+import type { AnyFunction } from 'yummies/types';
 
 export const useEvent = <H extends AnyFunction>(handler: H): H => {
   const handlerRef = useRef<H>(handler);

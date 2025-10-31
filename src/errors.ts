@@ -1,5 +1,5 @@
 import { typeGuard } from 'yummies/type-guard';
-import type { Maybe } from 'yummies/utils/types';
+import type { Maybe } from 'yummies/types';
 
 type GetErrorTextEnhancer = (error: any) => string;
 type GetErrorTextFormatErrorFn = (error: Error) => string;

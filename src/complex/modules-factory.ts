@@ -1,9 +1,4 @@
-import type {
-  AnyObject,
-  Class,
-  EmptyObject,
-  IsPartial,
-} from 'yummies/utils/types';
+import type { AnyObject, Class, EmptyObject, IsPartial } from 'yummies/types';
 
 type ModuleLoaderConfig<TPredefinedDeps extends AnyObject = EmptyObject> = {
   factory<TInstance, TDeps extends TPredefinedDeps>(

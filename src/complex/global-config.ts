@@ -1,4 +1,4 @@
-import type { AnyObject, Maybe } from 'yummies/utils/types';
+import type { AnyObject, Maybe } from 'yummies/types';
 
 const createGlobalPoint = <TValue>(accessSymbol?: keyof any) => {
   if (accessSymbol == null) {

@@ -5,7 +5,7 @@ import {
   observable,
   runInAction,
 } from 'mobx';
-import type { AnyObject, Maybe } from 'yummies/utils/types';
+import type { AnyObject, Maybe } from 'yummies/types';
 
 export type RefChangeListener<T> = (value: T | null) => void;
 

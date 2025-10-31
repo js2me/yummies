@@ -1,6 +1,6 @@
 import { format } from 'yummies/format';
 import { typeGuard } from 'yummies/type-guard';
-import type { Maybe } from 'yummies/utils/types';
+import type { Maybe } from 'yummies/types';
 
 export interface NumberParserSettings<TFallback = number> {
   digits?: number;

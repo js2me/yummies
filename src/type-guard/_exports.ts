@@ -1,4 +1,4 @@
-import type { AnyFunction, AnyObject, ValueOf } from 'yummies/utils/types';
+import type { AnyFunction, AnyObject, ValueOf } from 'yummies/types';
 
 const TYPE = {
   Null: 'null',

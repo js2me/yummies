@@ -1,6 +1,6 @@
 import { parser } from 'yummies/parser';
 import { typeGuard } from 'yummies/type-guard';
-import type { Maybe } from 'yummies/utils/types';
+import type { Maybe } from 'yummies/types';
 
 import { NO_VALUE } from './constants.js';
 

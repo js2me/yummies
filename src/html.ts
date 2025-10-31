@@ -1,6 +1,6 @@
 import DOMPurify, { type Config as DOMPurifyConfig } from 'dompurify';
 import { blobToUrl } from 'yummies/media';
-import type { Maybe } from 'yummies/utils/types';
+import type { Maybe } from 'yummies/types';
 
 /**
  * Вытаскивает RGB из любого цвета

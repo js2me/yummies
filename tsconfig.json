@@ -27,7 +27,6 @@
 			"yummies/parser": ["./src/parser/index.ts"],
 			"yummies/react": ["./src/react/index.ts"],
 			"yummies/type-guard": ["./src/type-guard/index.ts"],
-			"yummies/utils/types": ["./src/utils/types.ts"],
 			"yummies/async": ["./src/async.ts"],
 			"yummies/common": ["./src/common.ts"],
 			"yummies/cookie": ["./src/cookie.ts"],
@@ -49,7 +48,8 @@
 			"yummies/random": ["./src/random.ts"],
 			"yummies/sound": ["./src/sound.ts"],
 			"yummies/text": ["./src/text.ts"],
-			"yummies/utility-types": ["./src/utility-types.ts"],
+			"yummies/types": ["./src/types.ts"],
+			"yummies/types.global": ["./src/types.global.ts"],
 			"yummies/vibrate": ["./src/vibrate.ts"]
 		}
 	},

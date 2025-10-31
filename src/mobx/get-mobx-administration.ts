@@ -1,5 +1,5 @@
 import { $mobx, type AnnotationMapEntry } from 'mobx';
-import type { AnyObject } from 'yummies/utils/types';
+import type { AnyObject } from 'yummies/types';
 
 type ObservableObjectAdministration = Parameters<
   Exclude<AnnotationMapEntry, boolean>['make_']

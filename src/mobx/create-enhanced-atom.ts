@@ -1,5 +1,5 @@
 import { createAtom, type IAtom } from 'mobx';
-import type { AnyObject } from 'yummies/utils/types';
+import type { AnyObject } from 'yummies/types';
 
 export interface IEnhancedAtom<TMeta extends AnyObject = AnyObject>
   extends IAtom {

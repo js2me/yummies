@@ -5,7 +5,7 @@ import { format } from 'yummies/format';
 import { unitsToMs } from 'yummies/ms';
 import { declension } from 'yummies/text';
 import { typeGuard } from 'yummies/type-guard';
-import type { Maybe } from 'yummies/utils/types';
+import type { Maybe } from 'yummies/types';
 
 import 'dayjs/locale/ru.js';
 

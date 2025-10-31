@@ -1,5 +1,5 @@
 import { typeGuard } from 'yummies/type-guard';
-import type { Maybe } from 'yummies/utils/types';
+import type { Maybe } from 'yummies/types';
 
 export interface StringParserSettings<TFallback = string> {
   fallback?: TFallback;
