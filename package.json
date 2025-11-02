@@ -73,7 +73,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.52.5",
     "rollup-plugin-dts": "^6.2.3",
-    "sborshik": "^1.9.5",
+    "sborshik": "^1.9.6",
     "typescript": "^5.8.3",
     "unplugin-dts": "1.0.0-beta.6",
     "vite": "^7.1.9",
