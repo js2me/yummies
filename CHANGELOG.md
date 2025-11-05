@@ -1,5 +1,15 @@
 # yummies
 
+## 6.1.0
+
+### Minor Changes
+
+- [`2863402`](https://github.com/js2me/yummies/commit/286340245b6146b276089e43b78e2d8cf426d1ba) Thanks [@js2me](https://github.com/js2me)! - added `PubSub` and `createPubSub` complex utility
+
+### Patch Changes
+
+- [`f573d55`](https://github.com/js2me/yummies/commit/f573d559cdc968fc0bfdd54c2e512c7748edfc1a) Thanks [@js2me](https://github.com/js2me)! - [internal] build modification
+
 ## 6.0.0
 
 ### Major Changes
