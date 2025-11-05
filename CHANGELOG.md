@@ -1,5 +1,11 @@
 # yummies
 
+## 6.1.1
+
+### Patch Changes
+
+- [`881e3ce`](https://github.com/js2me/yummies/commit/881e3ce2adc14c4cad77b251b734fa3a62118d1f) Thanks [@js2me](https://github.com/js2me)! - modified api for pubsub
+
 ## 6.1.0
 
 ### Minor Changes
