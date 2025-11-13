@@ -1,5 +1,11 @@
 # yummies
 
+## 6.2.0
+
+### Minor Changes
+
+- [`f6bec05`](https://github.com/js2me/yummies/commit/f6bec05320a82820a3740110f7944809420d91c1) Thanks [@js2me](https://github.com/js2me)! - [mobx] enhance `createRef` function (save\tranfser last value)
+
 ## 6.1.1
 
 ### Patch Changes
