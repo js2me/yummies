@@ -1,5 +1,11 @@
 # yummies
 
+## 6.3.0
+
+### Minor Changes
+
+- [`788807b`](https://github.com/js2me/yummies/commit/788807bd74be65c540e5ed6b697aa50402e4bd1b) Thanks [@js2me](https://github.com/js2me)! - improved PubSub (save last args)
+
 ## 6.2.0
 
 ### Minor Changes
