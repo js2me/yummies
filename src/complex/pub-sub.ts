@@ -9,6 +9,11 @@ export interface PubSub<PubArgs extends any[] = any[]> {
   (...args: PubArgs): void;
 
   /**
+   * Last published arguments
+   */
+  lastPub: PubArgs | undefined;
+
+  /**
    * An array of subscriber functions (sub) that will be called
    * when an event is published. Each subscriber must match the type SubFn,
    * taking the arguments that will be passed to it when the publisher calls pub.
@@ -30,14 +35,21 @@ export interface PubSub<PubArgs extends any[] = any[]> {
 
 export const createPubSub = <PubArgs extends any[] = any[]>() => {
   const pubSub = ((...args: PubArgs) => {
+    pubSub.lastPub = args;
     pubSub.subs.forEach((sub) => {
       sub(...args);
     });
   }) as PubSub<PubArgs>;
+  pubSub.lastPub = undefined;
 
   pubSub.subs = [];
+
   pubSub.unsub = (sub: SubFn<PubArgs>) => {
     pubSub.subs = pubSub.subs.filter((it) => it !== sub);
+
+    if (pubSub.subs.length === 0) {
+      pubSub.lastPub = undefined;
+    }
   };
   pubSub.sub = (sub: SubFn<PubArgs>) => {
     pubSub.subs.push(sub);
