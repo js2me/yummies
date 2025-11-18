@@ -46,10 +46,6 @@ export const createPubSub = <PubArgs extends any[] = any[]>() => {
 
   pubSub.unsub = (sub: SubFn<PubArgs>) => {
     pubSub.subs = pubSub.subs.filter((it) => it !== sub);
-
-    if (pubSub.subs.length === 0) {
-      pubSub.lastPub = undefined;
-    }
   };
   pubSub.sub = (sub: SubFn<PubArgs>) => {
     pubSub.subs.push(sub);
