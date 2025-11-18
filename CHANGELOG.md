@@ -1,5 +1,11 @@
 # yummies
 
+## 6.3.1
+
+### Patch Changes
+
+- [`2418145`](https://github.com/js2me/yummies/commit/24181458b217e69e7cf685f1fe32de63c97b6dd8) Thanks [@js2me](https://github.com/js2me)! - remove auto cleanup for PubSub
+
 ## 6.3.0
 
 ### Minor Changes
