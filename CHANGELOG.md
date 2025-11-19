@@ -1,5 +1,11 @@
 # yummies
 
+## 6.3.2
+
+### Patch Changes
+
+- [`2f7367e`](https://github.com/js2me/yummies/commit/2f7367e940546426b7a7fcaa1a902d54af9bffd3) Thanks [@js2me](https://github.com/js2me)! - fix parser number fallback
+
 ## 6.3.1
 
 ### Patch Changes
