@@ -35,4 +35,8 @@ describe('parser.number', () => {
     expect(number(null, null)).toBe(0);
     expect(number(undefined, undefined)).toBe(0);
   });
+
+  test('fallback with empty string', () => {
+    expect(number('', { fallback: null })).toBe(null);
+  });
 });

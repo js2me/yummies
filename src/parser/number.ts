@@ -27,7 +27,9 @@ export const number = <TFallback = number>(
     ...userSettings,
   };
 
-  const fallback = settings?.fallback ?? 0;
+  const fallback = (
+    'fallback' in settings ? settings.fallback : 0
+  ) as TFallback;
 
   let result: number;
 
