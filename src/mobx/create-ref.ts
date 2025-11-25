@@ -7,10 +7,13 @@ import {
 } from 'mobx';
 import type { AnyObject, Maybe } from 'yummies/types';
 
+/**
+ * You can return `false` if you don't want to change the value in this ref
+ */
 export type RefChangeListener<T> = (
   value: T | null,
   prevValue: T | undefined,
-) => void;
+) => void | false;
 
 /**
  * Alternative to React.createRef but works in MobX world.
@@ -53,14 +56,24 @@ export const createRef = <T = any, TMeta = AnyObject>(
     }
 
     runInAction(() => {
+      const prevLastValue = lastValue;
       lastValue = ref.current ?? undefined;
       ref.current = nextValue;
 
+      let isNextValueIgnored = false;
+
       ref.listeners.forEach((listener) => {
-        listener(ref.current, lastValue);
+        const listenerResult = listener(ref.current, lastValue);
+
+        if (listenerResult === false) {
+          isNextValueIgnored = true;
+        }
       });
 
-      if (ref.current === null && lastValue !== undefined) {
+      if (isNextValueIgnored) {
+        lastValue = prevLastValue;
+        ref.current = lastValue ?? null;
+      } else if (ref.current === null && lastValue !== undefined) {
         lastValue = undefined;
       }
     });
