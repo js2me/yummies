@@ -1,5 +1,11 @@
 # yummies
 
+## 6.5.0
+
+### Minor Changes
+
+- [`18e6e27`](https://github.com/js2me/yummies/commit/18e6e2700a2b13f5e5debb95252a8891469e611f) Thanks [@js2me](https://github.com/js2me)! - add support to ignore next value update in `createRef`
+
 ## 6.4.0
 
 ### Minor Changes
