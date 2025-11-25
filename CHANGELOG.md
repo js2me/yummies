@@ -1,5 +1,11 @@
 # yummies
 
+## 6.4.0
+
+### Minor Changes
+
+- [`7ca2800`](https://github.com/js2me/yummies/commit/7ca28009c898c62f485762a4e75cdcea409d2d9b) Thanks [@js2me](https://github.com/js2me)! - added `attachRefs` function util for react
+
 ## 6.3.2
 
 ### Patch Changes
