@@ -1,13 +1,14 @@
-import type { Ref, RefObject } from 'react';
+import type { LegacyRef, RefObject } from 'react';
+import type { Maybe } from 'yummies/types';
 
 export const attachRefs = <T>(
   value: T | null,
-  ...refs: (RefObject<T> | RefObject<T | null> | Ref<T>)[]
+  ...refs: Maybe<RefObject<T> | RefObject<T | null> | LegacyRef<T>>[]
 ) =>
   refs.forEach((ref) => {
     if (typeof ref === 'function') {
       ref(value);
-    } else if (ref) {
+    } else if (ref && typeof ref !== 'string') {
       // @ts-expect-error
       ref.current = value;
     }
