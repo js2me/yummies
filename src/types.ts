@@ -538,3 +538,18 @@ export type HasSpecificKey<T, TKey extends string> = HasKey<T, TKey>;
 export type IsAny<T> = 0 extends 1 & T ? true : false;
 
 export type IsUnknown<T> = [unknown] extends [T] ? true : false;
+
+/**
+ * Helpful to use with union type literals (`'str1' | 'str2' | AnyString`)
+ */
+export type AnyString = string & {};
+
+/**
+ * Helpful to use with union type literals (`1 | 2 | AnyNumber`)
+ */
+export type AnyNumber = number & {};
+
+/**
+ * Helpful to use with union type literals (`true | AnyBoolean`)
+ */
+export type AnyBoolean = boolean & {};
