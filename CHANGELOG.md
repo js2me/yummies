@@ -1,5 +1,11 @@
 # yummies
 
+## 6.6.0
+
+### Minor Changes
+
+- [`e3263bf`](https://github.com/js2me/yummies/commit/e3263bfdbebe8fda1935bfdb14eccebbed7333fd) Thanks [@js2me](https://github.com/js2me)! - added AnyString AnyNumber AnyBoolean types
+
 ## 6.5.0
 
 ### Minor Changes
