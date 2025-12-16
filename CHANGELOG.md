@@ -1,5 +1,11 @@
 # yummies
 
+## 6.7.1
+
+### Patch Changes
+
+- [`5227103`](https://github.com/js2me/yummies/commit/52271033143554bb8f3e70b6f4f3489f5e335442) Thanks [@js2me](https://github.com/js2me)! - fix formatDate for date-time utils
+
 ## 6.7.0
 
 ### Minor Changes
