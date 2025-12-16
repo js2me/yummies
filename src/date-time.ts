@@ -13,20 +13,19 @@ dayjs.extend(relativeTime);
 dayjs.extend(duration);
 dayjs.locale('ru');
 
-const toLibFormat = (
-  value: Maybe<RawDateToFormat>,
-  asTime?: boolean,
-): Dayjs => {
-  if (typeGuard.isNumber(value)) {
-    if (asTime) {
-      return dayjs.duration(value) as unknown as Dayjs;
-    }
-    return dayjs(value);
-  } else if (dayjs.isDayjs(value)) {
-    return value;
-  } else {
-    return dayjs(value);
+const toLibFormat = (value: Maybe<RawDateToFormat>): Dayjs | null => {
+  let result: Maybe<Dayjs> = null;
+  if (dayjs.isDayjs(value)) {
+    result = value;
+  } else if (value != null) {
+    result = dayjs(value);
   }
+
+  if (!result?.isValid()) {
+    return null;
+  }
+
+  return result;
 };
 
 export type RawDateToFormat = Date | string | number | Dayjs;
@@ -53,43 +52,51 @@ export const formatDate = (
   const datePattern = settings?.pattern;
   const asTime = settings?.asTime;
 
-  value = toLibFormat(value, asTime);
+  let libDate: duration.Duration | dayjs.Dayjs | null = null;
 
-  if (typeGuard.isUndefined(value) || !value.isValid()) {
+  if (asTime && typeGuard.isNumber(value)) {
+    libDate = dayjs.duration(value);
+  } else {
+    libDate = toLibFormat(value);
+  }
+
+  if (!libDate) {
     return format.NO_VALUE;
   }
 
   if (datePattern) {
-    return value.format(datePattern);
+    return libDate.format(datePattern);
+  }
+
+  if (dateFormat === 'human' || dateFormat === 'spent-time') {
+    if ('fromNow' in libDate) {
+      return libDate.fromNow(dateFormat === 'spent-time');
+    } else {
+      return format.NO_VALUE;
+    }
   }
 
   switch (dateFormat) {
-    case 'human': {
-      return value.fromNow();
-    }
-    case 'spent-time': {
-      return value.fromNow(true);
-    }
     case 'full': {
-      return value.format('DD MMM YYYY HH:mm:ss');
+      return libDate.format('DD MMM YYYY HH:mm:ss');
     }
     case 'short': {
-      return value.format('DD MMM HH:mm');
+      return libDate.format('DD MMM HH:mm');
     }
     case 'time': {
-      return value.format('HH:mm:ss');
+      return libDate.format('HH:mm:ss');
     }
     case 'time-short': {
-      return value.format('HH:mm');
+      return libDate.format('HH:mm');
     }
     case 'day': {
-      return value.format('DD MMM YYYY');
+      return libDate.format('DD MMM YYYY');
     }
     case 'month': {
-      return value.format('MMMM YYYY');
+      return libDate.format('MMMM YYYY');
     }
     default: {
-      return value.format('DD.MM.YYYY');
+      return libDate.format('DD.MM.YYYY');
     }
   }
 };
@@ -133,7 +140,7 @@ export const changeDate = (
     ...Partial<DateChangeParam>,
   ]
 ) => {
-  let wrappedDate = toLibFormat(date);
+  let wrappedDate = toLibFormat(date)!;
 
   for (let i = 0; i < args.length; i += 2) {
     const amount = args[i] as DateChangeParam[0];
