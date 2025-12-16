@@ -1,5 +1,11 @@
 # yummies
 
+## 6.7.0
+
+### Minor Changes
+
+- [`fae4663`](https://github.com/js2me/yummies/commit/fae46632dec201b055f2e359be8dfe4abce05fe4) Thanks [@js2me](https://github.com/js2me)! - add missing storage export
+
 ## 6.6.0
 
 ### Minor Changes
