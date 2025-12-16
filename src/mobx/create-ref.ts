@@ -25,6 +25,7 @@ export interface Ref<T = any, TMeta = AnyObject> {
    */
   (value: Maybe<T>): void;
 
+  set(value: Maybe<T>): void;
   listeners: Set<RefChangeListener<NoInfer<T>>>;
   current: NoInfer<T> | null;
   meta: TMeta;
@@ -48,7 +49,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
   let lastValue: T | undefined;
   const comparer = cfg?.comparer ?? mobxComparer.default;
 
-  const ref = ((value: Maybe<T>) => {
+  const setValue: Ref<T, TMeta>['set'] = (value) => {
     const nextValue = value ?? null;
 
     if (comparer(ref.current, nextValue)) {
@@ -77,7 +78,11 @@ export const createRef = <T = any, TMeta = AnyObject>(
         lastValue = undefined;
       }
     });
-  }) as Ref<T, TMeta>;
+  };
+
+  const ref = setValue as Ref<T, TMeta>;
+
+  ref.set = setValue;
 
   ref.listeners = new Set(cfg?.onChange ? [cfg.onChange] : []);
 

@@ -36,6 +36,7 @@
 			"yummies/device": ["./src/device.ts"],
 			"yummies/encodings": ["./src/encodings.ts"],
 			"yummies/errors": ["./src/errors.ts"],
+			"yummies/storage": ["./src/storage.ts"],
 			"yummies/file": ["./src/file.ts"],
 			"yummies/html": ["./src/html.ts"],
 			"yummies/id": ["./src/id.ts"],
