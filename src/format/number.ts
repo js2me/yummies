@@ -32,6 +32,7 @@ export interface NumberFormatSettings {
    * Example: 0.010000000000000000000000000000000000000000000 -> 0.01
    */
   cutZeros?: boolean;
+  cropDigitsOnly?: boolean;
 }
 
 export const number = (
@@ -62,8 +63,23 @@ export const number = (
     let raw: string = `${value}`;
 
     if (digits !== false) {
-      raw = value.toFixed(digits);
+      if (settings.cropDigitsOnly) {
+        const [integerPart, decimalPart] = `${raw}`.split('.');
+        const leftPart = integerPart;
+        const rightPart = (decimalPart || '')
+          .slice(0, digits)
+          .padEnd(digits, '0');
+
+        if (rightPart) {
+          raw = `${leftPart}.${rightPart}`;
+        } else {
+          raw = leftPart;
+        }
+      } else {
+        raw = value.toFixed(digits);
+      }
     }
+
     if (cutZeros) {
       raw = `${+raw}`;
     }

@@ -13,4 +13,9 @@ describe('format.number', () => {
       '23_162',
     );
   });
+  test('cropDigitsOnly: true', () => {
+    expect(number(7.99999962002039, { digits: 2, cropDigitsOnly: true })).toBe(
+      '7.99',
+    );
+  });
 });
