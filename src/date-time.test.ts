@@ -1,8 +1,8 @@
-import { describe, expect, test } from 'vitest';
-
+import { describe, expect, test, vi } from 'vitest';
 import {
   changeDate,
   dayTimeDuration,
+  formatDate,
   getFormatDuration,
   timeDuration,
 } from './date-time.js';
@@ -99,6 +99,21 @@ describe('date-time', () => {
       });
     });
   });
+
+  test('human format (прошлое)', () => {
+    const today = new Date('2025-04-11');
+    vi.setSystemTime(today);
+    const nextDate = new Date('2025-04-02');
+    expect(formatDate(nextDate, { format: 'human' })).toBe('9 дней назад');
+  });
+
+  test('human format (будущее)', () => {
+    const today = new Date('2025-04-11');
+    vi.setSystemTime(today);
+    const nextDate = new Date('2025-04-18');
+    expect(formatDate(nextDate, { format: 'human' })).toBe('через 7 дней');
+  });
+
   describe('getFormatDuration', () => {
     test('30 minutes', () => {
       const dateA = new Date(`2025-02-10T09:53:00.000Z`);
