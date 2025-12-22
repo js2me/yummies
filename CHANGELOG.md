@@ -1,5 +1,11 @@
 # yummies
 
+## 6.8.0
+
+### Minor Changes
+
+- [`5866dba`](https://github.com/js2me/yummies/commit/5866dbaa1f69adc477e9e6a84f7c2f415eea940f) Thanks [@js2me](https://github.com/js2me)! - improved number format utils (`cropDigitsOnly`)
+
 ## 6.7.1
 
 ### Patch Changes
