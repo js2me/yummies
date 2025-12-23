@@ -553,3 +553,11 @@ export type AnyNumber = number & {};
  * Helpful to use with union type literals (`true | AnyBoolean`)
  */
 export type AnyBoolean = boolean & {};
+
+/**
+ * Upperfirst string type. It will capitalize the first letter of the string
+ * and leave the rest of the string unchanged.
+ */
+export type UpperFirst<S extends string> = S extends `${infer F}${infer R}`
+  ? `${Uppercase<F>}${R}`
+  : S;
