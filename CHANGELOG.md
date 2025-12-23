@@ -1,5 +1,11 @@
 # yummies
 
+## 6.9.0
+
+### Minor Changes
+
+- [`d25ee6f`](https://github.com/js2me/yummies/commit/d25ee6f8e1f735c138ef3895d40e2303019bc4d3) Thanks [@js2me](https://github.com/js2me)! - added UpperFirst type for ts types
+
 ## 6.8.0
 
 ### Minor Changes
