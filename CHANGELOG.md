@@ -1,5 +1,26 @@
 # yummies
 
+## 7.0.0
+
+### Major Changes
+
+- [`e6ba238`](https://github.com/js2me/yummies/commit/e6ba238331acc7e6f278cd17d68e0ad9310afd5f) Thanks [@js2me](https://github.com/js2me)! - modified `applyObservable` mobx util function (`[field, annotation]` -> `[annotation, ...fields]`)
+
+  Previous:
+
+  ```ts
+  applyObservable(this, [
+    ["foo", observable],
+    ["bar", observable],
+  ]);
+  ```
+
+  New:
+
+  ```ts
+  applyObservable(this, [[observable, "foo", "bar"]]);
+  ```
+
 ## 6.9.0
 
 ### Minor Changes
