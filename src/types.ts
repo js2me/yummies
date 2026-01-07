@@ -113,6 +113,8 @@ export type FalsyValues = undefined | null | '' | false | 0;
  */
 export type MaybeFalsy<T> = T | FalsyValues;
 
+export type Fn<T, TArgs extends any[] = any[]> = (...args: TArgs) => T;
+
 /**
  * Represents a type that can be either the specified type or a function returning that type.
  *
@@ -120,9 +122,7 @@ export type MaybeFalsy<T> = T | FalsyValues;
  * @template TArgs - Arguments type for the function
  * @returns T or a function that returns T
  */
-export type MaybeFn<T, TArgs extends any[] = any[]> =
-  | T
-  | ((...args: TArgs) => T);
+export type MaybeFn<T, TArgs extends any[] = any[]> = T | Fn<T, TArgs>;
 
 /**
  * Represents a class constructor type.
