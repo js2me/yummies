@@ -21,9 +21,14 @@ export const applyObservable = <T extends AnyObject>(
 
     makeObservable(context);
   } else {
-    const entries = annotationsArray.flatMap(([annotation, ...fields]) =>
-      fields.map((field) => [field, annotation]),
-    );
-    makeObservable(context, Object.fromEntries(entries));
+    const annotationsObject: AnyObject = {};
+
+    annotationsArray.forEach(([annotation, ...fields]) => {
+      fields.forEach((field) => {
+        annotationsObject[field] = annotation;
+      });
+    });
+
+    makeObservable(context, annotationsObject);
   }
 };
