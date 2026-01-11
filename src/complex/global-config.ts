@@ -1,27 +1,5 @@
 import type { AnyObject, Maybe } from 'yummies/types';
-
-const createGlobalPoint = <TValue>(accessSymbol?: keyof any) => {
-  if (accessSymbol == null) {
-    let storedValue: TValue | undefined;
-    return {
-      get: (): TValue => storedValue!,
-      set: (value: TValue): TValue => {
-        storedValue = value;
-        return value;
-      },
-    };
-  }
-
-  const _globalThis = globalThis as AnyObject;
-
-  return {
-    get: (): TValue => _globalThis[accessSymbol],
-    set: (value: TValue): TValue => {
-      _globalThis[accessSymbol] = value;
-      return value;
-    },
-  };
-};
+import { createGlobalPoint } from './global-point.js';
 
 /**
  * Создает глобальный конфиг, который может быть доступен в любой точке в коде
@@ -29,16 +7,23 @@ const createGlobalPoint = <TValue>(accessSymbol?: keyof any) => {
 export const createGlobalConfig = <T extends AnyObject>(
   defaultValue: T,
   accessSymbol?: keyof any,
-) => {
+): T => {
   const globalPoint = createGlobalPoint<T>(accessSymbol);
   return globalPoint.get() || globalPoint.set(defaultValue);
 };
 
+export interface GlobalDynamicConfig<TValue extends AnyObject> {
+  get(): TValue;
+  set(value: TValue): TValue;
+  unset(): void;
+  update(value: Partial<TValue>): void;
+}
+
 export const createGlobalDynamicConfig = <T extends AnyObject>(
   processFn: (change: Maybe<Partial<T>>, current: Maybe<T>) => T,
   accessSymbol?: keyof any,
-) => {
-  const globalPoint = createGlobalPoint<T | null | undefined>(accessSymbol);
+): GlobalDynamicConfig<T> => {
+  const globalPoint = createGlobalPoint<T>(accessSymbol);
 
   const getValue = () => {
     return globalPoint.get() ?? globalPoint.set(processFn(null, null))!;
@@ -47,6 +32,7 @@ export const createGlobalDynamicConfig = <T extends AnyObject>(
   return {
     get: getValue,
     set: globalPoint.set,
+    unset: globalPoint.unset,
     update: (value: Partial<T>) => {
       const currentValue = getValue();
       Object.assign(currentValue, processFn(value, currentValue));
