@@ -1,5 +1,11 @@
 # yummies
 
+## 7.0.1
+
+### Patch Changes
+
+- [`56fb902`](https://github.com/js2me/yummies/commit/56fb90228001112e67132320603e310235880d2c) Thanks [@js2me](https://github.com/js2me)! - small perf improvenments for `applyObservable` mobx util
+
 ## 7.0.0
 
 ### Major Changes
