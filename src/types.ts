@@ -33,12 +33,22 @@ export type ExtractEnumValues<T> = `${T & string}` | (T & number);
 export type Maybe<T> = Nullable<T> | undefined;
 
 /**
+ * Removes `null` and `undefined` from a type.
+ */
+export type NotMaybe<T> = Exclude<T, null | undefined>;
+
+/**
  * Represents a type that can be either the specified type or `null`.
  *
  * @template T - The type to make possibly `null`
  * @returns `T` or `null`
  */
 export type Nullable<T> = T | null;
+
+/**
+ * Removes `null` from a type.
+ */
+export type NotNullable<T> = Exclude<T, null>;
 
 /**
  * Represents any object with any keys and any values.
