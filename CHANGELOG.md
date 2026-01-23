@@ -1,5 +1,11 @@
 # yummies
 
+## 7.1.0
+
+### Minor Changes
+
+- [`aeed16d`](https://github.com/js2me/yummies/commit/aeed16dc46b2f0308bef5de0864b53b4613bccc3) Thanks [@js2me](https://github.com/js2me)! - added extra utility types
+
 ## 7.0.1
 
 ### Patch Changes
