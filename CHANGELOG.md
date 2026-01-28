@@ -1,5 +1,11 @@
 # yummies
 
+## 7.2.0
+
+### Minor Changes
+
+- [`f6797c6`](https://github.com/js2me/yummies/commit/f6797c63118727675ca87aa48bc42f41b61772fb) Thanks [@js2me](https://github.com/js2me)! - `MaybeArray` type
+
 ## 7.1.0
 
 ### Minor Changes
