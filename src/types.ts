@@ -65,6 +65,11 @@ export type AnyObject = Record<keyof any, any>;
 export type EmptyObject = Record<keyof any, never>;
 
 /**
+ * T or T[];
+ */
+export type MaybeArray<T> = T | T[];
+
+/**
  * Represents all primitive types in TypeScript.
  *
  * @returns Union of all primitive types

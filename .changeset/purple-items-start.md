@@ -1,0 +1,5 @@
+---
+"yummies": minor
+---
+
+`MaybeArray` type
