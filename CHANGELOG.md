@@ -1,5 +1,11 @@
 # yummies
 
+## 7.3.0
+
+### Minor Changes
+
+- [`b154ac2`](https://github.com/js2me/yummies/commit/b154ac2344898c54de1cdcf58df1402be27b6f1d) Thanks [@js2me](https://github.com/js2me)! - added `unset` method for storage
+
 ## 7.2.0
 
 ### Minor Changes
