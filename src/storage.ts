@@ -5,11 +5,8 @@ const storages: Record<StorageType, Storage> = {
   local: localStorage,
 };
 
-export const createStorageKey = (
-  prefix: string,
-  key: string,
-  namespace?: string,
-) => `${prefix}${namespace ? `/${namespace}` : ''}/${key}`;
+export const createKey = (prefix: string, key: string, namespace?: string) =>
+  `${prefix}${namespace ? `/${namespace}` : ''}/${key}`;
 
 const parseStorageValue = <V>(value: unknown): V | null => {
   if (typeof value !== 'string') {
@@ -32,6 +29,9 @@ export interface SetToStorageConfig<V>
   extends Omit<GetFromStorageConfig<V>, 'fallback'> {
   value: V;
 }
+
+export interface UnsetFromStorageConfig
+  extends Omit<GetFromStorageConfig<any>, 'fallback'> {}
 
 export interface GetFromStorageConfig<V> {
   /**
@@ -71,6 +71,20 @@ export type SetToStorageWrappedConfig<
   > &
   Pick<BaseConfig, Exclude<keyof BaseConfig, keyof SetToStorageConfig<V>>>;
 
+export type UnsetFromStorageWrappedConfig<
+  BaseConfig extends StorageConfigBase,
+> = Omit<
+  UnsetFromStorageConfig,
+  Extract<keyof UnsetFromStorageConfig, keyof BaseConfig>
+> &
+  Partial<
+    Pick<
+      UnsetFromStorageConfig,
+      Extract<keyof UnsetFromStorageConfig, keyof BaseConfig>
+    >
+  > &
+  Pick<BaseConfig, Exclude<keyof BaseConfig, keyof UnsetFromStorageConfig>>;
+
 export type GetFromStorageWrappedConfig<
   V,
   BaseConfig extends StorageConfigBase,
@@ -92,6 +106,7 @@ export type StorageConfigBase = Partial<
 
 export interface StorageApi<BaseConfig extends StorageConfigBase> {
   set<Value>(config: SetToStorageWrappedConfig<Value, BaseConfig>): void;
+  unset(config: UnsetFromStorageWrappedConfig<BaseConfig>): void;
   get<Value>(
     config: GetFromStorageWrappedConfig<Value, BaseConfig>,
   ): Value | null;
@@ -112,8 +127,18 @@ export function createStorage<BaseConfig extends StorageConfigBase>(
       const storage = storages[storageType];
 
       storage.setItem(
-        createStorageKey(storagePrefix, config.key, config.namespace),
+        createKey(storagePrefix, config.key, config.namespace),
         formatValueToStorage(config.value),
+      );
+    },
+    unset: <Value>(cfg: UnsetFromStorageWrappedConfig<BaseConfig>) => {
+      const config = cfg as unknown as SetToStorageConfig<Value>;
+      const storageType = (config.type ?? storageConfig.type!) as StorageType;
+      const storagePrefix = (config.prefix ?? storageConfig.prefix!) as string;
+      const storage = storages[storageType];
+
+      storage.removeItem(
+        createKey(storagePrefix, config.key, config.namespace),
       );
     },
     get: <Value>(cfg: GetFromStorageWrappedConfig<Value, BaseConfig>) => {
@@ -126,7 +151,7 @@ export function createStorage<BaseConfig extends StorageConfigBase>(
       return (
         parseStorageValue<Value>(
           storage.getItem(
-            createStorageKey(storagePrefix, config.key, config.namespace),
+            createKey(storagePrefix, config.key, config.namespace),
           ),
         ) ??
         config.fallback ??
