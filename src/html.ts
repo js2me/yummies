@@ -174,7 +174,11 @@ export const startViewTransitionSafety = (
   fn: VoidFunction,
   params?: { disabled?: boolean },
 ) => {
-  if (document.startViewTransition && !params?.disabled) {
+  if (
+    typeof document !== 'undefined' &&
+    document.startViewTransition &&
+    !params?.disabled
+  ) {
     return document.startViewTransition(fn);
   }
   fn();
