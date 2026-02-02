@@ -1,5 +1,11 @@
 # yummies
 
+## 7.3.1
+
+### Patch Changes
+
+- [`bcefe2d`](https://github.com/js2me/yummies/commit/bcefe2dfe1d318534a4dab81e6fffa67ac5eda02) Thanks [@js2me](https://github.com/js2me)! - fixed `startViewTransitionSafety` to SSR support
+
 ## 7.3.0
 
 ### Minor Changes
