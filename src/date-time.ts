@@ -2,7 +2,7 @@ import dayjs, { type Dayjs, type ManipulateType } from 'dayjs';
 import duration from 'dayjs/plugin/duration.js';
 import relativeTime from 'dayjs/plugin/relativeTime.js';
 import { format } from 'yummies/format';
-import { unitsToMs } from 'yummies/ms';
+import { ms, unitsToMs } from 'yummies/ms';
 import { declension } from 'yummies/text';
 import { typeGuard } from 'yummies/type-guard';
 import type { Maybe } from 'yummies/types';
@@ -240,3 +240,53 @@ export function getFormatDuration(...args: any[]): string {
 
   return formattedParts.join(' ');
 }
+
+export type TimeDiff = {
+  minutes: number;
+  seconds: number;
+  total: {
+    ms: number;
+    hours: number;
+  };
+};
+export const getTimeDiff = (
+  dateA: RawDateToFormat,
+  dateB: RawDateToFormat,
+): TimeDiff => {
+  const leftDate = toLibFormat(dateA)?.toDate();
+  const rightDate = toLibFormat(dateB)?.toDate();
+
+  if (!leftDate || !rightDate) {
+    return {
+      minutes: 0,
+      seconds: 0,
+      total: { ms: 0, hours: 0 },
+    };
+  }
+
+  const msDiff = leftDate.getTime() - rightDate.getTime();
+
+  return {
+    minutes: Math.max(Math.floor(msDiff / ms(1, 'min')), 0),
+    seconds: Math.max(Math.floor((msDiff % ms(1, 'min')) / 1000), 0),
+    total: {
+      hours: Math.round(msDiff / ms(1, 'hour')),
+      ms: msDiff,
+    },
+  };
+};
+
+export const addDays = (date: RawDateToFormat, count: number) =>
+  toLibFormat(date)?.add(count, 'd').toDate();
+
+export const subtractDays = (date: RawDateToFormat, count: number) =>
+  toLibFormat(date)?.subtract(count, 'd').toDate();
+
+export const addMinutes = (date: RawDateToFormat, count: number) =>
+  toLibFormat(date)?.add(count, 'm').toDate();
+
+export const setMinutes = (date: RawDateToFormat, minutes: number) =>
+  toLibFormat(date)?.set('m', minutes).toDate();
+
+export const setHours = (date: RawDateToFormat, hours: number) =>
+  toLibFormat(date)?.set('h', hours).toDate();
