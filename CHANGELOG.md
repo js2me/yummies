@@ -1,5 +1,11 @@
 # yummies
 
+## 7.4.0
+
+### Minor Changes
+
+- [`e087f68`](https://github.com/js2me/yummies/commit/e087f6818ca7c5a8205c61e05dd035f36ed81111) Thanks [@js2me](https://github.com/js2me)! - added more date time utils
+
 ## 7.3.1
 
 ### Patch Changes
