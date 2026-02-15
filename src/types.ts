@@ -62,7 +62,10 @@ export type AnyObject = Record<keyof any, any>;
  *
  * @returns Record with any keys and values
  */
-export type Dict<TValues = any> = Record<keyof any, TValues>;
+export type Dict<TValues = any, TKeys extends keyof any = keyof any> = Record<
+  TKeys,
+  TValues
+>;
 
 /**
  * Represents an empty object with no properties.
