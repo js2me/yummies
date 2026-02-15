@@ -58,6 +58,13 @@ export type NotNullable<T> = Exclude<T, null>;
 export type AnyObject = Record<keyof any, any>;
 
 /**
+ * Represents dictionary with any keys and expecting values;
+ *
+ * @returns Record with any keys and values
+ */
+export type Dict<TValues = any> = Record<keyof any, TValues>;
+
+/**
  * Represents an empty object with no properties.
  *
  * @returns Record with no keys and no values
