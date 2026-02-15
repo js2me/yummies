@@ -1,5 +1,11 @@
 # yummies
 
+## 7.5.0
+
+### Minor Changes
+
+- [`1b71cb6`](https://github.com/js2me/yummies/commit/1b71cb6f4264bfbdf79b1433f4e1019109dca9be) Thanks [@js2me](https://github.com/js2me)! - new type `Dict` for types
+
 ## 7.4.0
 
 ### Minor Changes
