@@ -1,5 +1,11 @@
 # yummies
 
+## 7.6.0
+
+### Minor Changes
+
+- [`d13ccae`](https://github.com/js2me/yummies/commit/d13ccaefa8fc4401db176655ad29b2744c95a252) Thanks [@js2me](https://github.com/js2me)! - added `MaybeKeys` type
+
 ## 7.5.0
 
 ### Minor Changes
