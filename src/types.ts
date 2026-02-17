@@ -183,6 +183,17 @@ export type PartialKeys<T, K extends keyof T> = Omit<T, K> &
   Partial<Pick<T, K>>;
 
 /**
+ * Makes specified keys of a type possibly Maybe<T> while keeping the rest required.
+ *
+ * @template T - The original type
+ * @template TMaybeKeys - The keys to make possibly Maybe<T>
+ * @returns A type with specified keys possibly Maybe<T> and others required
+ */
+export type MaybeKeys<T, TMaybeKeys extends keyof T> = {
+  [K in keyof T]: K extends TMaybeKeys ? Maybe<T[K]> : T[K];
+};
+
+/**
  * Makes specified keys of a type required while keeping the rest optional.
  *
  * @template T - The original type
