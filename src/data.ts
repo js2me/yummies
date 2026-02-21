@@ -1,4 +1,4 @@
-import type { AnyObject } from 'yummies/types';
+import type { AnyObject, Maybe } from 'yummies/types';
 
 export const isShallowEqual = (a: unknown, b: unknown): boolean => {
   if (a === b) return true;
@@ -57,9 +57,11 @@ export const flatMapDeep = <TSource, TNewValue>(
     : [fn(arr, 0, [arr])];
 
 export const safeJsonParse = <TValue = any, TFallback = null>(
-  json: string,
+  json: Maybe<string>,
   fallback: TFallback = null as TFallback,
 ): TValue | TFallback => {
+  if (json == null) return fallback;
+
   try {
     return JSON.parse(json);
   } catch {
