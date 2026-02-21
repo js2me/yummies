@@ -1,5 +1,11 @@
 # yummies
 
+## 7.8.0
+
+### Minor Changes
+
+- [`be83e05`](https://github.com/js2me/yummies/commit/be83e05d46027a4fdcf64ad8cf97f408b01a0d33) Thanks [@js2me](https://github.com/js2me)! - added `isUnsafeProperty` fn
+
 ## 7.7.1
 
 ### Patch Changes
