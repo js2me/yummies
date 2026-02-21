@@ -1,5 +1,11 @@
 # yummies
 
+## 7.7.0
+
+### Minor Changes
+
+- [`cf0eb12`](https://github.com/js2me/yummies/commit/cf0eb12647a077153fb65b0939943a9fc09e16f5) Thanks [@js2me](https://github.com/js2me)! - improve typings for `safeJsonParse` (add fallback arg)
+
 ## 7.6.0
 
 ### Minor Changes
