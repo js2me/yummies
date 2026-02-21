@@ -98,4 +98,4 @@ const UNSAFE_PROPERTY_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
  * isUnsafeProperty('__proto__'); // true
  * isUnsafeProperty('name'); // false
  */
-export const isUnsafeProperty = (key: string) => UNSAFE_PROPERTY_KEYS.has(key);
+export const isUnsafeProperty = (key: any) => UNSAFE_PROPERTY_KEYS.has(key);
