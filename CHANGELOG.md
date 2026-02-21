@@ -1,5 +1,11 @@
 # yummies
 
+## 7.7.1
+
+### Patch Changes
+
+- [`5752861`](https://github.com/js2me/yummies/commit/57528611cd18ef8e9fc00a9386cfb27b63a3406d) Thanks [@js2me](https://github.com/js2me)! - add maybe for safeJsonParse
+
 ## 7.7.0
 
 ### Minor Changes
