@@ -1,5 +1,11 @@
 # yummies
 
+## 7.9.0
+
+### Minor Changes
+
+- [`a0fe6b1`](https://github.com/js2me/yummies/commit/a0fe6b1c1ffbcfe51bdd925d72b99925635bc348) Thanks [@js2me](https://github.com/js2me)! - added debounce for useEventListener react hook
+
 ## 7.8.1
 
 ### Patch Changes
