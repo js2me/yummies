@@ -1,7 +1,7 @@
 import { describe } from 'node:test';
 import { expect, it } from 'vitest';
 
-import { isShallowEqual } from './data';
+import { flatMapDeep, isShallowEqual, isUnsafeProperty } from './data';
 
 describe('data tests', () => {
   describe('isShallowEqual', () => {
@@ -94,6 +94,46 @@ describe('data tests', () => {
         ) {}
       }
       expect(isShallowEqual(new A(1, 2), new B(1, 2))).toBeFalsy();
+    });
+  });
+
+  describe('isUnsafeProperty', () => {
+    it('returns true for unsafe keys', () => {
+      expect(isUnsafeProperty('__proto__')).toBeTruthy();
+      expect(isUnsafeProperty('prototype')).toBeTruthy();
+      expect(isUnsafeProperty('constructor')).toBeTruthy();
+    });
+
+    it('returns false for regular keys', () => {
+      expect(isUnsafeProperty('name')).toBeFalsy();
+    });
+  });
+
+  describe('flatMapDeep', () => {
+    it('flattens nested arrays and maps each value', () => {
+      const result = flatMapDeep([1, [2, [3, 4]]], (value) => value * 2);
+
+      expect(result).toEqual([2, 4, 6, 8]);
+    });
+
+    it('handles single value input', () => {
+      const result = flatMapDeep(5, (value) => value + 1);
+
+      expect(result).toEqual([6]);
+    });
+
+    it('passes normalized index and array to callback', () => {
+      const callbackArgs: Array<[number, number, number[]]> = [];
+
+      flatMapDeep([1, [2]], (value, i, arr) => {
+        callbackArgs.push([value, i, [...arr]]);
+        return value;
+      });
+
+      expect(callbackArgs).toEqual([
+        [1, 0, [1, 2]],
+        [2, 1, [1, 2]],
+      ]);
     });
   });
 });

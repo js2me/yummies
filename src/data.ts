@@ -48,13 +48,33 @@ export const isShallowEqual = (a: unknown, b: unknown): boolean => {
   return true;
 };
 
+export const toArray = <TValue>(value: TValue | TValue[]): TValue[] => {
+  return Array.isArray(value) ? value : [value];
+};
+
+type DeepArray<TValue> = TValue | Array<DeepArray<TValue>>;
+
 export const flatMapDeep = <TSource, TNewValue>(
-  arr: TSource | TSource[],
+  arr: DeepArray<TSource>,
   fn: (value: TSource, i: number, arr: TSource[]) => TNewValue,
-): TNewValue[] =>
-  Array.isArray(arr)
-    ? arr.flatMap((c: TSource): TNewValue[] => flatMapDeep(c, fn))
-    : [fn(arr, 0, [arr])];
+): TNewValue[] => {
+  const source: TSource[] = [];
+
+  const collect = (value: DeepArray<TSource>): void => {
+    if (!Array.isArray(value)) {
+      source.push(value);
+      return;
+    }
+
+    for (const item of value) {
+      collect(item);
+    }
+  };
+
+  collect(arr);
+
+  return source.map((value, i) => fn(value, i, source));
+};
 
 export const safeJsonParse = <TValue = any, TFallback = null>(
   json: Maybe<string>,
@@ -68,3 +88,14 @@ export const safeJsonParse = <TValue = any, TFallback = null>(
     return fallback;
   }
 };
+
+const UNSAFE_PROPERTY_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
+
+/**
+ * Checks whether a property key is unsafe and can lead to prototype pollution.
+ *
+ * @example
+ * isUnsafeProperty('__proto__'); // true
+ * isUnsafeProperty('name'); // false
+ */
+export const isUnsafeProperty = (key: string) => UNSAFE_PROPERTY_KEYS.has(key);
