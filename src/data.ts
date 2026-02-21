@@ -56,10 +56,13 @@ export const flatMapDeep = <TSource, TNewValue>(
     ? arr.flatMap((c: TSource): TNewValue[] => flatMapDeep(c, fn))
     : [fn(arr, 0, [arr])];
 
-export const safeJsonParse = (json: string) => {
+export const safeJsonParse = <TValue = any, TFallback = null>(
+  json: string,
+  fallback: TFallback = null as TFallback,
+): TValue | TFallback => {
   try {
     return JSON.parse(json);
   } catch {
-    return null;
+    return fallback;
   }
 };
