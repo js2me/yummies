@@ -7,23 +7,39 @@ export const useEventListener = <EventName extends keyof HTMLElementEventMap>({
   handler,
   options,
   deps = [],
+  debounce,
   node = document,
 }: {
   event: EventName;
   handler: (e: HTMLElementEventMap[EventName]) => void;
   options?: boolean | AddEventListenerOptions;
   deps?: unknown[];
+  debounce?: number;
   node?: HTMLElement | Document | Window;
 }) => {
   const handlerRef = useSyncRef(handler);
 
   useEffect(() => {
-    const handleEvent = (e: HTMLElementEventMap[EventName]) =>
-      handlerRef.current(e);
+    let timerId: ReturnType<typeof setTimeout> | undefined;
+
+    const handleEvent = (e: HTMLElementEventMap[EventName]) => {
+      if (debounce == null) {
+        handlerRef.current(e);
+      } else {
+        clearTimeout(timerId);
+        timerId = setTimeout(() => {
+          handlerRef.current(e);
+          timerId = undefined;
+        }, debounce);
+      }
+    };
 
     // @ts-expect-error
     node.addEventListener(event, handleEvent, options);
-    // @ts-expect-error
-    return () => node.removeEventListener(event, handleEvent, options);
+    return () => {
+      // @ts-expect-error
+      node.removeEventListener(event, handleEvent, options);
+      clearTimeout(timerId);
+    };
   }, deps);
 };
