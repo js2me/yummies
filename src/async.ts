@@ -4,8 +4,22 @@
  * @param ms значение в миллисекундах
  * @returns Promise
  */
-export const sleep = (time: number = 0) =>
-  new Promise((resolve) => setTimeout(resolve, time));
+export const sleep = (time: number = 0, signal?: AbortSignal) =>
+  new Promise((resolve, reject) => {
+    const timerId = setTimeout(resolve, time);
+    if (signal) {
+      signal.addEventListener(
+        'abort',
+        () => {
+          clearTimeout(timerId);
+          reject(signal.reason);
+        },
+        {
+          once: true,
+        },
+      );
+    }
+  });
 
 /**
  * Создает промис, который будет ждать указанное количество ms, чтобы выполниться
