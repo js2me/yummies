@@ -1,5 +1,15 @@
 # yummies
 
+## 7.10.0
+
+### Minor Changes
+
+- [`30e4898`](https://github.com/js2me/yummies/commit/30e48989f6983adf982547509ea4dc9d3f54ebc0) Thanks [@js2me](https://github.com/js2me)! - improve sleep fn (added signal parameter)
+
+### Patch Changes
+
+- [`cefc53e`](https://github.com/js2me/yummies/commit/cefc53ee7356e587a96ca578390e00fb7dcf8de1) Thanks [@js2me](https://github.com/js2me)! - [internal] update dev deps to latest
+
 ## 7.9.0
 
 ### Minor Changes
