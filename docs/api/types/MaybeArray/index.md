@@ -1,0 +1,2 @@
+# MaybeArray
+T or T[];

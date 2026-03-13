@@ -3,3 +3,4 @@ dist
 coverage
 utility-types.d.ts
 utils
+.vitepress

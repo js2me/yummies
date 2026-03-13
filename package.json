@@ -18,7 +18,8 @@
     "test:watch": "vitest watch --config vitest.config.ts",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "dev": "pnpm test:watch",
-    "dev:install-hooks": "if [ -z \"$CI\" ]; then lefthook install; fi"
+    "dev:install-hooks": "if [ -z \"$CI\" ]; then lefthook install; fi",
+    "docs:generate": "node --experimental-strip-types scripts/generate-api-docs.ts"
   },
   "keywords": [
     "javascript",

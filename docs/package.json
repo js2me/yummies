@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@iconify-json/logos": "^1.1.44",
+    "sborshik": "^2.1.0",
+    "vitepress": "^1.6.4"
+  },
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  }
+}
+

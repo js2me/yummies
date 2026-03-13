@@ -5,19 +5,19 @@
  * @returns Promise
  */
 export const sleep = (time: number = 0, signal?: AbortSignal) =>
-  new Promise((resolve, reject) => {
-    const timerId = setTimeout(resolve, time);
+  new Promise<void>((resolve, reject) => {
     if (signal) {
-      signal.addEventListener(
-        'abort',
-        () => {
-          clearTimeout(timerId);
-          reject(signal.reason);
-        },
-        {
-          once: true,
-        },
-      );
+      const abortListener = () => {
+        clearTimeout(timerId);
+        reject(signal?.reason);
+      };
+      const timerId = setTimeout(() => {
+        signal.removeEventListener('abort', abortListener);
+        resolve();
+      }, time);
+      signal.addEventListener('abort', abortListener, { once: true });
+    } else {
+      setTimeout(resolve, time);
     }
   });
 
