@@ -7,9 +7,8 @@ _No description._
 ### useFlag()
 Manages a reusable boolean flag object with stable helper methods.
 
-**Example:**
+**Examples:**
 
-```ts
 ```ts
 const modal = useFlag();
 modal.enable();
@@ -18,6 +17,5 @@ modal.enable();
 ```ts
 const loading = useFlag(true);
 loading.disable();
-```
 ```
 

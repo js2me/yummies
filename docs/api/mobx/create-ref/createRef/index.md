@@ -2,18 +2,16 @@
 Creates a MobX-aware ref that behaves like a callback ref and exposes
 observable `current` and `meta` fields.
 
-**Example:**
+**Examples:**
 
 ```ts
-```ts
-const inputRef = createRef&lt;HTMLInputElement&gt;();
+const inputRef = createRef<HTMLInputElement>();
 inputRef.set(document.createElement('input'));
 ```
 
 ```ts
-const nodeRef = createRef(`
-  onUnset: () =&gt; console.log('detached'),
-  meta: { mounted: false `,
+const nodeRef = createRef({
+  onUnset: () => console.log('detached'),
+  meta: { mounted: false },
 });
-```
 ```

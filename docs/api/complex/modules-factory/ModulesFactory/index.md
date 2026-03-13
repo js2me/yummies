@@ -4,15 +4,23 @@ dependencies.
 
 Works with classes whose constructor accepts a single dependency object.
 
-**Example:**
+**Examples:**
 
 ```ts
-```
-const factory = new ModulesFactory(`
-  factory: (MyClass, deps) =&gt; new MyClass(deps),
-  deps: { someDependency: new Dependency() `
+const factory = new ModulesFactory({
+  factory: (MyClass, deps) => new MyClass(deps),
+  deps: { someDependency: new Dependency() }
 });
 
-const instance = factory.create(MyClass, ` extraDependency: new ExtraDependency() `);
+const instance = factory.create(MyClass, { extraDependency: new ExtraDependency() });
 ```
+
+```ts
+const factory = new ModulesFactory({
+  factory: (Module, deps) => new Module(deps),
+});
+```
+
+```ts
+const service = factory.create(UserService, { api });
 ```

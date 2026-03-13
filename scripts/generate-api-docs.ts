@@ -29,22 +29,30 @@ function sanitizeMarkdown(text: string): string {
   return result;
 }
 
-function getCommentText(
+function getRawCommentText(
   comment: string | ts.NodeArray<ts.JSDocComment> | undefined,
   sourceFile: ts.SourceFile
 ): string {
   if (!comment) return "";
-  if (typeof comment === "string") return sanitizeMarkdown(comment.trim());
-  const joined = comment
+  if (typeof comment === "string") return comment.trim();
+  return comment
     .map((node) => {
-      if (ts.isJSDocText(node)) return node.text;
+      if (node.kind === ts.SyntaxKind.JSDocText) {
+        return (node as ts.JSDocText).text;
+      }
       if ("text" in node && typeof (node as { text: string }).text === "string")
         return (node as { text: string }).text;
       return "";
     })
     .join("")
     .trim();
-  return sanitizeMarkdown(joined);
+}
+
+function getCommentText(
+  comment: string | ts.NodeArray<ts.JSDocComment> | undefined,
+  sourceFile: ts.SourceFile
+): string {
+  return sanitizeMarkdown(getRawCommentText(comment, sourceFile));
 }
 
 function displayPartsToText(parts: ts.SymbolDisplayPart[] | undefined): string {
@@ -53,9 +61,46 @@ function displayPartsToText(parts: ts.SymbolDisplayPart[] | undefined): string {
 }
 
 function jsDocTagText(tag: ts.JSDocTagInfo): string {
-  const t = tag.text;
-  if (typeof t === "string") return sanitizeMarkdown(t.trim());
-  return sanitizeMarkdown(displayPartsToText(t) || "");
+  const raw =
+    typeof (tag.text as unknown) === "string"
+      ? String(tag.text)
+      : displayPartsToText(tag.text as ts.SymbolDisplayPart[] | undefined);
+  return sanitizeMarkdown(raw.trim());
+}
+
+function jsDocTagRawText(tag: ts.JSDocTagInfo): string {
+  const raw =
+    typeof (tag.text as unknown) === "string"
+      ? String(tag.text)
+      : displayPartsToText(tag.text as ts.SymbolDisplayPart[] | undefined);
+  return raw.trim();
+}
+
+function normalizeExample(example: string): { lang: string; code: string } {
+  const trimmed = example.trim();
+  const fencedMatch = trimmed.match(/^```([\w-]+)?\n([\s\S]*?)\n```$/);
+  if (fencedMatch) {
+    return {
+      lang: fencedMatch[1] || "ts",
+      code: fencedMatch[2].trim(),
+    };
+  }
+  return {
+    lang: "ts",
+    code: trimmed,
+  };
+}
+
+function renderExamples(examples: string[]): string {
+  if (examples.length === 0) return "";
+  const blocks = examples
+    .map((example) => {
+      const normalized = normalizeExample(example);
+      return `\`\`\`${normalized.lang}\n${normalized.code}\n\`\`\``;
+    })
+    .join("\n\n");
+  const title = examples.length === 1 ? "**Example:**" : "**Examples:**";
+  return `\n${title}\n\n${blocks}\n`;
 }
 
 function extractJSDocFromSymbol(
@@ -69,7 +114,7 @@ function extractJSDocFromSymbol(
   const tags = symbol.getJsDocTags(typeChecker);
   for (const tag of tags) {
     if (tag.name === "example") {
-      const code = jsDocTagText(tag);
+      const code = jsDocTagRawText(tag);
       if (code) result.examples.push(code);
     } else if (tag.name === "deprecated") {
       result.deprecated = jsDocTagText(tag);
@@ -98,7 +143,7 @@ function extractJSDoc(
         for (const tag of jsdoc.tags) {
           const name = tag.tagName.getText(sourceFile);
           if (name === "example") {
-            const code = getCommentText(tag.comment, sourceFile);
+            const code = getRawCommentText(tag.comment, sourceFile);
             if (code) result.examples.push(code);
           } else if (name === "deprecated") {
             result.deprecated = getCommentText(tag.comment, sourceFile);
@@ -266,13 +311,7 @@ function toMarkdownSection(doc: ExportDoc, namespacePrefix = ""): string {
     doc.description !== ""
       ? `\n${doc.description}\n`
       : "\n_No description._\n";
-  let examples = "";
-  if (doc.examples.length > 0) {
-    examples =
-      "\n**Example:**\n\n```ts\n" +
-      doc.examples.join("\n\n").trim() +
-      "\n```\n";
-  }
+  const examples = renderExamples(doc.examples);
   return heading + dep + desc + examples;
 }
 
@@ -287,13 +326,7 @@ function generateExportPageMarkdown(doc: ExportDoc, namespacePrefix = ""): strin
     doc.description !== ""
       ? `\n${doc.description}\n`
       : "\n_No description._\n";
-  let examples = "";
-  if (doc.examples.length > 0) {
-    examples =
-      "\n**Example:**\n\n```ts\n" +
-      doc.examples.join("\n\n").trim() +
-      "\n```\n";
-  }
+  const examples = renderExamples(doc.examples);
   return heading + dep + desc + examples;
 }
 
@@ -301,9 +334,15 @@ type SidebarTreeNode =
   | { link: string; title: string }
   | { children: Map<string, SidebarTreeNode> };
 
+type SidebarItem = {
+  text: string;
+  link?: string;
+  items?: SidebarItem[];
+};
+
 function buildSidebarTree(
   flat: Array<{ path: string; displayName: string }>
-): Array<{ text: string; link?: string; items?: Array<{ text: string; link?: string; items?: unknown[] }> }> {
+): SidebarItem[] {
   const root: { children: Map<string, SidebarTreeNode> } = { children: new Map() };
 
   // Специальный кейс: barrel-неймспейсы format и parser ведут себя как typeGuard —
@@ -358,7 +397,7 @@ function buildSidebarTree(
 
   function toSidebarItems(
     node: { children: Map<string, SidebarTreeNode> }
-  ): Array<{ text: string; link?: string; items?: unknown[] }> {
+  ): SidebarItem[] {
     const entries = Array.from(node.children.entries()).sort(([a], [b]) =>
       a.localeCompare(b, undefined, { sensitivity: "base" })
     );

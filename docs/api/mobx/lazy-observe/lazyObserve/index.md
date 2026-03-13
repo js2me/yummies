@@ -8,23 +8,21 @@ properties become unobserved, `onEnd` is called with the value returned by
 It uses MobX `onBecomeObserved` and `onBecomeUnobserved` hooks to perform
 lazy subscription management.
 
-**Example:**
+**Examples:**
 
 ```ts
-```ts
-const stop = lazyObserve(`
+const stop = lazyObserve({
   context: store,
   property: 'items',
-  onStart: () =&gt; api.subscribe(),
-  onEnd: (subscription) =&gt; subscription.unsubscribe(),
-`);
+  onStart: () => api.subscribe(),
+  onEnd: (subscription) => subscription.unsubscribe(),
+});
 ```
 
 ```ts
-lazyObserve(`
+lazyObserve({
   property: [boxA, boxB],
-  onStart: () =&gt; console.log('observed'),
+  onStart: () => console.log('observed'),
   endDelay: 300,
-`);
-```
+});
 ```

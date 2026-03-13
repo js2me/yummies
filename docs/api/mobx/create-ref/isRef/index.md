@@ -1,15 +1,13 @@
 # isRef()
 Checks whether the provided value is a ref created by `createRef`.
 
-**Example:**
+**Examples:**
 
 ```ts
-```ts
-const ref = createRef&lt;number&gt;();
+const ref = createRef<number>();
 isRef(ref); // true
 ```
 
 ```ts
-isRef(` current: 1 `); // false
-```
+isRef({ current: 1 }); // false
 ```

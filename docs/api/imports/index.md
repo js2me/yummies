@@ -6,11 +6,9 @@
 **Example:**
 
 ```ts
-```ts
-fetchLazyModule(() =&gt; import("./test.ts"), 3) // начнет загрузку test.ts
+fetchLazyModule(() => import("./test.ts"), 3) // начнет загрузку test.ts
 // Произошла ошибка загрузки test.ts, тогда fetchLazyModule повторно вызовет fn()
 // Вызывать будет столько раз сколько указано attempts (по умолчанию 3)
-```
 ```
 
 

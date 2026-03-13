@@ -3,15 +3,13 @@
 ### attachRefs()
 Assigns the same value to multiple React refs, including callback refs.
 
-**Example:**
+**Examples:**
 
-```ts
 ```ts
 attachRefs(node, localRef, forwardedRef);
 ```
 
 ```ts
-attachRefs(null, inputRef, (value) =&gt; console.log(value));
-```
+attachRefs(null, inputRef, (value) => console.log(value));
 ```
 

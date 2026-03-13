@@ -6,23 +6,21 @@ on every render.
 
 Supports optional debounce and custom effect dependencies.
 
-**Example:**
+**Examples:**
 
 ```ts
-```ts
-useEventListener(`
+useEventListener({
   event: 'click',
-  handler: () =&gt; console.log('clicked'),
-`);
+  handler: () => console.log('clicked'),
+});
 ```
 
 ```ts
-useEventListener(`
+useEventListener({
   event: 'scroll',
   node: window,
   debounce: 100,
-  handler: () =&gt; console.log('scroll'),
-`);
-```
+  handler: () => console.log('scroll'),
+});
 ```
 

@@ -17,54 +17,48 @@ _No description._
 Creates a MobX-aware ref that behaves like a callback ref and exposes
 observable `current` and `meta` fields.
 
-**Example:**
+**Examples:**
 
 ```ts
-```ts
-const inputRef = createRef&lt;HTMLInputElement&gt;();
+const inputRef = createRef<HTMLInputElement>();
 inputRef.set(document.createElement('input'));
 ```
 
 ```ts
-const nodeRef = createRef(`
-  onUnset: () =&gt; console.log('detached'),
-  meta: { mounted: false `,
+const nodeRef = createRef({
+  onUnset: () => console.log('detached'),
+  meta: { mounted: false },
 });
-```
 ```
 
 
 ### isRef()
 Checks whether the provided value is a ref created by `createRef`.
 
-**Example:**
+**Examples:**
 
 ```ts
-```ts
-const ref = createRef&lt;number&gt;();
+const ref = createRef<number>();
 isRef(ref); // true
 ```
 
 ```ts
-isRef(` current: 1 `); // false
-```
+isRef({ current: 1 }); // false
 ```
 
 
 ### toRef()
 Normalizes a plain value or an existing ref into a `Ref` instance.
 
-**Example:**
+**Examples:**
 
-```ts
 ```ts
 const ref = toRef(document.body);
 ref.current === document.body;
 ```
 
 ```ts
-const existingRef = createRef&lt;number&gt;();
+const existingRef = createRef<number>();
 const sameRef = toRef(existingRef);
-```
 ```
 

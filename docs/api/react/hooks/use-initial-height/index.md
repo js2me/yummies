@@ -3,16 +3,14 @@
 ### useInitialHeight()
 Captures an element's height the first time its ref becomes available.
 
-**Example:**
+**Examples:**
 
 ```ts
-```ts
-const ` ref, initialHeight ` = useInitialHeight&lt;HTMLDivElement&gt;();
+const { ref, initialHeight } = useInitialHeight<HTMLDivElement>();
 ```
 
 ```ts
-const state = useInitialHeight&lt;HTMLTextAreaElement&gt;();
+const state = useInitialHeight<HTMLTextAreaElement>();
 state.initialHeight;
-```
 ```
 

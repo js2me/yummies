@@ -4,9 +4,8 @@
 Returns a ref whose `current` value is synchronized with the latest input
 on every render.
 
-**Example:**
+**Examples:**
 
-```ts
 ```ts
 const latestHandler = useSyncRef(onSubmit);
 latestHandler.current();
@@ -15,6 +14,5 @@ latestHandler.current();
 ```ts
 const latestValue = useSyncRef(props.value);
 latestValue.current;
-```
 ```
 
