@@ -1,4 +1,4 @@
 # getComputedColor()
-Вытаскивает RGB из любого цвета
+Extracts an RGB value from any valid CSS color.
 
-Не рекомендуется к использованию так как вызывает reflow
+Not recommended for frequent use because it triggers a reflow.

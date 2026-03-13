@@ -1,5 +1,5 @@
 # Vibrate
 
 ### vibrate()
-Вибрации по шаблону
+Triggers vibration using the provided pattern.
 

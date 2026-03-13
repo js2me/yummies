@@ -1,19 +1,17 @@
 # Async
 
 ### sleep()
-Создает промис, который будет ждать указанное количество ms, чтобы выполниться
+Creates a promise that resolves after the specified number of milliseconds.
 
 
 ### waitAsync()
-**Deprecated:** используй `sleep`
+**Deprecated:** Use `sleep` instead.
 
-Создает промис, который будет ждать указанное количество ms, чтобы выполниться
+Creates a promise that resolves after the specified number of milliseconds.
 
 
 ### endlessRAF()
-Создает вызов requestAnimationFrame, посылая туда фукнцию `quitFn`, если она возвращает true,
-тогда повторно не будет создан вызов requestAnimationFrame, иначе будут создаваться повторно
-вызовы requestAnimationFrame до тем пор, пока эта функция не вернёт true
+Repeatedly schedules `requestAnimationFrame` until `quitFunction` returns `true`.
 
 
 ### setAbortableTimeout()

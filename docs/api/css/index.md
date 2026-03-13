@@ -1,15 +1,15 @@
 # Css
 
 ### toRem()
-Перевод значения в пикселях в rem строковое
+Converts a pixel value to a `rem` string.
 
 
 ### cx()
-classNames/clsx но с примесями tailwind-merge
+`classNames`/`clsx` with `tailwind-merge` support.
 
 
 ### cva
-Class Variance Authority но с примесями tailwind-merge
+`Class Variance Authority` with `tailwind-merge` support.
 
 https://cva.style/docs
 

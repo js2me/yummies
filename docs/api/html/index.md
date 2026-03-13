@@ -1,9 +1,9 @@
 # Html
 
 ### getComputedColor()
-Вытаскивает RGB из любого цвета
+Extracts an RGB value from any valid CSS color.
 
-Не рекомендуется к использованию так как вызывает reflow
+Not recommended for frequent use because it triggers a reflow.
 
 
 ### downloadUsingAnchor()
@@ -39,7 +39,7 @@ Executes a function within a view transition if supported by the browser.
 
 
 ### calcScrollbarWidth()
-Вычисляет размер скроллбара
+Calculates the scrollbar width.
 
 
 ### getElementInnerHeight()

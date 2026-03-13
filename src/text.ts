@@ -1,11 +1,11 @@
 /**
- * Склонение слова в зависимости от количества
+ * Returns the correct word form based on the provided count.
  * @example
- * declension(1, ['слово', 'слова', 'слов']) // 'слово'
+ * declension(1, ['slovo', 'slova', 'slov']) // 'slovo'
  * @example
- * declension(2, ['слово', 'слова', 'слов']) // 'слова'
+ * declension(2, ['slovo', 'slova', 'slov']) // 'slova'
  * @example
- * declension(5, ['слово', 'слова', 'слов']) // 'слов'
+ * declension(5, ['slovo', 'slova', 'slov']) // 'slov'
  */
 export const declension = (
   count: number,
@@ -15,7 +15,7 @@ export const declension = (
   txt[count % 100 > 4 && count % 100 < 20 ? 2 : cases[Math.min(count % 10, 5)]];
 
 /**
- * Разбиение текста на линии
+ * Splits text into lines with a maximum line length.
  */
 export const splitTextByLines = (
   text: string,

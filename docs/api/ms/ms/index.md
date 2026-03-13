@@ -1,5 +1,5 @@
 # ms()
-Переводит значение в юнитах в миллисекунды
+Converts a value in the specified unit to milliseconds.
 
 **Example:**
 

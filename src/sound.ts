@@ -1,5 +1,5 @@
 /**
- * Воспроизводит звук из файла
+ * Plays a sound from a file.
  */
 export const playSound = async (
   file: string,

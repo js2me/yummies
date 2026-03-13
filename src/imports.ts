@@ -1,12 +1,13 @@
 import { sleep } from 'yummies/async';
 
 /**
- * Функция ленивой загрузки модуля, с возможностью вызова доп. попыток
+ * Lazily loads a module with retry support.
+ *
  * @example
  * ```ts
- * fetchLazyModule(() => import("./test.ts"), 3) // начнет загрузку test.ts
- * // Произошла ошибка загрузки test.ts, тогда fetchLazyModule повторно вызовет fn()
- * // Вызывать будет столько раз сколько указано attempts (по умолчанию 3)
+ * fetchLazyModule(() => import('./test.ts'), 3) // starts loading test.ts
+ * // If loading test.ts fails, fetchLazyModule retries by calling fetchModule() again
+ * // It retries as many times as specified by attempts (3 by default)
  * ```
  */
 export const fetchLazyModule = async <T>(

@@ -8,7 +8,7 @@ export function radToDeg(rad: number) {
 }
 
 /**
- * Получить процент от числа
+ * Returns what percentage `value` is of `from`.
  * @example
  * ```ts
  * percentFrom(500, 2000) // 25

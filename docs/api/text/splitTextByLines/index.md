@@ -1,2 +1,2 @@
 # splitTextByLines()
-Разбиение текста на линии
+Splits text into lines with a maximum line length.

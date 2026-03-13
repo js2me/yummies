@@ -6,31 +6,31 @@ const LATIN_CHARS = 'abcdefghijklmnopqrstuvwxyz';
 const ALPHABET = `${LATIN_CHARS}${DIGITS}`;
 
 /**
- * Использует алфавит abcdefghijklmnopqrstuvwxyz0123456789
- * Размер 6
+ * Uses the alphabet `abcdefghijklmnopqrstuvwxyz0123456789`.
+ * Length: 6.
  */
 export const generateId = customAlphabet(ALPHABET, 6);
 
 /**
- * Использует алфавит abcdefghijklmnopqrstuvwxyz0123456789
- * Размер 4
+ * Uses the alphabet `abcdefghijklmnopqrstuvwxyz0123456789`.
+ * Length: 4.
  */
 export const generateShortId = customAlphabet(ALPHABET, 4);
 
 /**
- * Использует алфавит 0123456789
- * Размер 6
+ * Uses the alphabet `0123456789`.
+ * Length: 6.
  */
 export const generateNumericId = customAlphabet(DIGITS, 6);
 
 /**
- * Использует алфавит 0123456789
- * Размер 4
+ * Uses the alphabet `0123456789`.
+ * Length: 4.
  */
 export const generateNumericShortId = customAlphabet(DIGITS, 4);
 
 /**
- * Создает функцию, которая будет создавать уникальную строку, уникальность которой основана на порядке вызова этой функции
+ * Creates a function that generates unique strings based on call order.
  *
  * @example
  * ```ts
@@ -45,7 +45,7 @@ export const generateNumericShortId = customAlphabet(DIGITS, 4);
  * generateLinearNumericId() // '10000000'
  * ```
  *
- * @param size размер
+ * @param size Minimum string length.
  * @returns {()=>string}
  */
 export const createLinearNumericIdGenerator = (size: number = 9) => {

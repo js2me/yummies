@@ -1,5 +1,5 @@
 # percentFrom()
-Получить процент от числа
+Returns what percentage `value` is of `from`.
 
 **Example:**
 

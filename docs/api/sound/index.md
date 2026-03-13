@@ -1,5 +1,5 @@
 # Sound
 
 ### playSound()
-Воспроизводит звук из файла
+Plays a sound from a file.
 

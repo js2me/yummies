@@ -35,23 +35,24 @@ export interface UnsetFromStorageConfig
 
 export interface GetFromStorageConfig<V> {
   /**
-   * Ключ по которому можно получить значение из хранилища (имя ключа не полное, оно дополняется неймпспейсом проекта)
+   * Storage key used to retrieve the value.
+   * The full key is extended with the project namespace.
    */
   key: string;
   /**
-   * Тип хранилища
+   * Storage type.
    */
   type: StorageType;
   /**
-   * дефолтное значение, которое будет использоваться если значения нет в хранилище
+   * Default value used when there is no value in storage.
    */
   fallback?: V;
   /**
-   * Доп. делитель в ключ/utils/types'е
+   * Optional namespace segment used in the generated key.
    */
   namespace?: string;
   /**
-   * Доп. делитель
+   * Optional key prefix.
    */
   prefix?: string;
 }
@@ -113,7 +114,7 @@ export interface StorageApi<BaseConfig extends StorageConfigBase> {
 }
 
 /**
- * Создает интерфейс для работы с хранилищем (localStorage, sessionStorage)
+ * Creates an interface for working with storage (`localStorage`, `sessionStorage`).
  */
 export function createStorage<BaseConfig extends StorageConfigBase>(
   storageConfig: BaseConfig,

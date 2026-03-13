@@ -1,27 +1,27 @@
 # Id
 
 ### generateId
-Использует алфавит abcdefghijklmnopqrstuvwxyz0123456789
-Размер 6
+Uses the alphabet `abcdefghijklmnopqrstuvwxyz0123456789`.
+Length: 6.
 
 
 ### generateShortId
-Использует алфавит abcdefghijklmnopqrstuvwxyz0123456789
-Размер 4
+Uses the alphabet `abcdefghijklmnopqrstuvwxyz0123456789`.
+Length: 4.
 
 
 ### generateNumericId
-Использует алфавит 0123456789
-Размер 6
+Uses the alphabet `0123456789`.
+Length: 6.
 
 
 ### generateNumericShortId
-Использует алфавит 0123456789
-Размер 4
+Uses the alphabet `0123456789`.
+Length: 4.
 
 
 ### createLinearNumericIdGenerator()
-Создает функцию, которая будет создавать уникальную строку, уникальность которой основана на порядке вызова этой функции
+Creates a function that generates unique strings based on call order.
 
 **Example:**
 

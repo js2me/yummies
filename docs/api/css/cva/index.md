@@ -1,4 +1,4 @@
 # cva
-Class Variance Authority но с примесями tailwind-merge
+`Class Variance Authority` with `tailwind-merge` support.
 
 https://cva.style/docs

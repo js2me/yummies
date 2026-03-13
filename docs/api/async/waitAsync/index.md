@@ -1,4 +1,4 @@
 # waitAsync()
-**Deprecated:** используй `sleep`
+**Deprecated:** Use `sleep` instead.
 
-Создает промис, который будет ждать указанное количество ms, чтобы выполниться
+Creates a promise that resolves after the specified number of milliseconds.

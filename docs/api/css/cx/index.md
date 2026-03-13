@@ -1,2 +1,2 @@
 # cx()
-classNames/clsx но с примесями tailwind-merge
+`classNames`/`clsx` with `tailwind-merge` support.

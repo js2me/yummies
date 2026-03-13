@@ -1,7 +1,7 @@
 /**
- * Создает промис, который будет ждать указанное количество ms, чтобы выполниться
+ * Creates a promise that resolves after the specified number of milliseconds.
  *
- * @param ms значение в миллисекундах
+ * @param time Delay in milliseconds.
  * @returns Promise
  */
 export const sleep = (time: number = 0, signal?: AbortSignal) =>
@@ -22,22 +22,20 @@ export const sleep = (time: number = 0, signal?: AbortSignal) =>
   });
 
 /**
- * Создает промис, который будет ждать указанное количество ms, чтобы выполниться
+ * Creates a promise that resolves after the specified number of milliseconds.
  *
- * @deprecated используй {sleep}
- * @param ms значение в миллисекундах
+ * @deprecated Use `sleep` instead.
+ * @param ms Delay in milliseconds.
  * @returns Promise
  */
 export const waitAsync = async (ms = 1000) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
- * Создает вызов requestAnimationFrame, посылая туда фукнцию {quitFn}, если она возвращает true,
- * тогда повторно не будет создан вызов requestAnimationFrame, иначе будут создаваться повторно
- * вызовы requestAnimationFrame до тем пор, пока эта функция не вернёт true
+ * Repeatedly schedules `requestAnimationFrame` until `quitFunction` returns `true`.
  *
- * @param quitFn - сама фукнция которая исполнится в requestAnimationFrame
- * @param asMicrotask - дополнительно оборачивает RAF в queueMicrotask
+ * @param quitFunction Function executed on each animation frame.
+ * @param asMicrotask Additionally wraps the RAF scheduling in `queueMicrotask`.
  * @returns void
  */
 export const endlessRAF = (

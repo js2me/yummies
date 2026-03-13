@@ -1,2 +1,2 @@
 # createStorage()
-Создает интерфейс для работы с хранилищем (localStorage, sessionStorage)
+Creates an interface for working with storage (`localStorage`, `sessionStorage`).

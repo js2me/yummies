@@ -1,5 +1,5 @@
 # createLinearNumericIdGenerator()
-Создает функцию, которая будет создавать уникальную строку, уникальность которой основана на порядке вызова этой функции
+Creates a function that generates unique strings based on call order.
 
 **Example:**
 

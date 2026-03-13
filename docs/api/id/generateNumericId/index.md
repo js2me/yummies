@@ -1,3 +1,3 @@
 # generateNumericId
-Использует алфавит 0123456789
-Размер 6
+Uses the alphabet `0123456789`.
+Length: 6.

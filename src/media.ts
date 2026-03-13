@@ -45,7 +45,7 @@ export const imageToBlob = (
 };
 
 /**
- * Загружает и отрисовывает изображение с использованием Image
+ * Loads and renders an image using `Image`.
  *
  * @returns {Promise<HTMLImageElement>}
  */

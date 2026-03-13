@@ -1,2 +1,2 @@
 # calcScrollbarWidth()
-Вычисляет размер скроллбара
+Calculates the scrollbar width.

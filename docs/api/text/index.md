@@ -1,23 +1,23 @@
 # Text
 
 ### declension()
-Склонение слова в зависимости от количества
+Returns the correct word form based on the provided count.
 
 **Examples:**
 
 ```ts
-declension(1, ['слово', 'слова', 'слов']) // 'слово'
+declension(1, ['slovo', 'slova', 'slov']) // 'slovo'
 ```
 
 ```ts
-declension(2, ['слово', 'слова', 'слов']) // 'слова'
+declension(2, ['slovo', 'slova', 'slov']) // 'slova'
 ```
 
 ```ts
-declension(5, ['слово', 'слова', 'слов']) // 'слов'
+declension(5, ['slovo', 'slova', 'slov']) // 'slov'
 ```
 
 
 ### splitTextByLines()
-Разбиение текста на линии
+Splits text into lines with a maximum line length.
 

@@ -11,12 +11,12 @@ type ClassProp = {
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 
 /**
- * Перевод значения в пикселях в rem строковое
+ * Converts a pixel value to a `rem` string.
  */
 export const toRem = (px: number, remValue = 16) => `${px / remValue}rem`;
 
 /**
- * classNames/clsx но с примесями tailwind-merge
+ * `classNames`/`clsx` with `tailwind-merge` support.
  */
 export const cx = (...args: Parameters<typeof clsx>) => twMerge(clsx(...args));
 
@@ -45,7 +45,7 @@ type Props<T> = T extends ConfigSchema
   : ClassProp;
 
 /**
- * Class Variance Authority но с примесями tailwind-merge
+ * `Class Variance Authority` with `tailwind-merge` support.
  *
  * https://cva.style/docs
  */

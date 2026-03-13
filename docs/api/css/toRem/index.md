@@ -1,2 +1,2 @@
 # toRem()
-Перевод значения в пикселях в rem строковое
+Converts a pixel value to a `rem` string.

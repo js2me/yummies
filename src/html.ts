@@ -3,9 +3,9 @@ import { blobToUrl } from 'yummies/media';
 import type { Maybe } from 'yummies/types';
 
 /**
- * Вытаскивает RGB из любого цвета
+ * Extracts an RGB value from any valid CSS color.
  *
- * Не рекомендуется к использованию так как вызывает reflow
+ * Not recommended for frequent use because it triggers a reflow.
  */
 export const getComputedColor = (color?: string): string | null => {
   if (!color) return null;
@@ -185,7 +185,7 @@ export const startViewTransitionSafety = (
 };
 
 /**
- * Вычисляет размер скроллбара
+ * Calculates the scrollbar width.
  */
 export const calcScrollbarWidth = (elementToAppend = document.body) => {
   const outer = document.createElement('div');

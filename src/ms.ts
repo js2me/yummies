@@ -8,7 +8,7 @@ export const unitsToMs = {
 } as const;
 
 /**
- * Переводит значение в юнитах в миллисекунды
+ * Converts a value in the specified unit to milliseconds.
  *
  * @example
  * ```ts
