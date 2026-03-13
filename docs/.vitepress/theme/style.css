@@ -1,25 +1,25 @@
 @import url('sborshik/vitepress/styles');
 
 :root {
-  --vp-c-brand-1: #c87a45;
-  --vp-c-brand-2: #ff8a4f;
-  --vp-c-brand-3: #fb681f;
-  --vp-c-brand-soft: #ff82512b;
+  --vp-c-brand-1: #bf3d7f;
+  --vp-c-brand-2: #db5798;
+  --vp-c-brand-3: #a92b69;
+  --vp-c-brand-soft: #db579826;
 
-  --custom-brand-1: #3ba235;
-  --custom-brand-2: #ff8a4f;
-  --custom-brand-3: #ff6a07;
+  --custom-brand-1: #2eb8c5;
+  --custom-brand-2: #f0bc33;
+  --custom-brand-3: #ef7a32;
 }
 
 html.dark {
-  --vp-c-brand-1: #ffae77;
-  --vp-c-brand-2: #ff8a4f;
-  --vp-c-brand-3: #fb681f;
-  --vp-c-brand-soft: #ff662069;
+  --vp-c-brand-1: #ffb2d4;
+  --vp-c-brand-2: #ff8ec1;
+  --vp-c-brand-3: #f05c9f;
+  --vp-c-brand-soft: #ff74b440;
 
-  --custom-brand-1: #128223;
-  --custom-brand-2: #fb681f;
-  --custom-brand-3: #9e321a;
+  --custom-brand-1: #68d8d9;
+  --custom-brand-2: #ffd05a;
+  --custom-brand-3: #ff9b64;
 }
 
 /* Выделяем типы (type/interface/enum), помеченные #type в ссылке сайдбара */
