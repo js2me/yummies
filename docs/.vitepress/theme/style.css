@@ -21,3 +21,14 @@ html.dark {
   --custom-brand-2: #fb681f;
   --custom-brand-3: #9e321a;
 }
+
+/* Выделяем типы (type/interface/enum), помеченные #type в ссылке сайдбара */
+.VPSidebar .VPLink.link[href*="#type"] .text {
+  color: #969ab1;
+  font-weight: 400;
+  font-family: monospace;
+}
+
+html.dark .VPSidebar .VPLink.link[href*="#type"] .text {
+  color: #7a7e91;
+}

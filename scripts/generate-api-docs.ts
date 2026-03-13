@@ -599,7 +599,7 @@ function main() {
     // и один пункт в сайдбаре.
     if (groupPath === "types") {
       generatedGroups.push({
-        path: "/api/types/index",
+        path: "/api/types/index#type",
         displayName: "types",
       });
       continue;
@@ -613,7 +613,10 @@ function main() {
       const exportMd = generateExportPageMarkdown(doc);
       fs.writeFileSync(exportIndexPath, exportMd, "utf-8");
 
-      const pathApi = `/api/${groupPath}/${doc.name}`;
+      const basePathApi = `/api/${groupPath}/${doc.name}`;
+      const isTypeLike =
+        doc.kind === "type" || doc.kind === "interface" || doc.kind === "enum";
+      const pathApi = isTypeLike ? `${basePathApi}#type` : basePathApi;
       generatedGroups.push({ path: pathApi, displayName: doc.name });
     }
   }

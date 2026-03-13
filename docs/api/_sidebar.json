@@ -33,7 +33,7 @@
       },
       {
         "text": "FnValue",
-        "link": "/api/common/FnValue"
+        "link": "/api/common/FnValue#type"
       },
       {
         "text": "resolveFnValue",
@@ -49,11 +49,11 @@
         "items": [
           {
             "text": "Counter",
-            "link": "/api/complex/counter/Counter"
+            "link": "/api/complex/counter/Counter#type"
           },
           {
             "text": "CounterFn",
-            "link": "/api/complex/counter/CounterFn"
+            "link": "/api/complex/counter/CounterFn#type"
           },
           {
             "text": "createCounter",
@@ -74,7 +74,7 @@
           },
           {
             "text": "GlobalDynamicConfig",
-            "link": "/api/complex/global-config/GlobalDynamicConfig"
+            "link": "/api/complex/global-config/GlobalDynamicConfig#type"
           }
         ]
       },
@@ -87,7 +87,7 @@
           },
           {
             "text": "GlobalPoint",
-            "link": "/api/complex/global-point/GlobalPoint"
+            "link": "/api/complex/global-point/GlobalPoint#type"
           }
         ]
       },
@@ -109,11 +109,11 @@
           },
           {
             "text": "PubSub",
-            "link": "/api/complex/pub-sub/PubSub"
+            "link": "/api/complex/pub-sub/PubSub#type"
           },
           {
             "text": "SubFn",
-            "link": "/api/complex/pub-sub/SubFn"
+            "link": "/api/complex/pub-sub/SubFn#type"
           }
         ]
       }
@@ -207,7 +207,7 @@
       },
       {
         "text": "RawDateToFormat",
-        "link": "/api/date-time/RawDateToFormat"
+        "link": "/api/date-time/RawDateToFormat#type"
       },
       {
         "text": "setHours",
@@ -223,7 +223,7 @@
       },
       {
         "text": "TimeDiff",
-        "link": "/api/date-time/TimeDiff"
+        "link": "/api/date-time/TimeDiff#type"
       },
       {
         "text": "timeDuration",
@@ -402,7 +402,7 @@
       },
       {
         "text": "PackedAsyncModule",
-        "link": "/api/imports/PackedAsyncModule"
+        "link": "/api/imports/PackedAsyncModule#type"
       },
       {
         "text": "unpackAsyncModule",
@@ -485,7 +485,7 @@
       },
       {
         "text": "CreateRefConfig",
-        "link": "/api/mobx/create-ref/CreateRefConfig"
+        "link": "/api/mobx/create-ref/CreateRefConfig#type"
       },
       {
         "text": "DeepObservableStruct",
@@ -497,7 +497,7 @@
       },
       {
         "text": "IEnhancedAtom",
-        "link": "/api/mobx/create-enhanced-atom/IEnhancedAtom"
+        "link": "/api/mobx/create-enhanced-atom/IEnhancedAtom#type"
       },
       {
         "text": "isRef",
@@ -509,15 +509,15 @@
       },
       {
         "text": "ObservableAnnotationsArray",
-        "link": "/api/mobx/apply-observable/ObservableAnnotationsArray"
+        "link": "/api/mobx/apply-observable/ObservableAnnotationsArray#type"
       },
       {
         "text": "Ref",
-        "link": "/api/mobx/create-ref/Ref"
+        "link": "/api/mobx/create-ref/Ref#type"
       },
       {
         "text": "RefChangeListener",
-        "link": "/api/mobx/create-ref/RefChangeListener"
+        "link": "/api/mobx/create-ref/RefChangeListener#type"
       },
       {
         "text": "toRef",
@@ -560,7 +560,7 @@
       },
       {
         "text": "PriceFormatOptions",
-        "link": "/api/price/PriceFormatOptions"
+        "link": "/api/price/PriceFormatOptions#type"
       }
     ]
   },
@@ -721,39 +721,39 @@
       },
       {
         "text": "GetFromStorageConfig",
-        "link": "/api/storage/GetFromStorageConfig"
+        "link": "/api/storage/GetFromStorageConfig#type"
       },
       {
         "text": "GetFromStorageWrappedConfig",
-        "link": "/api/storage/GetFromStorageWrappedConfig"
+        "link": "/api/storage/GetFromStorageWrappedConfig#type"
       },
       {
         "text": "SetToStorageConfig",
-        "link": "/api/storage/SetToStorageConfig"
+        "link": "/api/storage/SetToStorageConfig#type"
       },
       {
         "text": "SetToStorageWrappedConfig",
-        "link": "/api/storage/SetToStorageWrappedConfig"
+        "link": "/api/storage/SetToStorageWrappedConfig#type"
       },
       {
         "text": "StorageApi",
-        "link": "/api/storage/StorageApi"
+        "link": "/api/storage/StorageApi#type"
       },
       {
         "text": "StorageConfigBase",
-        "link": "/api/storage/StorageConfigBase"
+        "link": "/api/storage/StorageConfigBase#type"
       },
       {
         "text": "StorageType",
-        "link": "/api/storage/StorageType"
+        "link": "/api/storage/StorageType#type"
       },
       {
         "text": "UnsetFromStorageConfig",
-        "link": "/api/storage/UnsetFromStorageConfig"
+        "link": "/api/storage/UnsetFromStorageConfig#type"
       },
       {
         "text": "UnsetFromStorageWrappedConfig",
-        "link": "/api/storage/UnsetFromStorageWrappedConfig"
+        "link": "/api/storage/UnsetFromStorageWrappedConfig#type"
       }
     ]
   },
@@ -776,7 +776,7 @@
   },
   {
     "text": "types",
-    "link": "/api/types/index"
+    "link": "/api/types/index#type"
   },
   {
     "text": "vibrate",
