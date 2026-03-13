@@ -5,3 +5,4 @@ utility-types.d.ts
 utils
 .vitepress/cache
 docs/.vitepress/cache
+docs/api
