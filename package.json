@@ -19,6 +19,10 @@
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "dev": "pnpm test:watch",
     "dev:install-hooks": "if [ -z \"$CI\" ]; then lefthook install; fi",
+    "docs": "pnpm build && cd docs && pnpm dev",
+    "docs:install": "cd docs && pnpm i",
+    "docs:build": "cd docs && pnpm build",
+    "docs:serve": "cd docs && pnpm preview",
     "docs:generate": "node --experimental-strip-types scripts/generate-api-docs.ts"
   },
   "keywords": [

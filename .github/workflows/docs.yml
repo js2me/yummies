@@ -34,7 +34,11 @@ jobs:
 
       - run: corepack enable
 
+      - run: pnpm i
+
       - run: pnpm docs:install
+
+      - run: pnpm docs:generate
 
       - run: pnpm docs:build
 
