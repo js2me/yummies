@@ -3,4 +3,5 @@ dist
 coverage
 utility-types.d.ts
 utils
-.vitepress
+.vitepress/cache
+docs/.vitepress/cache

@@ -11,7 +11,7 @@
 ```ts
 ```
 const factory = new ModulesFactory(`
-  factory: (MyClass, deps) => new MyClass(deps),
+  factory: (MyClass, deps) =&gt; new MyClass(deps),
   deps: { someDependency: new Dependency() `
 });
 

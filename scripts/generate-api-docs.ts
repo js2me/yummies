@@ -23,7 +23,10 @@ interface ExportDoc {
 
 function sanitizeMarkdown(text: string): string {
   // Заменяем {name} на `name`, чтобы VitePress не пытался интерполировать Vue-выражения.
-  return text.replace(/\{([^}]+)\}/g, (_m, name) => `\`${String(name)}\``);
+  let result = text.replace(/\{([^}]+)\}/g, (_m, name) => `\`${String(name)}\``);
+  // Экранируем угловые скобки, чтобы <T> и подобные не воспринимались как HTML-теги.
+  result = result.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return result;
 }
 
 function getCommentText(
@@ -481,6 +484,13 @@ function main() {
     fs.mkdirSync(API_DOCS_BASE, { recursive: true });
   }
 
+  // Для types генерируем только одну страницу docs/api/types/index.md,
+  // поэтому перед генерацией очищаем старые поддиректории (AllPropertiesOptional, AnyFunction и т.п.).
+  const typesDocsDir = path.join(API_DOCS_BASE, "types");
+  if (fs.existsSync(typesDocsDir)) {
+    fs.rmSync(typesDocsDir, { recursive: true });
+  }
+
   const generatedGroups: { path: string; displayName: string }[] = [];
   const barrelDirs = new Set<string>();
 
@@ -581,6 +591,16 @@ function main() {
       generatedGroups.push({
         path: `/api/${groupPath}`,
         displayName,
+      });
+      continue;
+    }
+
+    // Исключение для types: одна страница /api/types со всеми экспортами,
+    // и один пункт в сайдбаре.
+    if (groupPath === "types") {
+      generatedGroups.push({
+        path: "/api/types/index",
+        displayName: "types",
       });
       continue;
     }

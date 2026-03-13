@@ -1,2 +1,0 @@
-# MaybeArray
-T or T[];

@@ -91,7 +91,7 @@ Makes specified keys of a type optional while keeping the rest required.
 
 
 ### MaybeKeys
-Makes specified keys of a type possibly Maybe<T> while keeping the rest required.
+Makes specified keys of a type possibly Maybe&lt;T&gt; while keeping the rest required.
 
 
 ### RequiredKeys
@@ -99,7 +99,7 @@ Makes specified keys of a type required while keeping the rest optional.
 
 
 ### Unpromise
-**Deprecated:** use `Awaited<T>` from stdlib of TypeScript
+**Deprecated:** use `Awaited&lt;T&gt;` from stdlib of TypeScript
 
 Extracts the inner type from a Promise type.
 
@@ -125,7 +125,7 @@ Determines if all properties in a type are optional.
 
 
 ### AllPropertiesOptional
-**Deprecated:** use `IsPartial<T>` . Better naming
+**Deprecated:** use `IsPartial&lt;T&gt;` . Better naming
 
 _No description._
 
@@ -178,7 +178,7 @@ Replace value in object by key
 ```ts
 ```ts
 type Test = ` foo: string; bar?: number `;
-type FixedTest = OverrideKey<Test, 'bar', string>
+type FixedTest = OverrideKey&lt;Test, 'bar', string&gt;
 // ` foo: string; bar?: string `
 ```
 ```
