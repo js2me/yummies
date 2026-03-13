@@ -6,6 +6,25 @@ export type ObservableAnnotationsArray<T extends AnyObject = AnyObject> = [
   ...(keyof T | (string & {}))[],
 ][];
 
+/**
+ * Applies a compact list of MobX annotations to an object using either
+ * decorator-style invocation or the annotation map form accepted by `makeObservable`.
+ *
+ * @template T Target object type.
+ * @param context Object that should become observable.
+ * @param annotationsArray Tuples of annotation followed by annotated field names.
+ * @param useDecorators Enables decorator-style application before calling `makeObservable`.
+ *
+ * @example
+ * ```ts
+ * applyObservable(store, [[observable, 'items'], [action, 'setItems']]);
+ * ```
+ *
+ * @example
+ * ```ts
+ * applyObservable(viewModel, [[computed, 'fullName']], true);
+ * ```
+ */
 export const applyObservable = <T extends AnyObject>(
   context: T,
   annotationsArray: ObservableAnnotationsArray<T>,

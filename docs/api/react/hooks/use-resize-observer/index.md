@@ -1,5 +1,5 @@
 # Use Resize Observer
 
 ### useResizeObserver()
-_No description._
+Creates a stable `ResizeObserver` instance and disconnects it on unmount.
 

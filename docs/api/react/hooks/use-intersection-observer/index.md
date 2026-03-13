@@ -1,5 +1,5 @@
 # Use Intersection Observer
 
 ### useIntersectionObserver()
-_No description._
+Creates a single `IntersectionObserver` instance and disposes it on unmount.
 

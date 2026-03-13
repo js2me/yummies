@@ -1,5 +1,5 @@
 # Use Visibility State
 
 ### useVisibilityState()
-_No description._
+Tracks `document.visibilityState` and updates when the page visibility changes.
 

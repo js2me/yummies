@@ -1,5 +1,21 @@
 # Use Abort Signal
 
 ### useAbortSignal()
-_No description._
+Returns an `AbortSignal` tied to the component lifecycle.
+
+The signal is aborted automatically on unmount.
+
+**Example:**
+
+```ts
+```ts
+const signal = useAbortSignal();
+fetch('/api/users', ` signal `);
+```
+
+```ts
+const signal = useAbortSignal();
+someAsyncTask(` signal `);
+```
+```
 

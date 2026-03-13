@@ -11,5 +11,6 @@ when these events occur. The last published data can be accessed through the `da
 
 
 ### createPubSub()
-_No description._
+Creates a simple publish-subscribe dispatcher that stores the last published
+arguments and allows subscription management.
 

@@ -5,5 +5,6 @@ _No description._
 
 
 ### createGlobalPoint()
-_No description._
+Creates a simple storage point that can live either in `globalThis` under a
+provided key or in a local closure when no key is given.
 

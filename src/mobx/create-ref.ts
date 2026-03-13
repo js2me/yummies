@@ -41,7 +41,27 @@ export interface CreateRefConfig<T = any, TMeta = AnyObject> {
 }
 
 /**
- * Creates ref thing to attach HTMLElements in React and all other
+ * Creates a MobX-aware ref that behaves like a callback ref and exposes
+ * observable `current` and `meta` fields.
+ *
+ * @template T Referenced value type.
+ * @template TMeta Additional observable metadata stored on the ref.
+ * @param cfg Optional callbacks, initial value and comparer configuration.
+ * @returns Observable ref function object.
+ *
+ * @example
+ * ```ts
+ * const inputRef = createRef<HTMLInputElement>();
+ * inputRef.set(document.createElement('input'));
+ * ```
+ *
+ * @example
+ * ```ts
+ * const nodeRef = createRef({
+ *   onUnset: () => console.log('detached'),
+ *   meta: { mounted: false },
+ * });
+ * ```
  */
 export const createRef = <T = any, TMeta = AnyObject>(
   cfg?: CreateRefConfig<T, TMeta>,
@@ -107,12 +127,52 @@ export const createRef = <T = any, TMeta = AnyObject>(
   return ref;
 };
 
+/**
+ * Checks whether the provided value is a ref created by `createRef`.
+ *
+ * @template T Referenced value type.
+ * @template TMeta Ref metadata type.
+ * @param value Value to inspect.
+ * @returns `true` when the value is a ref-like function with `current`.
+ *
+ * @example
+ * ```ts
+ * const ref = createRef<number>();
+ * isRef(ref); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isRef({ current: 1 }); // false
+ * ```
+ */
 export const isRef = <T, TMeta = any>(
   value: T | Ref<T, TMeta>,
 ): value is Ref<T, TMeta> => {
   return typeof value === 'function' && 'current' in value;
 };
 
+/**
+ * Normalizes a plain value or an existing ref into a `Ref` instance.
+ *
+ * @template T Referenced value type.
+ * @template TMeta Ref metadata type.
+ * @param value Existing ref or initial plain value.
+ * @param cfg Optional ref configuration applied when a new ref is created.
+ * @returns Existing ref or a newly created ref initialized with `value`.
+ *
+ * @example
+ * ```ts
+ * const ref = toRef(document.body);
+ * ref.current === document.body;
+ * ```
+ *
+ * @example
+ * ```ts
+ * const existingRef = createRef<number>();
+ * const sameRef = toRef(existingRef);
+ * ```
+ */
 export const toRef = <T, TMeta = any>(
   value: T | Ref<T, TMeta>,
   cfg?: Omit<CreateRefConfig<T, TMeta>, 'initial'>,

@@ -7,6 +7,25 @@ export type InstanceCreateConfig<TPayload, TExtension = {}> = TExtension & {
   payload: TPayload;
 };
 
+/**
+ * Builds a custom hook that creates an instance once and wires lifecycle helpers
+ * such as an `AbortSignal` and optional extension data into the factory.
+ *
+ * @template TExtension Extra configuration injected into every factory call.
+ * @param extension Optional static extension object merged into the factory config.
+ * @returns Hook factory that creates stable instances from a supplied factory.
+ *
+ * @example
+ * ```ts
+ * const useStoreInstance = createUseInstanceHook({ api });
+ * ```
+ *
+ * @example
+ * ```ts
+ * const useService = createUseInstanceHook({ logger });
+ * const service = useService(({ logger, payload }) => new Service(logger, payload));
+ * ```
+ */
 export const createUseInstanceHook =
   <TExtension = {}>(extension?: TExtension) =>
   <TInstance, TPayload>(
@@ -45,5 +64,18 @@ export const createUseInstanceHook =
  * @param factory - A factory function that takes a configuration and returns an instance.
  * @param config - An optional configuration containing additional input parameters and an update function.
  * @returns An instance created by the factory function.
+ *
+ * @example
+ * ```ts
+ * const service = useInstance(({ abortSignal }) => new UsersService({ abortSignal }));
+ * ```
+ *
+ * @example
+ * ```ts
+ * const store = useInstance(
+ *   ({ payload }) => new UserStore(payload),
+ *   { payload: userId, onUpdate: (nextId) => console.log(nextId) },
+ * );
+ * ```
  */
 export const useInstance = createUseInstanceHook();

@@ -1,8 +1,23 @@
 /**
- * A Hook to define an event handler with an always-stable function identity.
+ * Creates an event callback with a stable function identity and up-to-date logic.
  *
- * borrowed from @gaeron
- * https://github.com/reactjs/rfcs/blob/useevent/text/0000-useevent.md
+ * Borrowed from the `useEvent` RFC idea by React contributors.
+ *
+ * @template H Handler function type.
+ * @param handler Latest callback implementation.
+ * @returns Stable callback that always delegates to the latest handler.
+ *
+ * @example
+ * ```ts
+ * const onClick = useEvent(() => {
+ *   console.log('clicked');
+ * });
+ * ```
+ *
+ * @example
+ * ```ts
+ * const onSubmit = useEvent((value: string) => save(value));
+ * ```
  */
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import type { AnyFunction } from 'yummies/types';

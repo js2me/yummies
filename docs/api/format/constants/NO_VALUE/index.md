@@ -1,2 +1,2 @@
 # NO_VALUE
-_No description._
+Placeholder shown when a formatter cannot produce a meaningful value.

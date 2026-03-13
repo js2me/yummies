@@ -1,10 +1,10 @@
 # Modules Factory
 
 ### ModulesFactory
-Класс `ModulesFactory` является универсальной фабрикой для создания экземпляров указанного класса с зависимостями.
-Он использует объект конфигурации для определения того, как эти экземпляры создаются.
+Universal factory for creating class instances with predefined and per-call
+dependencies.
 
-Важное примечание - эта сущность работает только с классами конструктор которых имеет один параметр
+Works with classes whose constructor accepts a single dependency object.
 
 **Example:**
 

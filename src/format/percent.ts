@@ -13,9 +13,22 @@ export interface PercentFormatSettings
 }
 
 /**
- * 100 -> 100%
- * 99.123214412 -> 99.12%
- * 99.123214412 -> 99,12%
+ * Formats a value as a percent string with configurable decimal precision,
+ * decimal divider and suffix symbol.
+ *
+ * @param value Number or numeric string to format.
+ * @param settings Parser and formatting options.
+ * @returns Formatted percent string or fallback text for invalid values.
+ *
+ * @example
+ * ```ts
+ * percent(12.345); // '12.35%'
+ * ```
+ *
+ * @example
+ * ```ts
+ * percent(12.345, { divider: ',', symbol: ' pct' }); // '12,35 pct'
+ * ```
  */
 export const percent = (
   value: Maybe<number | string>,

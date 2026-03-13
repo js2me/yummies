@@ -35,6 +35,26 @@ export interface NumberFormatSettings {
   cropDigitsOnly?: boolean;
 }
 
+/**
+ * Formats a numeric value with thousands separators, fractional digit control
+ * and optional postfix text.
+ *
+ * Invalid, empty or unsupported values fall back to `emptyText`.
+ *
+ * @param rawValue Number or numeric string to format.
+ * @param userSettings Formatting overrides merged with `number.defaultSettings`.
+ * @returns Formatted number string or fallback text.
+ *
+ * @example
+ * ```ts
+ * number(12000); // '12 000'
+ * ```
+ *
+ * @example
+ * ```ts
+ * number(12.5, { digits: 1, postfix: '%' }); // '12.5%'
+ * ```
+ */
 export const number = (
   rawValue: Maybe<string | number>,
   userSettings?: Maybe<NumberFormatSettings>,

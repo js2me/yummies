@@ -1,11 +1,21 @@
 import { type MutableRefObject, useRef } from 'react';
 
 /**
- * React hook for creating a value exactly once.
- * useMemo doesn't give this guarantee unfortunately -
- * https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily
- * https://reactjs.org/docs/hooks-reference.html#usememo
- * @param defineFn Function which returns defined value.
+ * Creates a mutable ref whose value is initialized exactly once.
+ *
+ * @template T Ref value type.
+ * @param defineFn Function that lazily creates the initial ref value.
+ * @returns Mutable ref with a stable initialized value.
+ *
+ * @example
+ * ```ts
+ * const cacheRef = useDefineRef(() => new Map());
+ * ```
+ *
+ * @example
+ * ```ts
+ * const observerRef = useDefineRef(() => new ResizeObserver(() => {}));
+ * ```
  */
 export const useDefineRef = <T>(defineFn: () => T): MutableRefObject<T> => {
   const ref = useRef<T>(void 0 as T);

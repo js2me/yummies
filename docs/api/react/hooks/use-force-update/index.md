@@ -1,5 +1,5 @@
 # Use Force Update
 
 ### useForceUpdate()
-_No description._
+Forces a component re-render by updating an internal dummy state.
 

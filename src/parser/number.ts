@@ -18,6 +18,28 @@ export interface NumberParserSettings<TFallback = number> {
   clamped?: [min?: Maybe<number>, max?: Maybe<number>];
 }
 
+/**
+ * Parses a number from raw input and optionally clamps, rounds or limits
+ * fractional digits.
+ *
+ * Strings are normalized by removing spaces and replacing `,` with `.` before
+ * parsing. Invalid inputs return the configured fallback.
+ *
+ * @template TFallback Fallback value type returned when parsing fails.
+ * @param input Raw value to parse.
+ * @param userSettings Parser settings merged with `number.defaultSettings`.
+ * @returns Parsed number or fallback value.
+ *
+ * @example
+ * ```ts
+ * number('1 234,5'); // 1234.5
+ * ```
+ *
+ * @example
+ * ```ts
+ * number('bad', { fallback: 0 }); // 0
+ * ```
+ */
 export const number = <TFallback = number>(
   input: Maybe<unknown>,
   userSettings?: Maybe<NumberParserSettings<TFallback>>,

@@ -1,15 +1,15 @@
 # format
 
 ### format.NO_VALUE
-_No description._
+Placeholder shown when a formatter cannot produce a meaningful value.
 
 
 ### format.HYPHEN
-_No description._
+Plain ASCII hyphen character.
 
 
 ### format.INFINITY
-_No description._
+Infinity symbol used by numeric formatters and UI output.
 
 
 ### format.NumberFormatSettings
@@ -17,7 +17,10 @@ _No description._
 
 
 ### format.number()
-_No description._
+Formats a numeric value with thousands separators, fractional digit control
+and optional postfix text.
+
+Invalid, empty or unsupported values fall back to `emptyText`.
 
 
 ### format.PercentFormatSettings
@@ -25,11 +28,10 @@ _No description._
 
 
 ### format.percent()
-100 -&gt; 100%
-99.123214412 -&gt; 99.12%
-99.123214412 -&gt; 99,12%
+Formats a value as a percent string with configurable decimal precision,
+decimal divider and suffix symbol.
 
 
 ### format.skipSpaces()
-Removes all spaces in string
+Removes all whitespace characters from a string.
 

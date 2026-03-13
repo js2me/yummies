@@ -1,5 +1,5 @@
 # Use Click Outside
 
 ### useClickOutside()
-_No description._
+Calls a handler when a pointer interaction happens outside the referenced element.
 

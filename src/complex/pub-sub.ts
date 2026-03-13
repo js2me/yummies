@@ -33,6 +33,25 @@ export interface PubSub<PubArgs extends any[] = any[]> {
   sub(sub: SubFn<PubArgs>): VoidFunction;
 }
 
+/**
+ * Creates a simple publish-subscribe dispatcher that stores the last published
+ * arguments and allows subscription management.
+ *
+ * @template PubArgs Argument tuple delivered to subscribers.
+ * @returns Callable publisher with subscribe and unsubscribe helpers.
+ *
+ * @example
+ * ```ts
+ * const pub = createPubSub<[string]>();
+ * pub('ready');
+ * ```
+ *
+ * @example
+ * ```ts
+ * const pub = createPubSub<[number]>();
+ * const unsub = pub.sub((value) => console.log(value));
+ * ```
+ */
 export const createPubSub = <PubArgs extends any[] = any[]>() => {
   const pubSub = ((...args: PubArgs) => {
     pubSub.lastPub = args;

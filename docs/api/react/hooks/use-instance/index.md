@@ -5,7 +5,8 @@ _No description._
 
 
 ### createUseInstanceHook()
-_No description._
+Builds a custom hook that creates an instance once and wires lifecycle helpers
+such as an `AbortSignal` and optional extension data into the factory.
 
 
 ### useInstance

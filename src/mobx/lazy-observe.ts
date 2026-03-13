@@ -1,10 +1,37 @@
 import { onBecomeObserved, onBecomeUnobserved } from 'mobx';
 
 /**
- * When ONE OF the properties is becomes observed then `onStart` function is called.
- * WHen ALL properties are unobserved then `onEnd` function is called with the `metaData` that was returned by `onStart`.
+ * Starts side effects only while one or more MobX observables are being observed.
  *
- * It uses `onBecomeObserved` and `onBecomeUnobserved` mobx hooks to perform lazy observation.
+ * When the first property becomes observed, `onStart` is called. When all tracked
+ * properties become unobserved, `onEnd` is called with the value returned by
+ * `onStart`. Cleanup can be delayed via `endDelay`.
+ *
+ * It uses MobX `onBecomeObserved` and `onBecomeUnobserved` hooks to perform
+ * lazy subscription management.
+ *
+ * @template TMetaData Data returned from `onStart` and forwarded to `onEnd`.
+ * @param config Configuration for tracked properties and lifecycle callbacks.
+ * @returns Cleanup function that clears the tracked state and runs `onEnd`.
+ *
+ * @example
+ * ```ts
+ * const stop = lazyObserve({
+ *   context: store,
+ *   property: 'items',
+ *   onStart: () => api.subscribe(),
+ *   onEnd: (subscription) => subscription.unsubscribe(),
+ * });
+ * ```
+ *
+ * @example
+ * ```ts
+ * lazyObserve({
+ *   property: [boxA, boxB],
+ *   onStart: () => console.log('observed'),
+ *   endDelay: 300,
+ * });
+ * ```
  */
 export const lazyObserve = <TMetaData = void>({
   context,

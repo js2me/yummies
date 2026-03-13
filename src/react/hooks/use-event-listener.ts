@@ -2,6 +2,33 @@
 import { useEffect } from 'react';
 import { useSyncRef } from './use-sync-ref.js';
 
+/**
+ * Subscribes to a DOM event and keeps the latest handler without resubscribing
+ * on every render.
+ *
+ * Supports optional debounce and custom effect dependencies.
+ *
+ * @template EventName DOM event name from `HTMLElementEventMap`.
+ * @param config Event subscription configuration.
+ *
+ * @example
+ * ```ts
+ * useEventListener({
+ *   event: 'click',
+ *   handler: () => console.log('clicked'),
+ * });
+ * ```
+ *
+ * @example
+ * ```ts
+ * useEventListener({
+ *   event: 'scroll',
+ *   node: window,
+ *   debounce: 100,
+ *   handler: () => console.log('scroll'),
+ * });
+ * ```
+ */
 export const useEventListener = <EventName extends keyof HTMLElementEventMap>({
   event,
   handler,

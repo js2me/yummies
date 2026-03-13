@@ -2,6 +2,24 @@ import { action, makeObservable, observable } from 'mobx';
 import { typeGuard } from 'yummies/type-guard';
 import type { AnyObject } from 'yummies/types';
 
+/**
+ * Wraps a plain object into a deeply observable structure and allows
+ * patch-like updates while preserving nested observable references where possible.
+ *
+ * @template TData Observable object shape.
+ *
+ * @example
+ * ```ts
+ * const state = new DeepObservableStruct({ user: { name: 'Ann' } });
+ * state.set({ user: { name: 'Bob' } });
+ * ```
+ *
+ * @example
+ * ```ts
+ * const state = new DeepObservableStruct({ filters: { active: true } });
+ * state.set({ filters: { active: false, archived: true } });
+ * ```
+ */
 export class DeepObservableStruct<TData extends AnyObject> {
   data: TData;
 

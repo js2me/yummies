@@ -7,6 +7,28 @@ type ClickOutsideInput = {
   options?: AddEventListenerOptions;
 };
 
+/**
+ * Calls a handler when a pointer interaction happens outside the referenced element.
+ *
+ * @param input Target element ref, callback and event listener options.
+ *
+ * @example
+ * ```ts
+ * useClickOutside({
+ *   contentRef: modalRef,
+ *   onClick: () => closeModal(),
+ * });
+ * ```
+ *
+ * @example
+ * ```ts
+ * useClickOutside({
+ *   contentRef: dropdownRef,
+ *   onClick: hideDropdown,
+ *   options: { capture: true },
+ * });
+ * ```
+ */
 export const useClickOutside = ({
   contentRef,
   onClick,

@@ -5,5 +5,8 @@ _No description._
 
 
 ### string()
-_No description._
+Converts arbitrary input into a string representation.
+
+Objects are serialized with `JSON.stringify`, optionally pretty-printed, and
+nullish values resolve to the configured fallback.
 

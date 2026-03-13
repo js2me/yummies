@@ -10,12 +10,12 @@ type ModuleLoaderConfig<TPredefinedDeps extends AnyObject = EmptyObject> = {
   : { deps: TPredefinedDeps });
 
 /**
- * Класс `ModulesFactory` является универсальной фабрикой для создания экземпляров указанного класса с зависимостями.
- * Он использует объект конфигурации для определения того, как эти экземпляры создаются.
+ * Universal factory for creating class instances with predefined and per-call
+ * dependencies.
  *
- * Важное примечание - эта сущность работает только с классами конструктор которых имеет один параметр
+ * Works with classes whose constructor accepts a single dependency object.
  *
- * @template TPredefinedDeps - Тип, расширяющий `AnyObject`, представляющий предопределенные зависимости, которые использует фабрика.
+ * @template TPredefinedDeps Dependency shape that is always injected by the factory.
  *
  * @example
  * ```
@@ -26,25 +26,61 @@ type ModuleLoaderConfig<TPredefinedDeps extends AnyObject = EmptyObject> = {
  *
  * const instance = factory.create(MyClass, { extraDependency: new ExtraDependency() });
  * ```
+ *
+ * @example
+ * ```ts
+ * const factory = new ModulesFactory({
+ *   factory: (Module, deps) => new Module(deps),
+ * });
+ * ```
+ *
+ * @example
+ * ```ts
+ * const service = factory.create(UserService, { api });
+ * ```
  */
 export class ModulesFactory<TPredefinedDeps extends AnyObject = EmptyObject> {
   /**
-   * Создает новый экземпляр `ModulesFactory`.
+   * Creates a new module factory.
    *
-   * @param config - Объект конфигурации для фабрики, включающий функцию фабрики и необязательные зависимости.
+   * @param config Factory strategy and predefined dependencies.
+   *
+   * @example
+   * ```ts
+   * const factory = new ModulesFactory({
+   *   factory: (Module, deps) => new Module(deps),
+   * });
+   * ```
+   *
+   * @example
+   * ```ts
+   * const factory = new ModulesFactory({
+   *   factory: (Module, deps) => new Module(deps),
+   *   deps: { api },
+   * });
+   * ```
    */
   constructor(private config: ModuleLoaderConfig<TPredefinedDeps>) {}
 
   /**
-   * Создает экземпляр указанного класса, внедряя необходимые зависимости.
+   * Creates an instance of the provided class by merging predefined and
+   * per-call dependencies.
    *
-   * @template TInstance - Тип создаваемого экземпляра.
-   * @template TDeps - Тип зависимостей, необходимых для экземпляра.
+   * @template TInstance Instance type produced by the constructor.
+   * @template TDeps Full dependency object expected by the constructor.
+   * @param Constructor Class constructor receiving a single dependency object.
+   * @param args Additional dependencies merged over predefined ones.
+   * @returns Created class instance.
    *
-   * @param Constructor - Конструктор класса для создаваемого экземпляра.
-   * @param args - Необязательные дополнительные зависимости для объединения с предопределенными зависимостями.
+   * @example
+   * ```ts
+   * const service = factory.create(UserService, { logger });
+   * ```
    *
-   * @returns Экземпляр указанного класса с внедренными зависимостями.
+   * @example
+   * ```ts
+   * const store = factory.create(UserStore);
+   * ```
    */
   create<TInstance, TDeps extends TPredefinedDeps = TPredefinedDeps>(
     Constructor: Class<TInstance, [TDeps]>,

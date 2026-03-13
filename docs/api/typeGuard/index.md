@@ -1,57 +1,59 @@
 # typeGuard
 
 ### typeGuard.isDefined()
-Check if a value is not null or undefined
+Checks that a value is neither `null` nor `undefined`.
 
 
 ### typeGuard.isNull
-Check if a value is null
+Checks whether a value is exactly `null`.
 
 
 ### typeGuard.isUndefined
-Check if a value is undefined
+Checks whether a value is exactly `undefined`.
 
 
 ### typeGuard.isObject
-Check if a value is an object
+Checks whether a value is a plain object.
 
 
 ### typeGuard.isArray
-Check if a value is an array
+Checks whether a value is an array.
 
 
 ### typeGuard.isString
-Check if a value is a string
+Checks whether a value is a string object or primitive string.
 
 
 ### typeGuard.isNumber
-Check if a value is a number
+Checks whether a value is a finite number.
+
+Unlike `isNaN` and `isInfinite`, this guard only matches regular numeric values.
 
 
 ### typeGuard.isBoolean
-Check if a value is a boolean
+Checks whether a value is a boolean.
 
 
 ### typeGuard.isFunction
-Check if a value is a function
+Checks whether a value is a synchronous or asynchronous function.
 
 
 ### typeGuard.isRegExp
-Check if a value is a regular expression
+Checks whether a value is a regular expression.
 
 
 ### typeGuard.isElement
-Check if a value is a DOM element
+Checks whether a value looks like a DOM element or document node.
 
 
 ### typeGuard.isNaN
-Check if a value is NaN
+Checks whether a value is `NaN`.
 
 
 ### typeGuard.isInfinite
-Check if a value is infinity
+Checks whether a value is positive or negative infinity.
 
 
 ### typeGuard.isSymbol
-Check if a value is a symbol
+Checks whether a value is a symbol.
 

@@ -1,4 +1,3 @@
 # percent()
-100 -&gt; 100%
-99.123214412 -&gt; 99.12%
-99.123214412 -&gt; 99,12%
+Formats a value as a percent string with configurable decimal precision,
+decimal divider and suffix symbol.

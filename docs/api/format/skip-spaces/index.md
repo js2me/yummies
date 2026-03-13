@@ -1,5 +1,5 @@
 # Skip Spaces
 
 ### skipSpaces()
-Removes all spaces in string
+Removes all whitespace characters from a string.
 

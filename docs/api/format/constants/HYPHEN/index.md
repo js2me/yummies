@@ -1,2 +1,2 @@
 # HYPHEN
-_No description._
+Plain ASCII hyphen character.

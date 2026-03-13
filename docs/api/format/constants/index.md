@@ -1,13 +1,13 @@
 # Constants
 
 ### NO_VALUE
-_No description._
+Placeholder shown when a formatter cannot produce a meaningful value.
 
 
 ### HYPHEN
-_No description._
+Plain ASCII hyphen character.
 
 
 ### INFINITY
-_No description._
+Infinity symbol used by numeric formatters and UI output.
 
