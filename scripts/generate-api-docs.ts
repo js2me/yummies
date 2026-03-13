@@ -359,10 +359,34 @@ function buildSidebarTree(
     const entries = Array.from(node.children.entries()).sort(([a], [b]) =>
       a.localeCompare(b, undefined, { sensitivity: "base" })
     );
+
+    const collectLeafItems = (
+      branch: { children: Map<string, SidebarTreeNode> }
+    ): Array<{ text: string; link: string }> => {
+      const out: Array<{ text: string; link: string }> = [];
+      for (const [childKey, childVal] of branch.children.entries()) {
+        if ("link" in childVal) {
+          out.push({ text: childVal.title, link: childVal.link });
+        } else {
+          out.push(...collectLeafItems(childVal));
+        }
+      }
+      return out;
+    };
+
     return entries.flatMap(([key, value]) => {
       if ("link" in value) {
         return [{ text: value.title, link: value.link }];
       }
+
+      // Специальный случай для mobx: собираем все листья из подпапок в один плоский список.
+      if (key === "mobx") {
+        const leaves = collectLeafItems(value).sort((a, b) =>
+          a.text.localeCompare(b.text, undefined, { sensitivity: "base" })
+        );
+        return [{ text: key, items: leaves }];
+      }
+
       const items = toSidebarItems(value);
       // Сворачиваем только barrel: группа и единственный ребёнок с тем же именем (typeGuard → typeGuard)
       const singleLeaf = items.length === 1 && items[0].link != null;

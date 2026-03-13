@@ -472,86 +472,56 @@
     "text": "mobx",
     "items": [
       {
-        "text": "apply-observable",
-        "items": [
-          {
-            "text": "applyObservable",
-            "link": "/api/mobx/apply-observable/applyObservable"
-          },
-          {
-            "text": "ObservableAnnotationsArray",
-            "link": "/api/mobx/apply-observable/ObservableAnnotationsArray"
-          }
-        ]
+        "text": "applyObservable",
+        "link": "/api/mobx/apply-observable/applyObservable"
       },
       {
-        "text": "create-enhanced-atom",
-        "items": [
-          {
-            "text": "createEnhancedAtom",
-            "link": "/api/mobx/create-enhanced-atom/createEnhancedAtom"
-          },
-          {
-            "text": "IEnhancedAtom",
-            "link": "/api/mobx/create-enhanced-atom/IEnhancedAtom"
-          }
-        ]
+        "text": "createEnhancedAtom",
+        "link": "/api/mobx/create-enhanced-atom/createEnhancedAtom"
       },
       {
-        "text": "create-ref",
-        "items": [
-          {
-            "text": "createRef",
-            "link": "/api/mobx/create-ref/createRef"
-          },
-          {
-            "text": "CreateRefConfig",
-            "link": "/api/mobx/create-ref/CreateRefConfig"
-          },
-          {
-            "text": "isRef",
-            "link": "/api/mobx/create-ref/isRef"
-          },
-          {
-            "text": "Ref",
-            "link": "/api/mobx/create-ref/Ref"
-          },
-          {
-            "text": "RefChangeListener",
-            "link": "/api/mobx/create-ref/RefChangeListener"
-          },
-          {
-            "text": "toRef",
-            "link": "/api/mobx/create-ref/toRef"
-          }
-        ]
+        "text": "createRef",
+        "link": "/api/mobx/create-ref/createRef"
       },
       {
-        "text": "deep-observable-struct",
-        "items": [
-          {
-            "text": "DeepObservableStruct",
-            "link": "/api/mobx/deep-observable-struct/DeepObservableStruct"
-          }
-        ]
+        "text": "CreateRefConfig",
+        "link": "/api/mobx/create-ref/CreateRefConfig"
       },
       {
-        "text": "get-mobx-administration",
-        "items": [
-          {
-            "text": "getMobxAdministration",
-            "link": "/api/mobx/get-mobx-administration/getMobxAdministration"
-          }
-        ]
+        "text": "DeepObservableStruct",
+        "link": "/api/mobx/deep-observable-struct/DeepObservableStruct"
       },
       {
-        "text": "lazy-observe",
-        "items": [
-          {
-            "text": "lazyObserve",
-            "link": "/api/mobx/lazy-observe/lazyObserve"
-          }
-        ]
+        "text": "getMobxAdministration",
+        "link": "/api/mobx/get-mobx-administration/getMobxAdministration"
+      },
+      {
+        "text": "IEnhancedAtom",
+        "link": "/api/mobx/create-enhanced-atom/IEnhancedAtom"
+      },
+      {
+        "text": "isRef",
+        "link": "/api/mobx/create-ref/isRef"
+      },
+      {
+        "text": "lazyObserve",
+        "link": "/api/mobx/lazy-observe/lazyObserve"
+      },
+      {
+        "text": "ObservableAnnotationsArray",
+        "link": "/api/mobx/apply-observable/ObservableAnnotationsArray"
+      },
+      {
+        "text": "Ref",
+        "link": "/api/mobx/create-ref/Ref"
+      },
+      {
+        "text": "RefChangeListener",
+        "link": "/api/mobx/create-ref/RefChangeListener"
+      },
+      {
+        "text": "toRef",
+        "link": "/api/mobx/create-ref/toRef"
       }
     ]
   },
