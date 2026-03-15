@@ -1,5 +1,13 @@
 import type { AnyObject, Maybe } from 'yummies/types';
 
+/**
+ * Performs a shallow comparison for arrays, plain objects, dates and regular expressions.
+ *
+ * @example
+ * ```ts
+ * isShallowEqual({ id: 1 }, { id: 1 }); // true
+ * ```
+ */
 export const isShallowEqual = (a: unknown, b: unknown): boolean => {
   if (a === b) return true;
 
@@ -48,12 +56,28 @@ export const isShallowEqual = (a: unknown, b: unknown): boolean => {
   return true;
 };
 
+/**
+ * Wraps a value in an array when it is not already an array.
+ *
+ * @example
+ * ```ts
+ * toArray('item'); // ['item']
+ * ```
+ */
 export const toArray = <TValue>(value: TValue | TValue[]): TValue[] => {
   return Array.isArray(value) ? value : [value];
 };
 
 type DeepArray<TValue> = TValue | Array<DeepArray<TValue>>;
 
+/**
+ * Recursively flattens a nested array and maps the collected values.
+ *
+ * @example
+ * ```ts
+ * flatMapDeep([1, [2, [3]]], (value) => value * 2); // [2, 4, 6]
+ * ```
+ */
 export const flatMapDeep = <TSource, TNewValue>(
   arr: DeepArray<TSource>,
   fn: (value: TSource, i: number, arr: TSource[]) => TNewValue,
@@ -76,6 +100,14 @@ export const flatMapDeep = <TSource, TNewValue>(
   return source.map((value, i) => fn(value, i, source));
 };
 
+/**
+ * Parses JSON safely and returns a fallback value when parsing fails.
+ *
+ * @example
+ * ```ts
+ * safeJsonParse('{"enabled":true}', {}); // { enabled: true }
+ * ```
+ */
 export const safeJsonParse = <TValue = any, TFallback = null>(
   json: Maybe<string>,
   fallback: TFallback = null as TFallback,

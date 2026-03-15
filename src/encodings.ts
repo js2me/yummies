@@ -258,6 +258,14 @@ const DMap: AnyObject = {
   1109: 190,
 };
 
+/**
+ * Converts a Unicode string into a Win-1251 encoded binary string.
+ *
+ * @example
+ * ```ts
+ * unicodeToWin1251('Привет');
+ * ```
+ */
 export function unicodeToWin1251(s: string) {
   const L = [];
   for (let i = 0; i < s.length; i++) {

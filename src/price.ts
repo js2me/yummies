@@ -4,6 +4,14 @@ export interface PriceFormatOptions
   customSymbol?: string;
 }
 
+/**
+ * Formats a numeric price using locale and currency options.
+ *
+ * @example
+ * ```ts
+ * formatPrice(1990, 'ru-RU', 'RUB');
+ * ```
+ */
 export const formatPrice = (
   price: number,
   locale: string,

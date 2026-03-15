@@ -54,6 +54,15 @@ export const endlessRAF = (
   }
 };
 
+/**
+ * Schedules a timeout that can be cancelled through an abort signal.
+ *
+ * @example
+ * ```ts
+ * const controller = new AbortController();
+ * setAbortableTimeout(() => console.log('done'), 500, controller.signal);
+ * ```
+ */
 export function setAbortableTimeout(
   callback: VoidFunction,
   delayInMs?: number,
@@ -77,6 +86,15 @@ export function setAbortableTimeout(
   }, delayInMs);
 }
 
+/**
+ * Schedules an interval that stops automatically when the abort signal fires.
+ *
+ * @example
+ * ```ts
+ * const controller = new AbortController();
+ * setAbortableInterval(() => console.log('tick'), 1000, controller.signal);
+ * ```
+ */
 export function setAbortableInterval(
   callback: VoidFunction,
   delayInMs?: number,

@@ -1,8 +1,25 @@
 import type { Maybe } from 'yummies/types';
 
+/**
+ * Converts degrees to radians.
+ *
+ * @example
+ * ```ts
+ * degToRad(180); // Math.PI
+ * ```
+ */
 export function degToRad(deg: number) {
   return deg * (Math.PI / 180);
 }
+
+/**
+ * Converts radians to degrees.
+ *
+ * @example
+ * ```ts
+ * radToDeg(Math.PI); // 180
+ * ```
+ */
 export function radToDeg(rad: number) {
   return rad * (180 / Math.PI);
 }

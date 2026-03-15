@@ -30,6 +30,14 @@ const toLibFormat = (value: Maybe<RawDateToFormat>): Dayjs | null => {
 
 export type RawDateToFormat = Date | string | number | Dayjs;
 
+/**
+ * Formats a date-like value using predefined presets or a custom pattern.
+ *
+ * @example
+ * ```ts
+ * formatDate('2024-03-15', { format: 'time-short' });
+ * ```
+ */
 export const formatDate = (
   value: Maybe<RawDateToFormat>,
   settings?: Maybe<{
@@ -101,6 +109,14 @@ export const formatDate = (
   }
 };
 
+/**
+ * Splits a duration in milliseconds into day-based time parts.
+ *
+ * @example
+ * ```ts
+ * dayTimeDuration(ms(1, 'day') + ms(2, 'hour'));
+ * ```
+ */
 export const dayTimeDuration = (timeInMs: number) => {
   let left = Math.max(timeInMs, 0);
 
@@ -129,6 +145,14 @@ export const dayTimeDuration = (timeInMs: number) => {
 
 type DateChangeParam = [amount: number, unit?: Maybe<ManipulateType>];
 
+/**
+ * Applies one or more date adjustments and returns a new `Date` instance.
+ *
+ * @example
+ * ```ts
+ * changeDate(new Date(), 1, 'day', 30, 'minute');
+ * ```
+ */
 export const changeDate = (
   date: Maybe<RawDateToFormat>,
   ...args: [
@@ -153,6 +177,14 @@ export const changeDate = (
   return wrappedDate.toDate();
 };
 
+/**
+ * Converts milliseconds into hour-based time parts without keeping full days separately.
+ *
+ * @example
+ * ```ts
+ * timeDuration(ms(1, 'hour') + ms(30, 'min'));
+ * ```
+ */
 export const timeDuration = (timeInMs: number) => {
   const { days, hours, milliseconds, minutes, seconds } =
     dayTimeDuration(timeInMs);
@@ -172,6 +204,14 @@ const durationFormatLabels = {
   seconds: { compact: 'сек', full: ['секунда', 'секунды', 'секунд'] },
 } as const;
 
+/**
+ * Formats a duration either from milliseconds or between two dates.
+ *
+ * @example
+ * ```ts
+ * getFormatDuration(ms(2, 'hour') + ms(15, 'min'));
+ * ```
+ */
 export function getFormatDuration(
   dateA: Date,
   dateB: Date,
@@ -249,6 +289,15 @@ export type TimeDiff = {
     hours: number;
   };
 };
+
+/**
+ * Calculates the difference between two dates in minutes, seconds and total units.
+ *
+ * @example
+ * ```ts
+ * getTimeDiff(new Date('2024-03-15T12:30:00'), new Date('2024-03-15T12:00:00'));
+ * ```
+ */
 export const getTimeDiff = (
   dateA: RawDateToFormat,
   dateB: RawDateToFormat,
@@ -276,17 +325,57 @@ export const getTimeDiff = (
   };
 };
 
+/**
+ * Returns a new date shifted forward by the provided number of days.
+ *
+ * @example
+ * ```ts
+ * addDays(new Date('2024-03-15'), 7);
+ * ```
+ */
 export const addDays = (date: RawDateToFormat, count: number) =>
   toLibFormat(date)?.add(count, 'd').toDate();
 
+/**
+ * Returns a new date shifted backward by the provided number of days.
+ *
+ * @example
+ * ```ts
+ * subtractDays(new Date('2024-03-15'), 7);
+ * ```
+ */
 export const subtractDays = (date: RawDateToFormat, count: number) =>
   toLibFormat(date)?.subtract(count, 'd').toDate();
 
+/**
+ * Returns a new date shifted forward by the provided number of minutes.
+ *
+ * @example
+ * ```ts
+ * addMinutes(new Date('2024-03-15T12:00:00'), 15);
+ * ```
+ */
 export const addMinutes = (date: RawDateToFormat, count: number) =>
   toLibFormat(date)?.add(count, 'm').toDate();
 
+/**
+ * Returns a new date with the minutes field replaced.
+ *
+ * @example
+ * ```ts
+ * setMinutes(new Date('2024-03-15T12:00:00'), 45);
+ * ```
+ */
 export const setMinutes = (date: RawDateToFormat, minutes: number) =>
   toLibFormat(date)?.set('m', minutes).toDate();
 
+/**
+ * Returns a new date with the hours field replaced.
+ *
+ * @example
+ * ```ts
+ * setHours(new Date('2024-03-15T12:00:00'), 9);
+ * ```
+ */
 export const setHours = (date: RawDateToFormat, hours: number) =>
   toLibFormat(date)?.set('h', hours).toDate();

@@ -1,5 +1,13 @@
 import { degToRad } from 'yummies/math';
 
+/**
+ * Reads a blob as a Base64 data URL.
+ *
+ * @example
+ * ```ts
+ * const base64 = await blobToBase64(blob);
+ * ```
+ */
 export function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -9,13 +17,37 @@ export function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
+/**
+ * Returns the original URL or creates an object URL for the provided blob.
+ *
+ * @example
+ * ```ts
+ * const url = blobToUrl(file);
+ * ```
+ */
 export const blobToUrl = (urlOrBlob: string | Blob) =>
   urlOrBlob instanceof Blob ? URL.createObjectURL(urlOrBlob) : urlOrBlob;
 
+/**
+ * Wraps a file into a new `Blob` while preserving its MIME type.
+ *
+ * @example
+ * ```ts
+ * const blob = fileToBlob(file);
+ * ```
+ */
 export const fileToBlob = (file: File) => {
   return new Blob([file], { type: file.type });
 };
 
+/**
+ * Renders an image element to canvas and returns the result as a blob.
+ *
+ * @example
+ * ```ts
+ * const blob = imageToBlob(imageElement, 'image/jpeg');
+ * ```
+ */
 export const imageToBlob = (
   imageElement: HTMLImageElement,
   mimeType: string = 'image/png',
@@ -91,6 +123,14 @@ function cropImageFromCanvas(context: CanvasRenderingContext2D) {
 }
 
 // TODO: ломает iphone с огромными изображениями
+/**
+ * Rotates an image by the provided angle and returns a newly rendered image.
+ *
+ * @example
+ * ```ts
+ * const rotated = await rotateImage(imageElement, 90);
+ * ```
+ */
 export const rotateImage = (image: HTMLImageElement, angle: number) => {
   const maxSize = Math.max(image.width, image.height);
   const canvas = document.createElement('canvas');
@@ -114,6 +154,14 @@ interface DecodedDataUrl {
 /*
  * Returning object which contains base64 data and mime type of passed data url string.
  * */
+/**
+ * Extracts the MIME type and Base64 payload from a data URL.
+ *
+ * @example
+ * ```ts
+ * decodeDataUrl('data:image/png;base64,AAAA');
+ * ```
+ */
 export function decodeDataUrl(url: string): DecodedDataUrl {
   const regex = /^data:(.*);base64,\s?(.*)$/;
   const matches = new RegExp(regex).exec(url);
@@ -124,10 +172,26 @@ export function decodeDataUrl(url: string): DecodedDataUrl {
   };
 }
 
+/**
+ * Checks whether a string starts with an HTTP or HTTPS scheme.
+ *
+ * @example
+ * ```ts
+ * isHttpUrl('https://example.com'); // true
+ * ```
+ */
 export const isHttpUrl = (url: string): boolean => {
   return url.startsWith('https://') || url.startsWith('http://');
 };
 
+/**
+ * Checks whether a string is a Base64-encoded image data URL.
+ *
+ * @example
+ * ```ts
+ * isBase64Image('data:image/png;base64,AAAA'); // true
+ * ```
+ */
 export const isBase64Image = (str: string): boolean => {
   const { mimeType, data } = decodeDataUrl(str);
   return !!(data && mimeType?.startsWith('image/'));

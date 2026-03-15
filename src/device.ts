@@ -1,3 +1,11 @@
+/**
+ * Returns the normalized user agent string in lowercase.
+ *
+ * @example
+ * ```ts
+ * const userAgent = getUserAgent();
+ * ```
+ */
 export const getUserAgent = () =>
   (
     navigator.userAgent ||
@@ -7,6 +15,14 @@ export const getUserAgent = () =>
     ''
   ).toLowerCase();
 
+/**
+ * Detects whether the current device should be treated as mobile based on the user agent.
+ *
+ * @example
+ * ```ts
+ * const isMobile = checkIsMobileDevice();
+ * ```
+ */
 export const checkIsMobileDevice = () => {
   const userAgent = getUserAgent();
 
@@ -24,6 +40,14 @@ export const checkIsMobileDevice = () => {
   return false;
 };
 
+/**
+ * Detects whether the current device should be treated as a tablet based on the user agent.
+ *
+ * @example
+ * ```ts
+ * const isTablet = checkIsTabletDevice();
+ * ```
+ */
 export const checkIsTabletDevice = () => {
   const userAgent = getUserAgent();
 
@@ -32,6 +56,14 @@ export const checkIsTabletDevice = () => {
   );
 };
 
+/**
+ * Detects whether the current device supports a touch-first form factor.
+ *
+ * @example
+ * ```ts
+ * const isTouch = checkIsTouchDevice();
+ * ```
+ */
 export const checkIsTouchDevice = () =>
   checkIsMobileDevice() || checkIsTabletDevice();
 

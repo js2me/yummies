@@ -24,6 +24,14 @@ export const getComputedColor = (color?: string): string | null => {
   return `${match[1]}, ${match[2]}, ${match[3]}`;
 };
 
+/**
+ * Triggers a file download by creating and clicking a temporary anchor element.
+ *
+ * @example
+ * ```ts
+ * downloadUsingAnchor('/report.pdf', 'report.pdf');
+ * ```
+ */
 export const downloadUsingAnchor = (
   urlOrBlob: string | Blob,
   fileName?: string,
@@ -53,6 +61,14 @@ export function wrapTextToTagLink(link: string) {
   return `<a href=${link} target="_blank">${descr}</a>`;
 }
 
+/**
+ * Collects the cumulative `offsetTop` value through the element parent chain.
+ *
+ * @example
+ * ```ts
+ * const offsetTop = collectOffsetTop(document.getElementById('section'));
+ * ```
+ */
 export const collectOffsetTop = (element: HTMLElement | null) => {
   let offsetTop = 0;
   let node = element;
@@ -65,6 +81,14 @@ export const collectOffsetTop = (element: HTMLElement | null) => {
   return offsetTop;
 };
 
+/**
+ * Prevents the default browser action and stops event propagation.
+ *
+ * @example
+ * ```ts
+ * button.addEventListener('click', (event) => skipEvent(event));
+ * ```
+ */
 export const skipEvent = (e: Event) => {
   e.preventDefault();
   e.stopPropagation();
@@ -72,6 +96,14 @@ export const skipEvent = (e: Event) => {
   return false;
 };
 
+/**
+ * Scrolls the page vertically to the viewport section containing the target element.
+ *
+ * @example
+ * ```ts
+ * globalScrollIntoViewForY(document.getElementById('footer')!);
+ * ```
+ */
 export const globalScrollIntoViewForY = (node: HTMLElement) => {
   const scrollContainer = document.body;
   const pageHeight = window.innerHeight;
@@ -136,6 +168,14 @@ const sanitizeDefaults: DOMPurifyConfig = {
   ALLOWED_ATTR: ['href', 'target', 'name', 'src', 'class'],
 };
 
+/**
+ * Sanitizes HTML using the default allowlist merged with custom DOMPurify config.
+ *
+ * @example
+ * ```ts
+ * sanitizeHtml('<img src=x onerror=alert(1) />');
+ * ```
+ */
 export const sanitizeHtml = (html: Maybe<string>, config?: DOMPurifyConfig) => {
   return DOMPurify.sanitize(html || '', {
     ...sanitizeDefaults,
@@ -143,6 +183,14 @@ export const sanitizeHtml = (html: Maybe<string>, config?: DOMPurifyConfig) => {
   });
 };
 
+/**
+ * Checks whether the element is nested inside the provided parent element.
+ *
+ * @example
+ * ```ts
+ * checkElementHasParent(childElement, modalElement);
+ * ```
+ */
 export const checkElementHasParent = (
   element: HTMLElement | null,
   parent: Maybe<HTMLElement>,
@@ -234,8 +282,24 @@ export function getElementInnerWidth(el: HTMLElement) {
   );
 }
 
+/**
+ * Checks whether the user prefers a dark color scheme.
+ *
+ * @example
+ * ```ts
+ * const prefersDark = isPrefersDarkTheme();
+ * ```
+ */
 export const isPrefersDarkTheme = () =>
   !!globalThis.matchMedia?.('(prefers-color-scheme: dark)')?.matches;
 
+/**
+ * Checks whether the user prefers a light color scheme.
+ *
+ * @example
+ * ```ts
+ * const prefersLight = isPrefersLightTheme();
+ * ```
+ */
 export const isPrefersLightTheme = () =>
   !!globalThis.matchMedia?.('(prefers-color-scheme: light)')?.matches;
