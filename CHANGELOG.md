@@ -1,5 +1,15 @@
 # yummies
 
+## 7.11.0
+
+### Minor Changes
+
+- [`6f63447`](https://github.com/js2me/yummies/commit/6f634472c02388a577865ef51560762d3489131a) Thanks [@js2me](https://github.com/js2me)! - add codegen jsdoc based vitepress documentation to gh pages
+
+### Patch Changes
+
+- [`6f63447`](https://github.com/js2me/yummies/commit/6f634472c02388a577865ef51560762d3489131a) Thanks [@js2me](https://github.com/js2me)! - update deps to latest
+
 ## 7.10.0
 
 ### Minor Changes
