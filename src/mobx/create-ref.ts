@@ -57,6 +57,13 @@ export interface CreateRefConfig<T = any, TMeta = AnyObject> {
  *
  * @example
  * ```ts
+ * const ref = createRef<number>();
+ * ref(3);
+ * ref.current; // 3
+ * ```
+ *
+ * @example
+ * ```ts
  * const nodeRef = createRef({
  *   onUnset: () => console.log('detached'),
  *   meta: { mounted: false },
