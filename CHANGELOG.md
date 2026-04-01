@@ -1,5 +1,19 @@
 # yummies
 
+## 7.12.0
+
+### Minor Changes
+
+- [`bb386a3`](https://github.com/js2me/yummies/commit/bb386a343582a960a10815b6f47785f99b6f8f64) Thanks [@js2me](https://github.com/js2me)! - update all deps to latest (+ dev deps too)
+
+- [`bb386a3`](https://github.com/js2me/yummies/commit/bb386a343582a960a10815b6f47785f99b6f8f64) Thanks [@js2me](https://github.com/js2me)! - [internal] migration to sborshik 3+
+
+- [`25e0640`](https://github.com/js2me/yummies/commit/25e0640fbf69e936072d443913f4336b6955ec98) Thanks [@js2me](https://github.com/js2me)! - [docs] added more documentation with examples for async, common, css, media, vibrate utils
+
+- [`bb386a3`](https://github.com/js2me/yummies/commit/bb386a343582a960a10815b6f47785f99b6f8f64) Thanks [@js2me](https://github.com/js2me)! - [internal] migration to vite 8+
+
+- [`bb386a3`](https://github.com/js2me/yummies/commit/bb386a343582a960a10815b6f47785f99b6f8f64) Thanks [@js2me](https://github.com/js2me)! - [internal] migration to TypeScript 6+
+
 ## 7.11.0
 
 ### Minor Changes
