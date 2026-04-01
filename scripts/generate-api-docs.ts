@@ -32,12 +32,51 @@ function sanitizeMarkdown(text: string): string {
   return result;
 }
 
+/**
+ * `{@link URL|label}` / `{@link symbol}` → markdown или обратные кавычки.
+ * Должно выполняться **до** `sanitizeMarkdown`: иначе `{@link ...}` превратится в «корявый» текст
+ * (и часть URL вроде `https` теряется при разборе `JSDocLink` вручную).
+ */
+function jsDocInlineTagsToMarkdown(text: string): string {
+  return text.replace(
+    /\{@(link|linkcode|linkplain)\s+([^}]+)\}/gi,
+    (_full, kind: string, inner: string) => {
+      const trimmed = inner.trim();
+      const pipe = trimmed.indexOf('|');
+      let target: string;
+      let label: string;
+      if (pipe >= 0) {
+        target = trimmed.slice(0, pipe).trim();
+        label = trimmed.slice(pipe + 1).trim();
+      } else {
+        target = trimmed;
+        label = trimmed;
+      }
+      const isUrl = /^https?:\/\//i.test(target);
+      if (isUrl) {
+        const display = label || target;
+        return `[${display}](${target})`;
+      }
+      if (kind.toLowerCase() === 'linkcode') {
+        return `\`${label || target}\``;
+      }
+      return label || target;
+    },
+  );
+}
+
+function finalizeDocMarkdown(raw: string): string {
+  return sanitizeMarkdown(jsDocInlineTagsToMarkdown(raw));
+}
+
 function getRawCommentText(
   comment: string | ts.NodeArray<ts.JSDocComment> | undefined,
   _sourceFile: ts.SourceFile,
 ): string {
   if (!comment) return '';
   if (typeof comment === 'string') return comment.trim();
+  const fromTs = ts.getTextOfJSDocComment(comment);
+  if (fromTs != null && fromTs !== '') return fromTs.trim();
   return comment
     .map((node) => {
       if (node.kind === ts.SyntaxKind.JSDocText) {
@@ -55,7 +94,7 @@ function getCommentText(
   comment: string | ts.NodeArray<ts.JSDocComment> | undefined,
   sourceFile: ts.SourceFile,
 ): string {
-  return sanitizeMarkdown(getRawCommentText(comment, sourceFile));
+  return finalizeDocMarkdown(getRawCommentText(comment, sourceFile));
 }
 
 function displayPartsToText(parts: ts.SymbolDisplayPart[] | undefined): string {
@@ -71,7 +110,7 @@ function jsDocTagText(tag: ts.JSDocTagInfo): string {
     typeof (tag.text as unknown) === 'string'
       ? String(tag.text)
       : displayPartsToText(tag.text as ts.SymbolDisplayPart[] | undefined);
-  return sanitizeMarkdown(raw.trim());
+  return finalizeDocMarkdown(raw.trim());
 }
 
 function jsDocTagRawText(tag: ts.JSDocTagInfo): string {
@@ -82,28 +121,68 @@ function jsDocTagRawText(tag: ts.JSDocTagInfo): string {
   return raw.trim();
 }
 
-function normalizeExample(example: string): { lang: string; code: string } {
+/**
+ * Turns JSDoc `@example` body into markdown. Handles:
+ * - plain code (no fences) → wrapped in ` ```ts `
+ * - a single fenced block that spans the whole string → one code block (re-wrapped cleanly)
+ * - a caption line(s) followed by ` ```lang ` … ` ``` ` (common in this repo) → caption as prose + code block, no nested fences
+ */
+function formatJSDocExampleForMarkdown(example: string): string {
   const trimmed = example.trim();
-  const fencedMatch = trimmed.match(/^```([\w-]+)?\n([\s\S]*?)\n```$/);
-  if (fencedMatch) {
-    return {
-      lang: fencedMatch[1] || 'ts',
-      code: fencedMatch[2].trim(),
-    };
+  if (!trimmed) return '';
+
+  if (!trimmed.includes('```')) {
+    return `\`\`\`ts\n${trimmed}\n\`\`\``;
   }
-  return {
-    lang: 'ts',
-    code: trimmed,
-  };
+
+  const singleFenceOnly = trimmed.match(/^```([\w-]+)?\s*\n([\s\S]*?)\n```$/);
+  if (singleFenceOnly) {
+    const lang = singleFenceOnly[1] || 'ts';
+    return `\`\`\`${lang}\n${singleFenceOnly[2].trim()}\n\`\`\``;
+  }
+
+  const segments: string[] = [];
+  let pos = 0;
+
+  while (pos < trimmed.length) {
+    const startFence = trimmed.indexOf('```', pos);
+    if (startFence === -1) {
+      const tail = trimmed.slice(pos).trim();
+      if (tail) segments.push(tail);
+      break;
+    }
+
+    const before = trimmed.slice(pos, startFence).trim();
+    if (before) segments.push(before);
+
+    const afterOpen = trimmed.slice(startFence + 3);
+    const newlineAfterLang = afterOpen.indexOf('\n');
+    if (newlineAfterLang === -1) {
+      segments.push(`\`\`\`ts\n${afterOpen.trim()}\n\`\`\``);
+      break;
+    }
+
+    const langLine = afterOpen.slice(0, newlineAfterLang).trim();
+    const lang = langLine || 'ts';
+    const codeRegion = afterOpen.slice(newlineAfterLang + 1);
+    const closeFence = codeRegion.indexOf('\n```');
+    if (closeFence === -1) {
+      segments.push(`\`\`\`${lang}\n${codeRegion.trim()}\n\`\`\``);
+      break;
+    }
+
+    const code = codeRegion.slice(0, closeFence).trim();
+    segments.push(`\`\`\`${lang}\n${code}\n\`\`\``);
+    pos = startFence + 3 + newlineAfterLang + 1 + closeFence + 4;
+  }
+
+  return segments.join('\n\n');
 }
 
 function renderExamples(examples: string[]): string {
   if (examples.length === 0) return '';
   const blocks = examples
-    .map((example) => {
-      const normalized = normalizeExample(example);
-      return `\`\`\`${normalized.lang}\n${normalized.code}\n\`\`\``;
-    })
+    .map((ex) => formatJSDocExampleForMarkdown(ex))
     .join('\n\n');
   const title = examples.length === 1 ? '**Example:**' : '**Examples:**';
   return `\n${title}\n\n${blocks}\n`;
@@ -120,7 +199,9 @@ function extractJSDocFromSymbol(
   };
   if (!symbol) return result;
   const docComment = symbol.getDocumentationComment(typeChecker);
-  result.description = displayPartsToText(docComment) || '';
+  result.description = finalizeDocMarkdown(
+    displayPartsToText(docComment) || '',
+  );
   const tags = symbol.getJsDocTags(typeChecker);
   for (const tag of tags) {
     if (tag.name === 'example') {

@@ -1,11 +1,25 @@
 import { degToRad } from 'yummies/math';
 
 /**
- * Reads a blob as a Base64 data URL.
+ * Reads a {@link Blob} as a **data URL** string (`data:<mime>;base64,...`) using {@link FileReader#readAsDataURL}.
+ *
+ * Useful for previewing uploads, embedding small assets inline, or serializing binary for APIs that
+ * expect Base64-in-JSON. The result includes the MIME prefix, not raw Base64 alone — use
+ * {@link decodeDataUrl} if you need the payload and type separately.
+ *
+ * @param blob - Any `Blob` or `File` (files are blobs).
+ * @returns Resolves to the data URL string; rejects if reading fails.
  *
  * @example
  * ```ts
- * const base64 = await blobToBase64(blob);
+ * const dataUrl = await blobToBase64(file);
+ * previewImg.src = dataUrl;
+ * ```
+ *
+ * @example
+ * ```ts
+ * const fromFetch = await fetch('/api/export').then((r) => r.blob());
+ * const dataUrl = await blobToBase64(fromFetch);
  * ```
  */
 export function blobToBase64(blob: Blob): Promise<string> {
@@ -18,22 +32,50 @@ export function blobToBase64(blob: Blob): Promise<string> {
 }
 
 /**
- * Returns the original URL or creates an object URL for the provided blob.
+ * If `urlOrBlob` is already a string, returns it unchanged. If it is a {@link Blob}, returns
+ * `URL.createObjectURL(blob)` — a short-lived `blob:` URL valid in this document until
+ * {@link URL.revokeObjectURL} is called.
+ *
+ * Pair with {@link renderImage} or `<img src>` without re-fetching binary data. **Remember to
+ * `revokeObjectURL`** when the URL is no longer needed to avoid retaining blob memory.
+ *
+ * @param urlOrBlob - Remote/http(s) URL string, data URL, or a `Blob` / `File`.
+ * @returns A string suitable for `HTMLImageElement.src` or similar.
  *
  * @example
  * ```ts
- * const url = blobToUrl(file);
+ * const src = blobToUrl(uploadedFile);
+ * img.src = src;
+ * // when done:
+ * URL.revokeObjectURL(src);
+ * ```
+ *
+ * @example
+ * ```ts
+ * blobToUrl('https://cdn.example.com/logo.png'); // passed through as-is
  * ```
  */
 export const blobToUrl = (urlOrBlob: string | Blob) =>
   urlOrBlob instanceof Blob ? URL.createObjectURL(urlOrBlob) : urlOrBlob;
 
 /**
- * Wraps a file into a new `Blob` while preserving its MIME type.
+ * Creates a new {@link Blob} from a {@link File}, copying the bytes and keeping `file.type` as
+ * the blob’s MIME type. Handy when an API accepts `Blob` but you only have `File`, or you want a
+ * plain blob without the `File` name/lastModified metadata.
+ *
+ * @param file - Source file from an `<input type="file">` or drag-and-drop.
+ * @returns A `Blob` with the same content and `type` as the file.
  *
  * @example
  * ```ts
- * const blob = fileToBlob(file);
+ * const blob = fileToBlob(fileFromInput);
+ * await uploadEndpoint(blob);
+ * ```
+ *
+ * @example
+ * ```ts
+ * const blob = fileToBlob(imageFile);
+ * const url = URL.createObjectURL(blob);
  * ```
  */
 export const fileToBlob = (file: File) => {
@@ -41,11 +83,26 @@ export const fileToBlob = (file: File) => {
 };
 
 /**
- * Renders an image element to canvas and returns the result as a blob.
+ * Draws an {@link HTMLImageElement} onto an offscreen canvas, then builds a {@link Blob} from the
+ * raster (via `canvas.toDataURL` + binary decode). Dimensions use `naturalWidth` / `naturalHeight`,
+ * falling back to `300×300` if those are zero (e.g. not yet decoded).
+ *
+ * **CORS:** if the image is cross-origin without proper CORS headers, the canvas may be
+ * *tainted* and `toDataURL` can throw — same browser rules as any canvas export.
+ *
+ * @param imageElement - Loaded image (`complete` / decoded recommended).
+ * @param mimeType - Output MIME type, e.g. `'image/png'` (default) or `'image/jpeg'`. Encoder support is browser-dependent.
+ * @returns Encoded image as a `Blob` with a matching `type` when possible.
  *
  * @example
  * ```ts
- * const blob = imageToBlob(imageElement, 'image/jpeg');
+ * const img = await renderImage('/photo.jpg');
+ * const jpegBlob = imageToBlob(img, 'image/jpeg');
+ * ```
+ *
+ * @example
+ * ```ts
+ * const pngBlob = imageToBlob(cachedImg); // default image/png
  * ```
  */
 export const imageToBlob = (
@@ -77,9 +134,27 @@ export const imageToBlob = (
 };
 
 /**
- * Loads and renders an image using `Image`.
+ * Loads a resource into a new `HTMLImageElement`: `src` is set via {@link blobToUrl} (so blobs get
+ * object URLs, strings are used directly). Resolves on `load` with the same element; rejects on
+ * `error` (e.g. bad URL, network failure, corrupt image) **with no rejection value**.
  *
- * @returns {Promise<HTMLImageElement>}
+ * Does not add the node to the DOM — use the returned element for canvas, measuring, or
+ * {@link imageToBlob}.
+ *
+ * @param urlOrBlob - Remote URL, data URL, or `Blob` / `File`.
+ * @returns Promise that fulfills with the loaded `HTMLImageElement`.
+ *
+ * @example
+ * ```ts
+ * const img = await renderImage('https://example.com/pic.png');
+ * document.body.appendChild(img);
+ * ```
+ *
+ * @example
+ * ```ts
+ * const img = await renderImage(pickedFile);
+ * const blob = imageToBlob(img, 'image/webp');
+ * ```
  */
 export const renderImage = (urlOrBlob: Blob | string) =>
   new Promise<HTMLImageElement>((resolve, reject) => {
@@ -124,11 +199,26 @@ function cropImageFromCanvas(context: CanvasRenderingContext2D) {
 
 // TODO: ломает iphone с огромными изображениями
 /**
- * Rotates an image by the provided angle and returns a newly rendered image.
+ * Rotates `image` around its center on a square canvas (side = max(width, height)), then **crops**
+ * transparent margins by trimming to the bounding box of pixels with non-zero alpha.
+ * Returns a **new** loaded `HTMLImageElement` (PNG data URL under the hood via {@link renderImage}).
+ *
+ * `angle` is in **degrees**; converted with {@link degToRad} from `yummies/math`.
+ *
+ * Very large sources can stress memory on some mobile browsers (known iPhone issues — see TODO in source).
+ *
+ * @param image - Source image (should be decoded; uses `width` / `height`).
+ * @param angle - Rotation in degrees (e.g. `90` for quarter turn).
+ * @returns Promise of a new `HTMLImageElement` showing the rotated, cropped result.
  *
  * @example
  * ```ts
- * const rotated = await rotateImage(imageElement, 90);
+ * const upright = await rotateImage(landscapeImg, 90);
+ * ```
+ *
+ * @example
+ * ```ts
+ * const fixed = await rotateImage(await renderImage(file), -15);
  * ```
  */
 export const rotateImage = (image: HTMLImageElement, angle: number) => {
@@ -151,15 +241,23 @@ interface DecodedDataUrl {
   data?: string;
 }
 
-/*
- * Returning object which contains base64 data and mime type of passed data url string.
- * */
 /**
- * Extracts the MIME type and Base64 payload from a data URL.
+ * Parses a `data:` URL of the form `data:<mime>;base64,<payload>` into its MIME type and raw
+ * Base64 body (without the `data:...;base64,` prefix). Non-matching strings yield `undefined`
+ * fields in the result object.
+ *
+ * @param url - Full data URL string.
+ * @returns `{ mimeType, data }` — both optional when the regex does not match.
  *
  * @example
  * ```ts
- * decodeDataUrl('data:image/png;base64,AAAA');
+ * const { mimeType, data } = decodeDataUrl('data:image/png;base64,iVBORw0KGgo=');
+ * // mimeType === 'image/png', data === 'iVBORw0KGgo='
+ * ```
+ *
+ * @example
+ * ```ts
+ * decodeDataUrl('not-a-data-url'); // { mimeType: undefined, data: undefined }
  * ```
  */
 export function decodeDataUrl(url: string): DecodedDataUrl {
@@ -173,11 +271,22 @@ export function decodeDataUrl(url: string): DecodedDataUrl {
 }
 
 /**
- * Checks whether a string starts with an HTTP or HTTPS scheme.
+ * Returns `true` if `url` starts with `https://` or `http://` (case-sensitive, as in
+ * `String#startsWith`). Does not validate that the rest is a well-formed URL — only the scheme
+ * prefix. `blob:`, `data:`, and relative paths return `false`.
+ *
+ * @param url - String to test (often a user-provided or configured href).
  *
  * @example
  * ```ts
- * isHttpUrl('https://example.com'); // true
+ * isHttpUrl('https://example.com/path'); // true
+ * isHttpUrl('http://localhost:3000'); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isHttpUrl('//cdn.example.com'); // false — no explicit http(s) prefix
+ * isHttpUrl('/assets/logo.png'); // false — relative path
  * ```
  */
 export const isHttpUrl = (url: string): boolean => {
@@ -185,11 +294,21 @@ export const isHttpUrl = (url: string): boolean => {
 };
 
 /**
- * Checks whether a string is a Base64-encoded image data URL.
+ * Returns `true` when `str` is a data URL that {@link decodeDataUrl} can parse **and** the MIME
+ * type starts with `image/` (e.g. `image/png`, `image/jpeg`). Requires both a non-empty Base64
+ * payload and an image MIME — arbitrary `data:text/plain;base64,...` is `false`.
+ *
+ * @param str - Candidate string (often `img.src` or API payload).
  *
  * @example
  * ```ts
- * isBase64Image('data:image/png;base64,AAAA'); // true
+ * isBase64Image('data:image/png;base64,iVBORw0KGgo='); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isBase64Image('https://example.com/x.png'); // false
+ * isBase64Image('data:text/plain;base64,SGk='); // false
  * ```
  */
 export const isBase64Image = (str: string): boolean => {
