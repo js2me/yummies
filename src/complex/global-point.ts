@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/complex
+ *
+ * ## Description
+ *
+ * Minimal **global or scoped storage** with `get` / `set` / `unset` semantics. When an access symbol
+ * is provided the value lives on `globalThis`; otherwise it is isolated in a closure. Handy for
+ * bridging non-React singletons, test doubles, or legacy globals without `window.foo =` sprawl.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { createGlobalPoint } from "yummies/complex";
+ * ```
+ */
+
 import type { AnyObject } from 'yummies/types';
 
 export interface GlobalPoint<TValue> {

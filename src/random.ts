@@ -1,4 +1,21 @@
 /**
+ * ---header-docs-section---
+ * # yummies/random
+ *
+ * ## Description
+ *
+ * Small RNG helpers for UI demos, games, and sampling: floats, integers, and random choices from
+ * arrays. They wrap `Math.random` (not cryptographically secure) so prefer platform `crypto` when
+ * generating secrets, tokens, or lottery outcomes.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { getRandomInt, getRandomChoice } from "yummies/random";
+ * ```
+ */
+
+/**
  * Returns a random floating-point number between `min` and `max`.
  *
  * @example

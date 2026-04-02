@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/complex
+ *
+ * ## Description
+ *
+ * **Dependency-injection style factory** for classes that take a single deps object in their
+ * constructor. Merges predefined singletons with per-call overrides so feature modules can be
+ * constructed consistently in apps that avoid heavyweight DI containers.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { ModulesFactory } from "yummies/complex";
+ * ```
+ */
+
 import type { AnyObject, Class, EmptyObject, IsPartial } from 'yummies/types';
 
 type ModuleLoaderConfig<TPredefinedDeps extends AnyObject = EmptyObject> = {

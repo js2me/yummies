@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/id
+ *
+ * ## Description
+ *
+ * Fast, URL-friendly identifiers based on **nanoid** with curated alphabets and lengths. Use for
+ * client-generated keys, trace ids, or UI instance ids where UUID size is unnecessary. Collisions are
+ * unlikely at these lengths but still assume server-side uniqueness for persisted entities.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { generateId } from "yummies/id";
+ * ```
+ */
+
 import { customAlphabet } from 'nanoid';
 
 const DIGITS = '0123456789';

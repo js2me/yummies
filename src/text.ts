@@ -1,4 +1,21 @@
 /**
+ * ---header-docs-section---
+ * # yummies/text
+ *
+ * ## Description
+ *
+ * Russian-centric text helpers: **declension** by count (одно слово / два слова / пять слов) and
+ * utilities for splitting long strings into wrapped lines. Pair with `yummies/date-time` for
+ * natural language timestamps and labels in Slavic locales.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { declension } from "yummies/text";
+ * ```
+ */
+
+/**
  * Returns the correct word form based on the provided count.
  * @example
  * declension(1, ['slovo', 'slova', 'slov']) // 'slovo'

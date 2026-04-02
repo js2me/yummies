@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/date-time
+ *
+ * ## Description
+ *
+ * Date and time formatting built on **dayjs** with locale plugins, human-readable presets, relative
+ * phrases, and duration helpers tailored to UI copy. It composes with `yummies/format`, `yummies/ms`,
+ * and `yummies/text` for declensions so timestamps read naturally in Russian-facing apps.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { formatDate } from "yummies/date-time";
+ * ```
+ */
+
 import dayjs, { type Dayjs, type ManipulateType } from 'dayjs';
 import duration from 'dayjs/plugin/duration.js';
 import relativeTime from 'dayjs/plugin/relativeTime.js';

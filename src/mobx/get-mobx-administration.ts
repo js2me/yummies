@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/mobx
+ *
+ * ## Description
+ *
+ * Typed access to MobX **internal administration** (`$mobx`) for advanced tooling, migration scripts,
+ * or introspection. Prefer public MobX APIs in application code; reach for this when you must align
+ * with library internals or patch behavior at the administration layer.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { getMobxAdministration } from "yummies/mobx";
+ * ```
+ */
+
 import { $mobx, type AnnotationMapEntry } from 'mobx';
 import type { AnyObject } from 'yummies/types';
 

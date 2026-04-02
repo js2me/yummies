@@ -69,6 +69,56 @@ function finalizeDocMarkdown(raw: string): string {
   return sanitizeMarkdown(jsDocInlineTagsToMarkdown(raw));
 }
 
+const HEADER_DOCS_MARKER = '---header-docs-section---';
+
+/**
+ * Обрабатывает только «прозу» вне fenced-блоков, чтобы не ломать `{ … }` и `<T>` внутри ```.
+ */
+function processMarkdownPreservingCodeBlocks(
+  text: string,
+  transformProse: (chunk: string) => string,
+): string {
+  const parts = text.split(/(```[\s\S]*?```)/g);
+  return parts
+    .map((part) => (part.startsWith('```') ? part : transformProse(part)))
+    .join('');
+}
+
+function finalizeModuleHeaderMarkdown(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed) return '';
+  return processMarkdownPreservingCodeBlocks(trimmed, (prose) =>
+    finalizeDocMarkdown(prose),
+  );
+}
+
+/**
+ * Вырезает тело JSDoc после маркера `---header-docs-section---` (для вставки в index.md API).
+ */
+function extractHeaderDocsSectionFromSource(sourceText: string): string {
+  const markerIdx = sourceText.indexOf(HEADER_DOCS_MARKER);
+  if (markerIdx === -1) return '';
+
+  const blockStart = sourceText.lastIndexOf('/**', markerIdx);
+  if (blockStart === -1) return '';
+
+  const blockEnd = sourceText.indexOf('*/', markerIdx);
+  if (blockEnd === -1) return '';
+
+  const inner = sourceText.slice(blockStart + 3, blockEnd);
+  const localMarker = inner.indexOf(HEADER_DOCS_MARKER);
+  if (localMarker === -1) return '';
+
+  const afterMarker = inner.slice(localMarker + HEADER_DOCS_MARKER.length);
+  const unstared = afterMarker
+    .split('\n')
+    .map((line) => line.replace(/^\s*\*\s?/, ''))
+    .join('\n')
+    .trim();
+
+  return finalizeModuleHeaderMarkdown(unstared);
+}
+
 function getRawCommentText(
   comment: string | ts.NodeArray<ts.JSDocComment> | undefined,
   _sourceFile: ts.SourceFile,
@@ -501,9 +551,10 @@ function buildSidebarTree(
     }
   }
 
-  function toSidebarItems(node: {
-    children: Map<string, SidebarTreeNode>;
-  }): SidebarItem[] {
+  function toSidebarItems(
+    node: { children: Map<string, SidebarTreeNode> },
+    pathSegments: string[],
+  ): SidebarItem[] {
     const entries = Array.from(node.children.entries()).sort(([a], [b]) =>
       a.localeCompare(b, undefined, { sensitivity: 'base' }),
     );
@@ -522,6 +573,9 @@ function buildSidebarTree(
       return out;
     };
 
+    const sectionOverviewLink = (key: string): string =>
+      `/api/${[...pathSegments, key].join('/')}`;
+
     return entries.flatMap(([key, value]) => {
       if ('link' in value) {
         return [{ text: value.title, link: value.link }];
@@ -532,27 +586,72 @@ function buildSidebarTree(
         const leaves = collectLeafItems(value).sort((a, b) =>
           a.text.localeCompare(b.text, undefined, { sensitivity: 'base' }),
         );
-        return [{ text: key, items: leaves }];
+        return [
+          {
+            text: key,
+            link: sectionOverviewLink(key),
+            items: leaves,
+          },
+        ];
       }
 
-      const items = toSidebarItems(value);
+      const childPath = [...pathSegments, key];
+      const items = toSidebarItems(value, childPath);
       // Сворачиваем только barrel: группа и единственный ребёнок с тем же именем (typeGuard → typeGuard)
       const singleLeaf = items.length === 1 && items[0].link != null;
       const childSameAsGroup = singleLeaf && items[0].text === key;
       if (singleLeaf && childSameAsGroup) {
         return [items[0]];
       }
-      return [{ text: key, items }];
+      return [
+        {
+          text: key,
+          link: sectionOverviewLink(key),
+          items,
+        },
+      ];
     });
   }
 
-  return toSidebarItems(root);
+  return toSidebarItems(root, []);
+}
+
+/**
+ * Страница `docs/api/<dir>/index.md` только из `header-docs-section` в `src/<dir>/index.ts`,
+ * если полноценный index ещё не сгенерирован (нет единого модуля с экспортами).
+ */
+function ensureSectionOverviewFromEntryIndex(
+  relDir: string,
+  sourceFiles: readonly ts.SourceFile[],
+): void {
+  const normalized = relDir.replace(/\\/g, '/');
+  const indexSrc = findSourceFileRelative(
+    sourceFiles,
+    `${normalized}/index.ts`,
+  );
+  if (!indexSrc) return;
+  const header = extractHeaderDocsSectionFromSource(
+    indexSrc.getFullText(),
+  ).trim();
+  if (!header) return;
+  const outMd = path.join(API_DOCS_BASE, normalized, 'index.md');
+  if (fs.existsSync(outMd)) return;
+  fs.mkdirSync(path.dirname(outMd), { recursive: true });
+  fs.writeFileSync(outMd, `${header}\n`, 'utf-8');
 }
 
 function generateGroupMarkdown(
   filePath: string,
   exportDocs: ExportDoc[],
-  options?: { namespacePrefix?: string; pageTitle?: string },
+  options?: {
+    namespacePrefix?: string;
+    pageTitle?: string;
+    headerMarkdown?: string;
+    /**
+     * Если false — только intro (header или `# Title`): секции экспортов на отдельных страницах.
+     */
+    includeExportSections?: boolean;
+  },
 ): string {
   const title =
     options?.pageTitle ??
@@ -565,6 +664,19 @@ function generateGroupMarkdown(
   const sections = exportDocs
     .map((d) => toMarkdownSection(d, prefix))
     .join('\n\n');
+  const header = options?.headerMarkdown?.trim();
+  const includeExportSections = options?.includeExportSections !== false;
+
+  if (!includeExportSections) {
+    if (header) {
+      return `${header}\n`;
+    }
+    return `# ${title}\n`;
+  }
+
+  if (header) {
+    return `${header}\n\n${sections}\n`;
+  }
   return `# ${title}\n\n${sections}\n`;
 }
 
@@ -727,9 +839,13 @@ function tryHandleBarrelIndexFile(
 
   const docDir = path.join(API_DOCS_BASE, namespaceName);
   fs.mkdirSync(docDir, { recursive: true });
+  const headerMarkdown = extractHeaderDocsSectionFromSource(
+    exportsFile.getFullText(),
+  );
   const md = generateGroupMarkdown(exportsFile.fileName, exportDocs, {
     namespacePrefix: `${namespaceName}.`,
     pageTitle: namespaceName,
+    headerMarkdown,
   });
   fs.writeFileSync(path.join(docDir, 'index.md'), md, 'utf-8');
   const exportsDocDir = path.join(API_DOCS_BASE, dirName, '_exports');
@@ -772,11 +888,34 @@ function emitRegularModuleDocsAndSidebar(
   topDir: string,
   exportDocs: ExportDoc[],
   state: DocGenLoopState,
+  sourceFiles: readonly ts.SourceFile[],
 ): void {
   const dir = path.join(API_DOCS_BASE, groupPath);
   const indexPath = path.join(dir, 'index.md');
   fs.mkdirSync(path.dirname(indexPath), { recursive: true });
-  const md = generateGroupMarkdown(sourceFile.fileName, exportDocs);
+  let headerMarkdown = extractHeaderDocsSectionFromSource(
+    sourceFile.getFullText(),
+  );
+  /** Секция `react/*`: один общий header в `react/index.ts`, не в каждом файле. */
+  if (topDir === 'react') {
+    const reactEntry = findSourceFileRelative(sourceFiles, 'react/index.ts');
+    if (reactEntry) {
+      headerMarkdown = extractHeaderDocsSectionFromSource(
+        reactEntry.getFullText(),
+      );
+    }
+  }
+
+  /** Утилиты вынесены на `/api/.../name` — корневой index только с header-docs-section. */
+  const skipBecauseBarrelChild =
+    dirName !== '' && state.barrelDirs.has(dirName);
+  const splitExportsToSidebarPages =
+    !skipBecauseBarrelChild && topDir !== 'react' && groupPath !== 'types';
+
+  const md = generateGroupMarkdown(sourceFile.fileName, exportDocs, {
+    headerMarkdown,
+    includeExportSections: !splitExportsToSidebarPages,
+  });
   fs.writeFileSync(indexPath, md, 'utf-8');
 
   if (dirName !== '' && state.barrelDirs.has(dirName)) return;
@@ -867,7 +1006,13 @@ function main() {
       topDir,
       exportDocs,
       state,
+      sourceFiles,
     );
+  }
+
+  const sectionEntryDirs = ['complex', 'mobx', 'react', 'react/hooks'] as const;
+  for (const d of sectionEntryDirs) {
+    ensureSectionOverviewFromEntryIndex(d, sourceFiles);
   }
 
   writeSidebarJson(state.generatedGroups);

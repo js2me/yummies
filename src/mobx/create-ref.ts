@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/mobx
+ *
+ * ## Description
+ *
+ * **Observable ref** pattern for MobX: boxed mutable references with change listeners, metadata,
+ * and optional custom equality. Bridges React-style ref holders and MobX reactivity when a single
+ * mutable cell must notify dependents without replacing the whole parent object graph.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { createRef } from "yummies/mobx";
+ * ```
+ */
+
 import {
   type IEqualsComparer,
   makeObservable,

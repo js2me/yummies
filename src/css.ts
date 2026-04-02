@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/css
+ *
+ * ## Description
+ *
+ * Styling utilities for React and plain DOM: `rem` conversion, `clsx` + `tailwind-merge` via `cx`,
+ * and a `cva` bridge for variant-driven class names. The goal is predictable class strings without
+ * Tailwind conflicts and with less boilerplate than concatenating strings by hand across components.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { cx, toRem } from "yummies/css";
+ * ```
+ */
+
 import { cva as cvaLib } from 'class-variance-authority';
 import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';

@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/complex
+ *
+ * ## Description
+ *
+ * **Singleton-style config** backed by either `globalThis` (keyed by symbol) or a module closure.
+ * Use for app-wide feature flags, bootstrapped locale, or SSR-safe defaults without prop-drilling.
+ * Pairs with `createGlobalPoint` for other global handles in the same `yummies/complex` package.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { createGlobalConfig } from "yummies/complex";
+ * ```
+ */
+
 import type { AnyObject, Maybe } from 'yummies/types';
 import { createGlobalPoint } from './global-point.js';
 

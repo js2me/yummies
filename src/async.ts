@@ -1,4 +1,22 @@
 /**
+ * ---header-docs-section---
+ * # yummies/async
+ *
+ * ## Description
+ *
+ * Helpers for asynchronous control flow: delays, cancellable waits, scheduling on the next frame,
+ * and small utilities around `requestAnimationFrame` and `queueMicrotask`. They complement native
+ * `Promise`/`AbortSignal` patterns and keep timing logic easy to test and tree-shake per call site.
+ * Import only what you need from `yummies/async` so bundlers can drop unused helpers.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { sleep } from "yummies/async";
+ * ```
+ */
+
+/**
  * Returns a promise that resolves after `time` milliseconds.
  *
  * When `signal` is passed and becomes aborted before the delay elapses, the promise

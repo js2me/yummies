@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/react
+ *
+ * ## Description
+ *
+ * Barrel of React hooks: refs, observers, abort signals, stable event callbacks, and boolean state
+ * helpers. Each hook lives in its own module for tree-shaking; this index re-exports the full set
+ * for apps that prefer a single import path alongside `attachRefs` from the parent package entry.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { useToggle, useEvent } from "yummies/react";
+ * ```
+ */
+
 export * from './use-abort-controller.js';
 export * from './use-abort-signal.js';
 export * from './use-click-outside.js';

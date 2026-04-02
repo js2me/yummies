@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/mobx
+ *
+ * ## Description
+ *
+ * **Deep observable object** with structural `set` patches that reuse nested observables when keys
+ * overlap. Helps store trees (forms, filters, entities) under MobX without wholesale replacement
+ * and without manual `observable.map` wiring for every level.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { DeepObservableStruct } from "yummies/mobx";
+ * ```
+ */
+
 import { action, makeObservable, observable } from 'mobx';
 import { typeGuard } from 'yummies/type-guard';
 import type { AnyObject } from 'yummies/types';

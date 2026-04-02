@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/complex
+ *
+ * ## Description
+ *
+ * Tiny **publish–subscribe** bus: subscribers register callbacks, publishers broadcast arguments, and
+ * the last payload remains readable for late subscribers. Simpler than full event emitters when you
+ * only need in-memory fan-out inside a feature or view-model layer.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { createPubSub } from "yummies/complex";
+ * ```
+ */
+
 export type SubFn<PubArgs extends any[] = any[]> = (...args: PubArgs) => void;
 
 /**

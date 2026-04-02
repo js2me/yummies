@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/mobx
+ *
+ * ## Description
+ *
+ * **`createAtom` wrapper** that attaches arbitrary metadata and keeps MobX’s observed/unobserved
+ * hooks in one place. Useful for custom reactive primitives, async resources, or debugging atoms
+ * where the stock API is too bare.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { createEnhancedAtom } from "yummies/mobx";
+ * ```
+ */
+
 import { createAtom, type IAtom } from 'mobx';
 import type { AnyObject } from 'yummies/types';
 

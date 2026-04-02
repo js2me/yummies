@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/complex
+ *
+ * ## Description
+ *
+ * Callable **counter** objects with increment, decrement, and reset for UI steppers, pagination,
+ * and id generators. Values can be mapped on read so the public API stays typed while the internal
+ * tick stays numeric. This file is the `counter` slice of the broader `yummies/complex` entry point.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { createCounter } from "yummies/complex";
+ * ```
+ */
+
 export interface Counter<TValue = number> {
   (): TValue;
   counter: number;

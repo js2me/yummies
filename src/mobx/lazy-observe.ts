@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/mobx
+ *
+ * ## Description
+ *
+ * **Lazy subscriptions** tied to MobX observation: start work when the first reaction observes
+ * tracked keys, stop when nothing listens anymore (optionally after a delay). Ideal for polling,
+ * WebSocket feeds, or expensive caches that should idle when the UI is not mounted.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { lazyObserve } from "yummies/mobx";
+ * ```
+ */
+
 import { onBecomeObserved, onBecomeUnobserved } from 'mobx';
 
 /**

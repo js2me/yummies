@@ -1,3 +1,21 @@
+/**
+ * ---header-docs-section---
+ * # yummies/data
+ *
+ * ## Description
+ *
+ * General-purpose data helpers: shallow equality, normalizing values to arrays, and recursive
+ * `flatMap`-style transforms. They complement `Array`/`Object` builtins when you need stable
+ * comparisons for memoization or small structural utilities without pulling a large lodash-style
+ * dependency into the bundle.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { isShallowEqual, toArray } from "yummies/data";
+ * ```
+ */
+
 import type { AnyObject, Maybe } from 'yummies/types';
 
 /**

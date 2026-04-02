@@ -1,3 +1,21 @@
+/**
+ * ---header-docs-section---
+ * # yummies/type-guard
+ *
+ * ## Description
+ *
+ * Runtime **type guards** and narrowers for primitives, DOM nodes, `NaN`, and common app values.
+ * Each helper is implemented once with consistent `typeof` / `Object.prototype.toString` logic so
+ * `unknown` from JSON, events, or third-party scripts becomes safe typed branches without ad-hoc
+ * checks scattered through the codebase.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { typeGuard } from "yummies/type-guard";
+ * ```
+ */
+
 import type { AnyFunction, AnyObject, ValueOf } from 'yummies/types';
 
 const TYPE = {

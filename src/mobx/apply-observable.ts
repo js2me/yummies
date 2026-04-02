@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/mobx
+ *
+ * ## Description
+ *
+ * Compact **MobX `makeObservable`** wiring from tuple lists of annotations and keys. Reduces boilerplate
+ * when many fields share `observable`, `action`, or `computed` decorators and you want one call site
+ * instead of sprawling annotation maps across large stores.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { applyObservable } from "yummies/mobx";
+ * ```
+ */
+
 import { type AnnotationMapEntry, makeObservable } from 'mobx';
 import type { AnyObject } from 'yummies/types';
 

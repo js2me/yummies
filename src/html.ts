@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/html
+ *
+ * ## Description
+ *
+ * DOM-centric utilities: sanitizing HTML with **DOMPurify**, computed style probes, downloads via
+ * temporary anchors, and small string helpers for safe markup. Prefer these over `innerHTML` with
+ * raw user input; keep CSP and server-side validation as the real security boundary.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { getComputedColor } from "yummies/html";
+ * ```
+ */
+
 import DOMPurify, { type Config as DOMPurifyConfig } from 'dompurify';
 import { blobToUrl } from 'yummies/media';
 import type { Maybe } from 'yummies/types';

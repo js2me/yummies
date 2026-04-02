@@ -1,4 +1,22 @@
 /**
+ * ---header-docs-section---
+ * # yummies/device
+ *
+ * ## Description
+ *
+ * Lightweight user-agent sniffing for product UI: mobile/tablet heuristics and a normalized UA
+ * string accessor. These checks are best-effort (browsers spoof and evolve) and should gate only
+ * non-critical layout or analytics, never security. Prefer feature detection when the platform API
+ * is what you actually need.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { checkIsMobileDevice, getUserAgent } from "yummies/device";
+ * ```
+ */
+
+/**
  * Returns the normalized user agent string in lowercase.
  *
  * @example

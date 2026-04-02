@@ -1,3 +1,20 @@
+/**
+ * ---header-docs-section---
+ * # yummies/media
+ *
+ * ## Description
+ *
+ * Binary and media helpers: Base64 data URLs, object URLs, image orientation fixes, and related
+ * browser APIs wrapped in promises. Centralizes `FileReader`/`URL.createObjectURL` usage so image
+ * pipelines and uploads stay consistent and easier to test or mock.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { blobToBase64 } from "yummies/media";
+ * ```
+ */
+
 import { degToRad } from 'yummies/math';
 
 /**
