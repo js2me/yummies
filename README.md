@@ -15,7 +15,14 @@
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/yummies
 
 
-Yummies - a set of various utilities for JavaScript projects with open source code, designed to simplify the execution of common tasks and increase performance. This project provides developers with powerful and easy-to-use functions that can be easily integrated into any JavaScript code.
+```
+yummies - a set of various utilities for JavaScript projects with open source code,
+          designed to simplify the execution of common tasks and increase performance.
+          This project provides developers with powerful and easy-to-use functions
+          that can be easily integrated into any JavaScript code.  
+```
+
+### [Read the docs →](https://js2me.github.io/mobx-tanstack-query/)   
 
 ## [yummies/async](src/async.ts)  
 Utilities for working with asynchronous code  
