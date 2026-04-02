@@ -20,7 +20,7 @@
           This project provides developers with powerful and easy-to-use functions
           that can be easily integrated into any JavaScript code.  
 
-## [Read the docs →](https://js2me.github.io/mobx-tanstack-query/)   
+## [Read the docs →](https://js2me.github.io/yummies/)   
 
 ## Migration from 5.x to 6.x   
 
