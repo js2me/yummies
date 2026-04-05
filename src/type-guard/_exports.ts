@@ -16,7 +16,12 @@
  * ```
  */
 
-import type { AnyFunction, AnyObject, ValueOf } from 'yummies/types';
+import type {
+  AnyFunction,
+  AnyObject,
+  FalsyValues,
+  ValueOf,
+} from 'yummies/types';
 
 const TYPE = {
   Null: 'null',
@@ -92,10 +97,10 @@ export const isDefined = <T>(value: T | undefined | null): value is T =>
   value != null;
 
 /**
- * Checks whether a value is truthy (same as `Boolean(value)` in `if (...)`).
+ * Checks whether a value is truthy (`!!value`).
  *
  * @param value Value to test.
- * @returns `true` when coercion to boolean is true.
+ * @returns `true` when `!!value` is true.
  *
  * @example
  * ```ts
@@ -107,15 +112,14 @@ export const isDefined = <T>(value: T | undefined | null): value is T =>
  * isTruthy(0); // false
  * ```
  */
-export const isTruthy = (value: unknown): boolean => Boolean(value);
+export const isTruthy = <T>(value: T): value is Exclude<T, FalsyValues> =>
+  !!value;
 
 /**
- * Checks whether a value is falsy (same as `!value` / the `else` branch of `if (value)`).
- *
- * Includes `false`, `0`, `-0`, `NaN`, `""`, `null`, `undefined`, and `0n`.
+ * Checks whether a value is falsy (`!Boolean(value)`).
  *
  * @param value Value to test.
- * @returns `true` when coercion to boolean is false.
+ * @returns `true` when `Boolean(value)` is false.
  *
  * @example
  * ```ts
@@ -127,7 +131,8 @@ export const isTruthy = (value: unknown): boolean => Boolean(value);
  * isFalsy("x"); // false
  * ```
  */
-export const isFalsy = (value: unknown): boolean => !value;
+export const isFalsy = <T>(value: T): value is Extract<T, FalsyValues> =>
+  !value;
 
 /**
  * Checks whether a value is exactly `null`.

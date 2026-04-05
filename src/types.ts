@@ -166,11 +166,12 @@ export type UnionToIntersection<U> = (
   : never;
 
 /**
- * Represents falsy values (undefined, null, empty string, false, or 0).
+ * Represents falsy values aligned with `!Boolean(x)` / `typeGuard.isFalsy` (undefined, null, empty
+ * string, false, `0`, and `0n`).
  *
  * @returns Union of all falsy values
  */
-export type FalsyValues = undefined | null | '' | false | 0;
+export type FalsyValues = undefined | null | '' | false | 0 | 0n;
 
 /**
  * Represents a type that can be either the specified type, undefined, or any other falsy value.
