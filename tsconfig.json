@@ -27,6 +27,7 @@
 			"yummies/parser": ["./src/parser/index.ts"],
 			"yummies/react": ["./src/react/index.ts"],
 			"yummies/type-guard": ["./src/type-guard/index.ts"],
+			"yummies/assert": ["./src/assert/index.ts"],
 			"yummies/async": ["./src/async.ts"],
 			"yummies/common": ["./src/common.ts"],
 			"yummies/cookie": ["./src/cookie.ts"],
