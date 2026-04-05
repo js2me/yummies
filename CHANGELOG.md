@@ -1,5 +1,11 @@
 # yummies
 
+## 7.14.2
+
+### Patch Changes
+
+- [`9061c25`](https://github.com/js2me/yummies/commit/9061c25f907982e47108c062f527f7569206c79b) Thanks [@js2me](https://github.com/js2me)! - fixed `typeGuard.isTruthy` `typeGuard.isFalsy` as type guarding
+
 ## 7.14.1
 
 ### Patch Changes
