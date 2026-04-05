@@ -1,5 +1,11 @@
 # yummies
 
+## 7.14.1
+
+### Patch Changes
+
+- [`f5012a8`](https://github.com/js2me/yummies/commit/f5012a8c416ec3a26c5714746c5a8e79d94cc5bf) Thanks [@js2me](https://github.com/js2me)! - fixed yummies.assert (use typeGuard)
+
 ## 7.14.0
 
 ### Minor Changes
