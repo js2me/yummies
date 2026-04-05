@@ -1,5 +1,11 @@
 # yummies
 
+## 7.14.0
+
+### Minor Changes
+
+- [`ff102dc`](https://github.com/js2me/yummies/commit/ff102dcc8205f56a0d11ee6d12882435a0117b12) Thanks [@js2me](https://github.com/js2me)! - added `yummies/assert` for type assertiong utils
+
 ## 7.13.0
 
 ### Minor Changes
