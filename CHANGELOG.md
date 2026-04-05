@@ -1,5 +1,15 @@
 # yummies
 
+## 7.13.0
+
+### Minor Changes
+
+- [`626a622`](https://github.com/js2me/yummies/commit/626a622620d579b2626feb14655d05af29265167) Thanks [@js2me](https://github.com/js2me)! - [docs] improve docs
+
+### Patch Changes
+
+- [`f595ed5`](https://github.com/js2me/yummies/commit/f595ed52d3c829f99317e15f200473039c31d26d) Thanks [@js2me](https://github.com/js2me)! - [docs] update homepage, add docs link
+
 ## 7.12.0
 
 ### Minor Changes
