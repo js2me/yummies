@@ -92,6 +92,44 @@ export const isDefined = <T>(value: T | undefined | null): value is T =>
   value != null;
 
 /**
+ * Checks whether a value is truthy (same as `Boolean(value)` in `if (...)`).
+ *
+ * @param value Value to test.
+ * @returns `true` when coercion to boolean is true.
+ *
+ * @example
+ * ```ts
+ * isTruthy(1); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isTruthy(0); // false
+ * ```
+ */
+export const isTruthy = (value: unknown): boolean => Boolean(value);
+
+/**
+ * Checks whether a value is falsy (same as `!value` / the `else` branch of `if (value)`).
+ *
+ * Includes `false`, `0`, `-0`, `NaN`, `""`, `null`, `undefined`, and `0n`.
+ *
+ * @param value Value to test.
+ * @returns `true` when coercion to boolean is false.
+ *
+ * @example
+ * ```ts
+ * isFalsy(null); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isFalsy("x"); // false
+ * ```
+ */
+export const isFalsy = (value: unknown): boolean => !value;
+
+/**
  * Checks whether a value is exactly `null`.
  *
  * @param value Value to test.

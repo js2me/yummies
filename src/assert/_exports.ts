@@ -6,8 +6,8 @@
  *
  * Runtime **assertions** for invariants, narrowing, and exhaustiveness. Helpers throw
  * {@link AssertionError} with an optional message (`string` or {@link MaybeFn}) so failing fast stays
- * explicit without a heavy assertion library. Use `assert.ok`, `assert.defined`, `assert.fail`, and
- * the rest on the namespace export from the package entry.
+ * explicit without a heavy assertion library. Use `assert.ok`, `assert.string`, `assert.defined`,
+ * `assert.fail`, and the rest on the namespace export from the package entry.
  *
  * ## Usage
  *
@@ -16,10 +16,12 @@
  *
  * assert.ok(user.id, "user id is required");
  * assert.defined(maybeName);
+ * assert.string(raw);
  * ```
  */
 
 import { callFunction } from 'yummies/common';
+import { typeGuard } from 'yummies/type-guard';
 import type { Maybe, MaybeFn } from 'yummies/types';
 
 /**
@@ -54,7 +56,7 @@ export function ok(
   condition: unknown,
   message?: MaybeFn<string>,
 ): asserts condition {
-  if (!condition) {
+  if (typeGuard.isFalsy(condition)) {
     throw new AssertionError(resolveAssertMessage(message, 'Assertion failed'));
   }
 }
@@ -79,7 +81,7 @@ export function defined<T>(
   value: Maybe<T>,
   message?: MaybeFn<string>,
 ): asserts value is NonNullable<T> {
-  if (value == null) {
+  if (!typeGuard.isDefined(value)) {
     throw new AssertionError(
       resolveAssertMessage(message, 'Expected a defined value'),
     );
@@ -96,7 +98,7 @@ export function notNull<T>(
   value: T | null,
   message?: MaybeFn<string>,
 ): asserts value is T {
-  if (value === null) {
+  if (typeGuard.isNull(value)) {
     throw new AssertionError(
       resolveAssertMessage(message, 'Expected a non-null value'),
     );
@@ -113,9 +115,77 @@ export function notUndefined<T>(
   value: T | undefined,
   message?: MaybeFn<string>,
 ): asserts value is T {
-  if (value === undefined) {
+  if (typeGuard.isUndefined(value)) {
     throw new AssertionError(
       resolveAssertMessage(message, 'Expected a defined value'),
+    );
+  }
+}
+
+/**
+ * Throws when `value` is not a string (primitive or `String` object); uses `typeGuard.isString`.
+ *
+ * @param value Value to narrow.
+ * @param message Optional message or lazy message factory.
+ */
+export function string(
+  value: unknown,
+  message?: MaybeFn<string>,
+): asserts value is string {
+  if (!typeGuard.isString(value)) {
+    throw new AssertionError(
+      resolveAssertMessage(message, 'Expected a string'),
+    );
+  }
+}
+
+/**
+ * Throws when `value` is not a finite non-NaN number; uses `typeGuard.isNumber`.
+ *
+ * @param value Value to narrow.
+ * @param message Optional message or lazy message factory.
+ */
+export function number(
+  value: unknown,
+  message?: MaybeFn<string>,
+): asserts value is number {
+  if (!typeGuard.isNumber(value)) {
+    throw new AssertionError(
+      resolveAssertMessage(message, 'Expected a finite number'),
+    );
+  }
+}
+
+/**
+ * Throws when `value` is not a boolean; uses `typeGuard.isBoolean`.
+ *
+ * @param value Value to narrow.
+ * @param message Optional message or lazy message factory.
+ */
+export function boolean(
+  value: unknown,
+  message?: MaybeFn<string>,
+): asserts value is boolean {
+  if (!typeGuard.isBoolean(value)) {
+    throw new AssertionError(
+      resolveAssertMessage(message, 'Expected a boolean'),
+    );
+  }
+}
+
+/**
+ * Throws when `value` is not a symbol; uses `typeGuard.isSymbol`.
+ *
+ * @param value Value to narrow.
+ * @param message Optional message or lazy message factory.
+ */
+export function symbol(
+  value: unknown,
+  message?: MaybeFn<string>,
+): asserts value is symbol {
+  if (!typeGuard.isSymbol(value)) {
+    throw new AssertionError(
+      resolveAssertMessage(message, 'Expected a symbol'),
     );
   }
 }

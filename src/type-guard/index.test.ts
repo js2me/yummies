@@ -115,6 +115,36 @@ describe('typeGuard', () => {
     expect(typeGuard.isDefined(Symbol())).toBe(true);
   });
 
+  test('isTruthy / isFalsy', () => {
+    expect(typeGuard.isTruthy(true)).toBe(true);
+    expect(typeGuard.isTruthy(1)).toBe(true);
+    expect(typeGuard.isTruthy('a')).toBe(true);
+    expect(typeGuard.isTruthy({})).toBe(true);
+    expect(typeGuard.isTruthy([])).toBe(true);
+    expect(typeGuard.isTruthy(false)).toBe(false);
+    expect(typeGuard.isTruthy(0)).toBe(false);
+    expect(typeGuard.isTruthy('')).toBe(false);
+    expect(typeGuard.isTruthy(null)).toBe(false);
+    expect(typeGuard.isTruthy(undefined)).toBe(false);
+    expect(typeGuard.isTruthy(Number.NaN)).toBe(false);
+
+    expect(typeGuard.isFalsy(false)).toBe(true);
+    expect(typeGuard.isFalsy(0)).toBe(true);
+    expect(typeGuard.isFalsy(-0)).toBe(true);
+    expect(typeGuard.isFalsy('')).toBe(true);
+    expect(typeGuard.isFalsy(null)).toBe(true);
+    expect(typeGuard.isFalsy(undefined)).toBe(true);
+    expect(typeGuard.isFalsy(Number.NaN)).toBe(true);
+    expect(typeGuard.isFalsy(0n)).toBe(true);
+    expect(typeGuard.isFalsy(true)).toBe(false);
+    expect(typeGuard.isFalsy(1)).toBe(false);
+    expect(typeGuard.isFalsy('x')).toBe(false);
+    expect(typeGuard.isFalsy({})).toBe(false);
+
+    expect(typeGuard.isTruthy(null)).toBe(!typeGuard.isFalsy(null));
+    expect(typeGuard.isTruthy(0)).toBe(!typeGuard.isFalsy(0));
+  });
+
   test('isArray', () => {
     expect(typeGuard.isArray([1, 2, 3])).toBe(true);
     expect(typeGuard.isArray({})).toBe(false);

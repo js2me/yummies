@@ -42,6 +42,34 @@ describe('assert', () => {
     );
   });
 
+  test('string', () => {
+    expect(() => assert.string('')).not.toThrow();
+    expect(() => assert.string('a')).not.toThrow();
+    expect(() => assert.string(1)).toThrow('Expected a string');
+    expect(() => assert.string(null, 'need str')).toThrow('need str');
+  });
+
+  test('number', () => {
+    expect(() => assert.number(0)).not.toThrow();
+    expect(() => assert.number(1.5)).not.toThrow();
+    expect(() => assert.number(Number.NaN)).toThrow('Expected a finite number');
+    expect(() => assert.number(Infinity)).toThrow('Expected a finite number');
+    expect(() => assert.number('1')).toThrow('Expected a finite number');
+  });
+
+  test('boolean', () => {
+    expect(() => assert.boolean(true)).not.toThrow();
+    expect(() => assert.boolean(false)).not.toThrow();
+    expect(() => assert.boolean(0)).toThrow('Expected a boolean');
+    expect(() => assert.boolean('true', 'b')).toThrow('b');
+  });
+
+  test('symbol', () => {
+    expect(() => assert.symbol(Symbol())).not.toThrow();
+    expect(() => assert.symbol(Symbol.for('x'))).not.toThrow();
+    expect(() => assert.symbol('sym')).toThrow('Expected a symbol');
+  });
+
   test('fail', () => {
     expect(() => assert.fail()).toThrow(assert.AssertionError);
     expect(() => assert.fail('stop')).toThrow('stop');
