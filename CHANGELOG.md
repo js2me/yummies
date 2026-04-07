@@ -1,5 +1,11 @@
 # yummies
 
+## 7.15.0
+
+### Minor Changes
+
+- [`96f028a`](https://github.com/js2me/yummies/commit/96f028a9e47bf7bebd5c0e90acd9819b88aa56d0) Thanks [@js2me](https://github.com/js2me)! - add `flushPendingReactions` mobx utility
+
 ## 7.14.2
 
 ### Patch Changes
