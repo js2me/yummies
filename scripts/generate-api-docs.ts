@@ -95,11 +95,15 @@ function jsDocInlineTagsToMarkdown(text: string): string {
 }
 
 function stripHeaderDocsMarkerLines(text: string): string {
-  return text
-    .split('\n')
-    .filter((line) => line.trim() !== HEADER_DOCS_MARKER)
-    .join('\n')
-    .trim();
+  return (
+    text
+      .split('\n')
+      .filter((line) => line.trim() !== HEADER_DOCS_MARKER)
+      .join('\n')
+      // Нельзя `.trim()`: в `processMarkdownPreservingCodeBlocks` этот текст режется на куски,
+      // и хвостовые `\n` перед ``` должны сохраниться, иначе получится `## Usage```ts`.
+      .trimStart()
+  );
 }
 
 function finalizeDocMarkdown(raw: string): string {
