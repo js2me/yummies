@@ -15,16 +15,16 @@
  * ```
  */
 
-import dayjs, { type Dayjs, type ManipulateType } from 'dayjs';
-import duration from 'dayjs/plugin/duration.js';
-import relativeTime from 'dayjs/plugin/relativeTime.js';
+import dayjs, { type Dayjs, type ManipulateType } from 'dayjs/esm/index.js';
+import duration from 'dayjs/esm/plugin/duration/index.js';
+import relativeTime from 'dayjs/esm/plugin/relativeTime/index.js';
 import { format } from 'yummies/format';
 import { ms, unitsToMs } from 'yummies/ms';
 import { declension } from 'yummies/text';
 import { typeGuard } from 'yummies/type-guard';
 import type { Maybe } from 'yummies/types';
 
-import 'dayjs/locale/ru.js';
+import 'dayjs/esm/locale/ru.js';
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
