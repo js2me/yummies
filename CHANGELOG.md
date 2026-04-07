@@ -1,5 +1,11 @@
 # yummies
 
+## 7.15.1
+
+### Patch Changes
+
+- [`3c28724`](https://github.com/js2me/yummies/commit/3c28724528136449255e6ccd4ea905aea6f536ca) Thanks [@js2me](https://github.com/js2me)! - fixed `dayjs` import
+
 ## 7.15.0
 
 ### Minor Changes
