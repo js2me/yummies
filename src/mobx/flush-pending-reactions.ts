@@ -1,6 +1,7 @@
 import { _getGlobalState } from 'mobx';
 import type { MobXGlobals } from 'mobx/dist/internal.js';
 
+/** Same cap as MobX's internal `MAX_REACTION_ITERATIONS` (not exported from the package). */
 const DEFAULT_MAX_REACTION_ITERATIONS = 100;
 
 /**

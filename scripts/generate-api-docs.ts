@@ -11,6 +11,9 @@ const SRC_DIR = path.join(process.cwd(), 'src');
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 const API_DOCS_BASE = path.join(DOCS_DIR, 'api');
 
+/** Маркер «module header» в JSDoc; не должен попадать в сгенерированные страницы экспортов. */
+const HEADER_DOCS_MARKER = '---header-docs-section---';
+
 interface ExportDoc {
   name: string;
   kind: 'function' | 'const' | 'class' | 'type' | 'interface' | 'enum';
@@ -21,15 +24,41 @@ interface ExportDoc {
   deprecated?: string;
 }
 
-function sanitizeMarkdown(text: string): string {
-  // Заменяем {name} на `name`, чтобы VitePress не пытался интерполировать Vue-выражения.
-  let result = text.replace(
-    /\{([^}]+)\}/g,
-    (_m, name) => `\`${String(name)}\``,
+/**
+ * Экранирует `<` / `>` вне inline `` `...` `` (fenced-блоки режутся в `sanitizeMarkdown`).
+ * Отдельной стандартной утилиты нет: HTML-эскейперы не знают Markdown; полный разбор — micromark/remark,
+ * что избыточно. Обычный приём — один `replace` с группами «кодspan | &lt; | &gt;».
+ */
+function escapeAnglesInProseSegment(prose: string): string {
+  return prose.replace(
+    /(`[^`]*`)|(<)|(>)/g,
+    (
+      _m,
+      code: string | undefined,
+      lt: string | undefined,
+      gt: string | undefined,
+    ) => {
+      if (code !== undefined) return code;
+      if (lt !== undefined) return '&lt;';
+      if (gt !== undefined) return '&gt;';
+      return _m;
+    },
   );
-  // Экранируем угловые скобки, чтобы <T> и подобные не воспринимались как HTML-теги.
-  result = result.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  return result;
+}
+
+function sanitizeMarkdown(text: string): string {
+  // В fenced-блоках не трогаем `{ foo }` (импорты TS) и углы — только в «прозе».
+  const chunks = text.split(/(```[\s\S]*?```)/g);
+  return chunks
+    .map((chunk) => {
+      if (chunk.startsWith('```')) return chunk;
+      const vueSafe = chunk.replace(
+        /\{([^}]+)\}/g,
+        (_m, name) => `\`${String(name)}\``,
+      );
+      return escapeAnglesInProseSegment(vueSafe);
+    })
+    .join('');
 }
 
 /**
@@ -65,11 +94,19 @@ function jsDocInlineTagsToMarkdown(text: string): string {
   );
 }
 
-function finalizeDocMarkdown(raw: string): string {
-  return sanitizeMarkdown(jsDocInlineTagsToMarkdown(raw));
+function stripHeaderDocsMarkerLines(text: string): string {
+  return text
+    .split('\n')
+    .filter((line) => line.trim() !== HEADER_DOCS_MARKER)
+    .join('\n')
+    .trim();
 }
 
-const HEADER_DOCS_MARKER = '---header-docs-section---';
+function finalizeDocMarkdown(raw: string): string {
+  return sanitizeMarkdown(
+    jsDocInlineTagsToMarkdown(stripHeaderDocsMarkerLines(raw)),
+  );
+}
 
 /**
  * Обрабатывает только «прозу» вне fenced-блоков, чтобы не ломать `{ … }` и `<T>` внутри ```.
