@@ -19,5 +19,6 @@ export * from './apply-observable.js';
 export * from './create-enhanced-atom.js';
 export * from './create-ref.js';
 export * from './deep-observable-struct.js';
+export * from './flush-pending-reactions.js';
 export * from './get-mobx-administration.js';
 export * from './lazy-observe.js';
