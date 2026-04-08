@@ -42,7 +42,7 @@ export function flushPendingReactions(
 ): void {
   const gs: MobXGlobals = _getGlobalState();
 
-  if (gs.isRunningReactions || gs.pendingReactions.length === 0) {
+  if (!maxCount || gs.isRunningReactions || gs.pendingReactions.length === 0) {
     return;
   }
 
