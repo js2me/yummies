@@ -1,5 +1,11 @@
 # yummies
 
+## 7.15.2
+
+### Patch Changes
+
+- [`7bdb786`](https://github.com/js2me/yummies/commit/7bdb78650eff9c9b8ac5eb30b1aa18ab0ece9e8f) Thanks [@js2me](https://github.com/js2me)! - flushPendingReactions early return for zero max count
+
 ## 7.15.1
 
 ### Patch Changes
