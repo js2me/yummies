@@ -1,7 +1,25 @@
+/**
+ * ---header-docs-section---
+ * # yummies/mobx
+ *
+ * ## Description
+ *
+ * **`annotation`** — factories for `makeObservable` maps and {@link applyObservable} tuples:
+ * `observable.*` flavours, `computed` with shorthand `equals` (`struct`, `shallow`, reference), custom
+ * comparators, and `false` to skip a field.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { annotation } from "yummies/mobx";
+ * ```
+ */
+
 import {
   comparer,
   computed,
   type IComputedValueOptions,
+  type IEqualsComparer,
   observable,
 } from 'mobx';
 import type { AnyObject } from 'yummies/types';
@@ -12,14 +30,14 @@ import type { AnyObject } from 'yummies/types';
  * - `'struct'` — structural comparison (`comparer.structural`).
  * - `'shallow'` — shallow comparison (`comparer.shallow`).
  * - `true` — reference equality (`comparer.default`).
- * - `false` — disable the annotation (see {@link annotation}).
+ * - `false` — skip the annotation (handled by the `annotation.computed` / `annotation.observable` helpers).
  * - A custom `(a, b) => boolean` is allowed by the type for parity with `IComputedValueOptions.equals`.
  */
 export type ComputedEqualsValue =
   | 'struct'
   | 'shallow'
   | boolean
-  | ((a: any, b: any) => boolean);
+  | IEqualsComparer<any>;
 
 const computedEqualsResolvers: AnyObject = {
   true: comparer.default,
@@ -36,7 +54,8 @@ const computedEqualsResolvers: AnyObject = {
 export type ComputedOtherOptions = Omit<IComputedValueOptions<any>, 'equals'>;
 
 /**
- * Observable “flavour” keys supported by {@link observable}: `ref`, `deep`, `shallow`, `struct`.
+ * Observable flavour keys returned by {@link annotation.observable}: `ref`, `deep`, `shallow`, `struct`.
+ * Also supported: `true` (base `observable`) and `false` (no annotation).
  */
 export type ObservableTypes = keyof Pick<
   typeof observable,
@@ -44,15 +63,15 @@ export type ObservableTypes = keyof Pick<
 >;
 
 /**
- * Returns a MobX annotation factory for `makeObservable` / tuple-style wiring: either an
- * `observable.*` variant or a preconfigured `computed({ ... })` decorator.
+ * MobX annotation factories for `makeObservable` and tuple-style wiring ({@link applyObservable}).
  *
- * Pass `false` as the second argument to skip annotating that field (returns `false`).
+ * - **`annotation.observable(value?)`** — `observable.ref` / `deep` / `shallow` / `struct`; `true` or
+ *   omitted → base `observable` (deep by default); `false` → `false` (field omitted from the map).
+ * - **`annotation.computed(value?, options?)`** — `computed({ ...options, equals })` with `equals` from
+ *   {@link ComputedEqualsValue} or a custom `(a, b) => boolean`. Omitted `value`, unknown literals, and
+ *   `true` resolve to `comparer.default`; `value === false` returns `false`.
  *
- * @param kind - `'observable'` or `'computed'`.
- * @param value - For `observable`, one of {@link ObservableTypes} or `false`. For `computed`,
- *   a {@link ComputedEqualsValue} (or `false`).
- * @param options - Only for `computed`: extra options merged into `computed({ ... })`.
+ * Other `computed` options (except `equals`) go in the second argument; see {@link ComputedOtherOptions}.
  *
  * @example Observable variants
  * ```ts
@@ -65,8 +84,8 @@ export type ObservableTypes = keyof Pick<
  *
  *   constructor() {
  *     makeObservable(this, {
- *       shallowMap: annotation('observable', 'shallow'),
- *       deep: annotation('observable', 'deep'),
+ *       shallowMap: annotation.observable('shallow'),
+ *       deep: annotation.observable('deep'),
  *     });
  *   }
  * }
@@ -75,53 +94,73 @@ export type ObservableTypes = keyof Pick<
  * @example Skip a field
  * ```ts
  * makeObservable(this, {
- *   plain: annotation('observable', false), // not decorated
+ *   plain: annotation.observable(false), // not decorated
  * });
  * ```
  *
  * @example Computed with structural equality
  * ```ts
  * makeObservable(this, {
- *   fullName: annotation('computed', 'struct', { name: 'fullName' }),
+ *   fullName: annotation.computed('struct', { name: 'fullName' }),
  * });
  * ```
  *
  * @example Computed with default reference equality
  * ```ts
  * makeObservable(this, {
- *   total: annotation('computed', true),
+ *   total: annotation.computed(true),
+ * });
+ * ```
+ *
+ * @example Omitted first argument or `true` — reference equality (`comparer.default`)
+ * ```ts
+ * makeObservable(this, {
+ *   n: annotation.computed(undefined, { name: 'n' }),
+ *   m: annotation.computed(true, { name: 'm' }), // same `equals` as omitted
+ * });
+ * ```
+ *
+ * @example Custom `equals`
+ * ```ts
+ * makeObservable(this, {
+ *   row: annotation.computed((a, b) => a.id === b.id),
+ * });
+ * ```
+ *
+ * @example With {@link applyObservable}
+ * ```ts
+ * applyObservable(store, [
+ *   [annotation.observable('shallow'), 'cache', 'index'],
+ *   [annotation.computed('struct'), 'viewModel'],
+ * ]);
+ * ```
+ *
+ * @example `observable.ref` and skipping `computed`
+ * ```ts
+ * makeObservable(this, {
+ *   handle: annotation.observable('ref'),
+ *   skipMe: annotation.computed(false),
  * });
  * ```
  */
-export function annotation(
-  kind: 'observable',
-  type: ObservableTypes | false,
-):
-  | typeof observable
-  | typeof observable.struct
-  | typeof observable.ref
-  | typeof observable.deep
-  | typeof observable.shallow
-  | false;
-export function annotation(
-  kind: 'computed',
-  equals: ComputedEqualsValue,
-  options?: ComputedOtherOptions,
-): ReturnType<typeof computed> | false;
 
-export function annotation(kind: any, value: any, options?: any): any {
-  if (value === false) {
-    return false;
-  }
-
-  if (kind === 'computed') {
-    const equalsFn = computedEqualsResolvers[value] ?? comparer.default;
+export const annotation = {
+  computed: (value?: ComputedEqualsValue, options?: any) => {
+    if (value === false) return false;
 
     return computed({
       ...options,
-      equals: equalsFn,
+      equals:
+        typeof value === 'function'
+          ? value
+          : (computedEqualsResolvers[
+              value as keyof typeof computedEqualsResolvers
+            ] ?? comparer.default),
     });
-  } else {
-    return observable[value as ObservableTypes];
-  }
-}
+  },
+  observable: (value?: ObservableTypes | boolean) => {
+    if (value === false) return false;
+    if (value === undefined || value === true) return observable;
+    return observable[value];
+  },
+};

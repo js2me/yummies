@@ -4,14 +4,15 @@
  *
  * ## Description
  *
- * Optional MobX helpers: observable wiring, refs, lazy observation, deep structs, and low-level
- * atom utilities. Peer dependency **mobx** stays out of your bundle until you import from this
- * entry; use these helpers to reduce boilerplate around `makeObservable` and subscription lifecycles.
+ * Optional MobX helpers: observable wiring, **`annotation`** factories for `makeObservable` maps,
+ * refs, lazy observation, deep structs, and low-level atom utilities. Peer dependency **mobx** stays
+ * out of your bundle until you import from this entry; use these helpers to reduce boilerplate around
+ * `makeObservable` and subscription lifecycles.
  *
  * ## Usage
  *
  * ```ts
- * import { applyObservable, createRef } from "yummies/mobx";
+ * import { annotation, applyObservable, createRef } from "yummies/mobx";
  * ```
  */
 
