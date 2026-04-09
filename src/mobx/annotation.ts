@@ -12,7 +12,7 @@ import type { AnyObject } from 'yummies/types';
  * - `'struct'` — structural comparison (`comparer.structural`).
  * - `'shallow'` — shallow comparison (`comparer.shallow`).
  * - `true` — reference equality (`comparer.default`).
- * - `false` — disable the annotation (see {@link getObservableAnnotation}).
+ * - `false` — disable the annotation (see {@link annotation}).
  * - A custom `(a, b) => boolean` is allowed by the type for parity with `IComputedValueOptions.equals`.
  */
 export type ComputedEqualsValue =
@@ -57,7 +57,7 @@ export type ObservableTypes = keyof Pick<
  * @example Observable variants
  * ```ts
  * import { makeObservable } from 'mobx';
- * import { getObservableAnnotation } from 'yummies/mobx';
+ * import { annotation } from 'yummies/mobx';
  *
  * class Store {
  *   shallowMap = new Map();
@@ -65,8 +65,8 @@ export type ObservableTypes = keyof Pick<
  *
  *   constructor() {
  *     makeObservable(this, {
- *       shallowMap: getObservableAnnotation('observable', 'shallow'),
- *       deep: getObservableAnnotation('observable', 'deep'),
+ *       shallowMap: annotation('observable', 'shallow'),
+ *       deep: annotation('observable', 'deep'),
  *     });
  *   }
  * }
@@ -75,25 +75,25 @@ export type ObservableTypes = keyof Pick<
  * @example Skip a field
  * ```ts
  * makeObservable(this, {
- *   plain: getObservableAnnotation('observable', false), // not decorated
+ *   plain: annotation('observable', false), // not decorated
  * });
  * ```
  *
  * @example Computed with structural equality
  * ```ts
  * makeObservable(this, {
- *   fullName: getObservableAnnotation('computed', 'struct', { name: 'fullName' }),
+ *   fullName: annotation('computed', 'struct', { name: 'fullName' }),
  * });
  * ```
  *
  * @example Computed with default reference equality
  * ```ts
  * makeObservable(this, {
- *   total: getObservableAnnotation('computed', true),
+ *   total: annotation('computed', true),
  * });
  * ```
  */
-export function getObservableAnnotation(
+export function annotation(
   kind: 'observable',
   type: ObservableTypes | false,
 ):
@@ -103,17 +103,13 @@ export function getObservableAnnotation(
   | typeof observable.deep
   | typeof observable.shallow
   | false;
-export function getObservableAnnotation(
+export function annotation(
   kind: 'computed',
   equals: ComputedEqualsValue,
   options?: ComputedOtherOptions,
 ): ReturnType<typeof computed> | false;
 
-export function getObservableAnnotation(
-  kind: any,
-  value: any,
-  options?: any,
-): any {
+export function annotation(kind: any, value: any, options?: any): any {
   if (value === false) {
     return false;
   }

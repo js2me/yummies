@@ -2,4 +2,4 @@
 "yummies": minor
 ---
 
-added `getObservableAnnotation` util for mobx
+added `annotation` util for mobx
