@@ -149,11 +149,15 @@ type AnnotationObject = {
     value?: Exclude<ComputedEqualsValue, false>,
     options?: ComputedOtherOptions,
   ): typeof computed.struct;
+  computed(value?: ComputedEqualsValue): false | typeof computed.struct;
   observable(value: Extract<ObservableTypes, false>): false;
   observable(value?: Extract<ObservableTypes, true>): typeof observable;
   observable<TValue extends Exclude<ObservableTypes, boolean>>(
     value: TValue,
   ): (typeof observable)[TValue];
+  observable(
+    value?: ObservableTypes,
+  ): false | (typeof observable)[Exclude<ObservableTypes, boolean>];
 };
 
 export const annotation = {
