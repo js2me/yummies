@@ -144,8 +144,21 @@ export type ObservableTypes = keyof Pick<
  * ```
  */
 
+type AnnotationObject = {
+  computed(value: false): false;
+  computed(
+    value?: Exclude<ComputedEqualsValue, false>,
+    options?: ComputedOtherOptions,
+  ): typeof computed.struct;
+  observable(value: false): false;
+  observable(value?: undefined | true): typeof observable;
+  observable<TValue extends ObservableTypes>(
+    value: TValue,
+  ): (typeof observable)[TValue];
+};
+
 export const annotation = {
-  computed: (value?: ComputedEqualsValue, options?: any) => {
+  computed: (value?: ComputedEqualsValue, options?: ComputedOtherOptions) => {
     if (value === false) return false;
 
     return computed({
@@ -163,4 +176,4 @@ export const annotation = {
     if (value === undefined || value === true) return observable;
     return observable[value];
   },
-};
+} as AnnotationObject;
