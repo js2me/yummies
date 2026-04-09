@@ -1,5 +1,11 @@
 # yummies
 
+## 7.16.0
+
+### Minor Changes
+
+- [`22c5d02`](https://github.com/js2me/yummies/commit/22c5d02a3487e59fe5a7c2a7947c566e28603f2c) Thanks [@js2me](https://github.com/js2me)! - added `annotation` util for mobx
+
 ## 7.15.2
 
 ### Patch Changes
