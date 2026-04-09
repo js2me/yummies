@@ -21,4 +21,5 @@ export * from './create-ref.js';
 export * from './deep-observable-struct.js';
 export * from './flush-pending-reactions.js';
 export * from './get-mobx-administration.js';
+export * from './get-observable-annotation.js';
 export * from './lazy-observe.js';
