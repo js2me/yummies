@@ -57,10 +57,9 @@ export type ComputedOtherOptions = Omit<IComputedValueOptions<any>, 'equals'>;
  * Observable flavour keys returned by {@link annotation.observable}: `ref`, `deep`, `shallow`, `struct`.
  * Also supported: `true` (base `observable`) and `false` (no annotation).
  */
-export type ObservableTypes = keyof Pick<
-  typeof observable,
-  'ref' | 'deep' | 'shallow' | 'struct'
->;
+export type ObservableTypes =
+  | keyof Pick<typeof observable, 'ref' | 'deep' | 'shallow' | 'struct'>
+  | boolean;
 
 /**
  * MobX annotation factories for `makeObservable` and tuple-style wiring ({@link applyObservable}).
@@ -150,9 +149,9 @@ type AnnotationObject = {
     value?: Exclude<ComputedEqualsValue, false>,
     options?: ComputedOtherOptions,
   ): typeof computed.struct;
-  observable(value: false): false;
-  observable(value?: undefined | true): typeof observable;
-  observable<TValue extends ObservableTypes>(
+  observable(value: Extract<ObservableTypes, false>): false;
+  observable(value?: Extract<ObservableTypes, true>): typeof observable;
+  observable<TValue extends Exclude<ObservableTypes, boolean>>(
     value: TValue,
   ): (typeof observable)[TValue];
 };
