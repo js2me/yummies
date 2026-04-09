@@ -1,5 +1,11 @@
 # yummies
 
+## 7.16.1
+
+### Patch Changes
+
+- [`93698c8`](https://github.com/js2me/yummies/commit/93698c8bdbffaa65d80c0b4091d256d2bf1ee9f3) Thanks [@js2me](https://github.com/js2me)! - fixed typings for mobx annotation
+
 ## 7.16.0
 
 ### Minor Changes
