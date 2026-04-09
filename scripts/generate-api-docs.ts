@@ -213,6 +213,110 @@ function jsDocTagRawText(tag: ts.JSDocTagInfo): string {
 }
 
 /**
+ * Убирает только пустые строки по краям fenced body; не срезает отступы кода
+ * (в отличие от `String#trim()`, которое ломает первую строку).
+ */
+function trimFencedCodeBody(code: string): string {
+  return code.replace(/^\n+/, '').replace(/\n+$/, '');
+}
+
+/**
+ * Снимает префикс строки JSDoc (` * `), сохраняя отступ после звёздочки — так в примерах
+ * остаётся реальная индентация кода.
+ */
+function stripJSDocLineStarPrefix(line: string): string {
+  return line.replace(/^\s*\* ?/, '');
+}
+
+/**
+ * Вырезает тексты всех `@example` из тела блока `/** … *\/` уже без ведущих `*`.
+ */
+function parseExampleSectionsFromUnstaredJSDoc(body: string): string[] {
+  const lines = body.split('\n');
+  const examples: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    const m = /^@example\b\s*(.*)$/.exec(lines[i] ?? '');
+    if (!m) {
+      i++;
+      continue;
+    }
+    const chunk: string[] = [];
+    if (m[1].trim()) chunk.push(m[1].trimEnd());
+    i++;
+    let inFence = false;
+    while (i < lines.length) {
+      const L = lines[i];
+      const head = L.trimStart();
+      if (!inFence && /^@\w/.test(head)) break;
+      if (head.startsWith('```')) inFence = !inFence;
+      chunk.push(L);
+      i++;
+    }
+    const ex = chunk.join('\n').trim();
+    if (ex) examples.push(ex);
+  }
+  return examples;
+}
+
+/**
+ * TypeScript в `symbol.getJsDocTags()` отдаёт `@example` без ведущих пробелов в строках кода.
+ * Читаем исходный JSDoc у декларации и парсим `@example` вручную.
+ */
+function extractExamplesFromLeadingCommentOfNode(
+  sourceFile: ts.SourceFile,
+  declarationNode: ts.Node,
+): string[] {
+  const fullStart = declarationNode.getFullStart();
+  const ranges = ts.getLeadingCommentRanges(sourceFile.text, fullStart);
+  if (!ranges?.length) return [];
+
+  const out: string[] = [];
+  for (const range of ranges) {
+    const raw = sourceFile.text.slice(range.pos, range.end);
+    if (!raw.includes('@example')) continue;
+    const inner = raw.replace(/^\/\*\*?/, '').replace(/\*\/\s*$/, '');
+    const unstared = inner.split('\n').map(stripJSDocLineStarPrefix).join('\n');
+    out.push(...parseExampleSectionsFromUnstaredJSDoc(unstared));
+  }
+  return out;
+}
+
+/**
+ * У перегрузок JSDoc часто только у первой декларации; страница же может строиться с последней.
+ * Пробуем текущий узел, затем остальные декларации того же символа в этом файле.
+ */
+function extractJSDocExamplesFromLeadingComment(
+  sourceFile: ts.SourceFile,
+  declarationNode: ts.Node,
+  typeChecker?: ts.TypeChecker,
+): string[] {
+  const fromNode = extractExamplesFromLeadingCommentOfNode(
+    sourceFile,
+    declarationNode,
+  );
+  if (fromNode.length > 0) return fromNode;
+
+  if (
+    typeChecker &&
+    (ts.isFunctionDeclaration(declarationNode) ||
+      ts.isMethodDeclaration(declarationNode) ||
+      ts.isPropertyDeclaration(declarationNode)) &&
+    declarationNode.name &&
+    ts.isIdentifier(declarationNode.name)
+  ) {
+    const sym = typeChecker.getSymbolAtLocation(declarationNode.name);
+    for (const decl of sym?.declarations ?? []) {
+      if (decl === declarationNode) continue;
+      if (decl.getSourceFile() !== sourceFile) continue;
+      const ex = extractExamplesFromLeadingCommentOfNode(sourceFile, decl);
+      if (ex.length > 0) return ex;
+    }
+  }
+  return [];
+}
+
+/**
  * Turns JSDoc `@example` body into markdown. Handles:
  * - plain code (no fences) → wrapped in ` ```ts `
  * - a single fenced block that spans the whole string → one code block (re-wrapped cleanly)
@@ -229,7 +333,7 @@ function formatJSDocExampleForMarkdown(example: string): string {
   const singleFenceOnly = trimmed.match(/^```([\w-]+)?\s*\n([\s\S]*?)\n```$/);
   if (singleFenceOnly) {
     const lang = singleFenceOnly[1] || 'ts';
-    return `\`\`\`${lang}\n${singleFenceOnly[2].trim()}\n\`\`\``;
+    return `\`\`\`${lang}\n${trimFencedCodeBody(singleFenceOnly[2])}\n\`\`\``;
   }
 
   const segments: string[] = [];
@@ -249,7 +353,9 @@ function formatJSDocExampleForMarkdown(example: string): string {
     const afterOpen = trimmed.slice(startFence + 3);
     const newlineAfterLang = afterOpen.indexOf('\n');
     if (newlineAfterLang === -1) {
-      segments.push(`\`\`\`ts\n${afterOpen.trim()}\n\`\`\``);
+      segments.push(
+        `\`\`\`ts\n${trimFencedCodeBody(afterOpen.trimStart())}\n\`\`\``,
+      );
       break;
     }
 
@@ -258,11 +364,11 @@ function formatJSDocExampleForMarkdown(example: string): string {
     const codeRegion = afterOpen.slice(newlineAfterLang + 1);
     const closeFence = codeRegion.indexOf('\n```');
     if (closeFence === -1) {
-      segments.push(`\`\`\`${lang}\n${codeRegion.trim()}\n\`\`\``);
+      segments.push(`\`\`\`${lang}\n${trimFencedCodeBody(codeRegion)}\n\`\`\``);
       break;
     }
 
-    const code = codeRegion.slice(0, closeFence).trim();
+    const code = trimFencedCodeBody(codeRegion.slice(0, closeFence));
     segments.push(`\`\`\`${lang}\n${code}\n\`\`\``);
     pos = startFence + 3 + newlineAfterLang + 1 + closeFence + 4;
   }
@@ -356,6 +462,15 @@ function extractJSDoc(
     if (fromSymbol.examples.length) result.examples = fromSymbol.examples;
     if (fromSymbol.deprecated != null)
       result.deprecated = fromSymbol.deprecated;
+  }
+
+  const fromSource = extractJSDocExamplesFromLeadingComment(
+    sourceFile,
+    node,
+    typeChecker,
+  );
+  if (fromSource.length > 0) {
+    result.examples = fromSource;
   }
   return result;
 }
