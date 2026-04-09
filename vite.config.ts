@@ -3,6 +3,7 @@ import { ConfigsManager } from 'sborshik/utils';
 import { defineLibViteConfig } from 'sborshik/vite';
 
 export default defineLibViteConfig(ConfigsManager.create(), {
+  omitStrangeExportEntries: true,
   async customPluginBeforeFinish() {
     try {
       console.log('\n📝 Generating utility types global file...\n');
