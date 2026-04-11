@@ -22,7 +22,7 @@
 
 import { callFunction } from 'yummies/common';
 import { typeGuard } from 'yummies/type-guard';
-import type { Maybe, MaybeFn } from 'yummies/types';
+import type { AnyObject, Maybe, MaybeFn } from 'yummies/types';
 
 /**
  * Error thrown by assertion helpers in this module.
@@ -135,6 +135,40 @@ export function string(
   if (!typeGuard.isString(value)) {
     throw new AssertionError(
       resolveAssertMessage(message, 'Expected a string'),
+    );
+  }
+}
+
+/**
+ * Throws when `value` is not a object (primitive or `AnyObject` object); uses `typeGuard.isObject`.
+ *
+ * @param value Value to narrow.
+ * @param message Optional message or lazy message factory.
+ */
+export function object<T extends AnyObject = AnyObject>(
+  value: unknown,
+  message?: MaybeFn<string>,
+): asserts value is T {
+  if (!typeGuard.isObject(value)) {
+    throw new AssertionError(
+      resolveAssertMessage(message, 'Expected an object'),
+    );
+  }
+}
+
+/**
+ * Throws when `value` is not a object (primitive or `AnyObject` object); uses `typeGuard.isArray`.
+ *
+ * @param value Value to narrow.
+ * @param message Optional message or lazy message factory.
+ */
+export function array<T extends any[] = any[]>(
+  value: unknown,
+  message?: MaybeFn<string>,
+): asserts value is T {
+  if (!typeGuard.isArray(value)) {
+    throw new AssertionError(
+      resolveAssertMessage(message, 'Expected an array'),
     );
   }
 }

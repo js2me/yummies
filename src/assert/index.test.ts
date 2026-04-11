@@ -49,6 +49,22 @@ describe('assert', () => {
     expect(() => assert.string(null, 'need str')).toThrow('need str');
   });
 
+  test('object', () => {
+    expect(() => assert.object({})).not.toThrow();
+    expect(() => assert.object([])).toThrow('Expected an object');
+    expect(() => assert.object(1)).toThrow('Expected an object');
+    expect(() => assert.object('')).toThrow('Expected an object');
+    expect(() => assert.object(null, 'need obj')).toThrow('need obj');
+  });
+
+  test('array', () => {
+    expect(() => assert.array([])).not.toThrow();
+    expect(() => assert.array({})).toThrow('Expected an array');
+    expect(() => assert.array(1)).toThrow('Expected an array');
+    expect(() => assert.array('')).toThrow('Expected an array');
+    expect(() => assert.array(null, 'need arr')).toThrow('need arr');
+  });
+
   test('number', () => {
     expect(() => assert.number(0)).not.toThrow();
     expect(() => assert.number(1.5)).not.toThrow();
