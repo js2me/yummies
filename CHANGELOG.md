@@ -1,5 +1,11 @@
 # yummies
 
+## 7.18.0
+
+### Minor Changes
+
+- [`eedccb3`](https://github.com/js2me/yummies/commit/eedccb3721aa68ab7ca26c02a220b17464e8bb25) Thanks [@js2me](https://github.com/js2me)! - add `hasEnumerableKeys` for `yummies/data`
+
 ## 7.17.0
 
 ### Minor Changes
