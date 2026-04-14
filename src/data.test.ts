@@ -1,7 +1,12 @@
 import { describe } from 'node:test';
 import { expect, it } from 'vitest';
 
-import { flatMapDeep, isShallowEqual, isUnsafeProperty } from './data';
+import {
+  flatMapDeep,
+  hasEnumerableKeys,
+  isShallowEqual,
+  isUnsafeProperty,
+} from './data';
 
 describe('data tests', () => {
   describe('isShallowEqual', () => {
@@ -106,6 +111,23 @@ describe('data tests', () => {
 
     it('returns false for regular keys', () => {
       expect(isUnsafeProperty('name')).toBeFalsy();
+    });
+  });
+
+  describe('hasEnumerableKeys', () => {
+    it('returns true for object with own enumerable keys', () => {
+      expect(hasEnumerableKeys({ a: 1 })).toBeTruthy();
+    });
+
+    it('returns false for empty object', () => {
+      expect(hasEnumerableKeys({})).toBeFalsy();
+    });
+
+    it('returns true for enumerable key from prototype chain', () => {
+      const proto = { inherited: 1 };
+      const value = Object.create(proto);
+
+      expect(hasEnumerableKeys(value)).toBeTruthy();
     });
   });
 
