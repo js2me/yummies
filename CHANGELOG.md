@@ -1,5 +1,11 @@
 # yummies
 
+## 7.17.0
+
+### Minor Changes
+
+- [`360fc83`](https://github.com/js2me/yummies/commit/360fc838f411b707330db2b7150175520326a3a4) Thanks [@js2me](https://github.com/js2me)! - added assert.object assert.array
+
 ## 7.16.2
 
 ### Patch Changes
