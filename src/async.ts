@@ -16,6 +16,8 @@
  * ```
  */
 
+import type { MaybePromise, Primitive } from './types.js';
+
 /**
  * Returns a promise that resolves after `time` milliseconds.
  *
@@ -214,4 +216,111 @@ export function setAbortableInterval(
   signal?.addEventListener('abort', handleAbort, { once: true });
 
   timer = setInterval(callback, delayInMs);
+}
+
+/**
+ * A single interpolated segment in {@link asyncTemplate}.
+ *
+ * - **Primitives** use `String(value)` for output, except that values matching
+ *   `value === null || value === undefined || value === false` yield no text (early return in `processTemplatePiece`).
+ *   Other falsy values such as `0` or `''` are still stringified.
+ * - **Arrays** are flattened recursively in order.
+ * - **Promises** are awaited; the resolved value is processed the same way.
+ * - **Async iterables of strings** are streamed in order (`yield*`).
+ */
+export type AsyncTemplatePiece =
+  | Primitive
+  | void
+  | AsyncIterable<string>
+  | AsyncTemplatePiece[];
+
+/**
+ * Tagged template that builds an async iterable of string chunks (like a streaming template engine).
+ *
+ * Static template parts are yielded as-is. Each interpolated “piece” can be a primitive, a nested array of pieces,
+ * a `Promise` of a piece, or an async iterable of strings (e.g. another template or a line-by-line source).
+ *
+ * Interpolation handling matches `processTemplatePiece`: `null`, `undefined`, and `false` add nothing; any other value
+ * becomes text via `String(...)`. Collect chunks with `for await...of` or utilities like `Array.fromAsync` where available.
+ *
+ * @param strings - Cooked template segments from the tag (`strings[0]`, `strings[1]`, …).
+ * @param pieces - Values between segments (`pieces[i]` sits between `strings[i]` and `strings[i + 1]`).
+ * @returns An async generator yielding string fragments in document order.
+ *
+ * @example
+ * Plain values and promises:
+ * ```ts
+ * const gen = asyncTemplate`Hello, ${'world'}! Status: ${Promise.resolve(200)}`;
+ * let out = '';
+ * for await (const chunk of gen) out += chunk;
+ * // out === 'Hello, world! Status: 200'
+ * ```
+ *
+ * @example
+ * Falsy pieces are omitted (`null`, `undefined`, `false`); arrays flatten recursively:
+ * ```ts
+ * const gen = asyncTemplate`${null}${false}A${['B', ['C']]}`;
+ * const out = await Array.fromAsync(gen).then((parts) => parts.join(''));
+ * // out === 'ABC'
+ * ```
+ *
+ * @example
+ * Stream from an async iterable (e.g. chunked upstream text):
+ * ```ts
+ * async function* lines() {
+ *   yield 'line1\n';
+ *   yield 'line2\n';
+ * }
+ * const gen = asyncTemplate`Header\n${lines()}Footer`;
+ * ```
+ */
+export async function* asyncTemplate(
+  strings: TemplateStringsArray,
+  ...pieces: MaybePromise<AsyncTemplatePiece>[]
+) {
+  for (let i = 0; i < strings.length; i++) {
+    yield strings[i];
+
+    if (i < pieces.length) {
+      const value = pieces[i];
+      yield* processTemplatePiece(value);
+    }
+  }
+}
+
+/**
+ * Resolves a template piece into yielded string chunks.
+ *
+ * Skips output when `value === null || value === undefined || value === false`.
+ * Otherwise awaits promises, flattens arrays, streams async iterables, and uses `String(value)` for primitives.
+ */
+async function* processTemplatePiece(
+  value: MaybePromise<AsyncTemplatePiece>,
+): AsyncGenerator<string, void, unknown> {
+  if (value === null || value === undefined || value === false) {
+    return;
+  }
+
+  if (value instanceof Promise) {
+    const resolved = await value;
+    yield* processTemplatePiece(resolved);
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      yield* processTemplatePiece(item);
+    }
+    return;
+  }
+
+  if (
+    typeof value === 'object' &&
+    typeof value[Symbol.asyncIterator] === 'function'
+  ) {
+    yield* value;
+    return;
+  }
+
+  yield String(value);
 }
