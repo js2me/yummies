@@ -226,21 +226,26 @@ export function setAbortableInterval(
  *   Other falsy values such as `0` or `''` are still stringified.
  * - **Arrays** are flattened recursively in order.
  * - **Promises** are awaited; the resolved value is processed the same way.
- * - **Async iterables of strings** are streamed in order (`yield*`).
+ * - **Async iterables of primitives** are streamed in order; each yielded value uses the same rules
+ *   as a standalone primitive (`String(...)`, with `null` / `undefined` / `false` omitted).
  * - **Functions** (thunks): if the piece is a function, it is invoked with **no arguments** (`piece()`), and the return
  *   value is processed recursively—so you can defer work or return any other {@link AsyncTemplatePiece} shape
  *   (see {@link MaybeFn}). At runtime a thunk may also return a `Promise` of a piece; that is covered by
  *   {@link MaybePromise} on each template interpolation.
  */
 export type AsyncTemplatePiece = MaybeFn<
-  Primitive | void | AsyncIterable<string> | AsyncTemplatePiece[]
+  | Primitive
+  | void
+  | AsyncIterable<Primitive>
+  | Promise<Primitive>
+  | AsyncTemplatePiece[]
 >;
 
 /**
  * Tagged template that builds an async iterable of string chunks (like a streaming template engine).
  *
  * Static template parts are yielded as-is. Each interpolated “piece” can be a primitive, a nested array of pieces,
- * a `Promise` of a piece, an async iterable of strings (e.g. another template or a line-by-line source), or a
+ * a `Promise` of a piece (including a resolved primitive), an async iterable of primitives, or a
  * **zero-arg function** whose result is processed the same way (see {@link AsyncTemplatePiece} / `MaybeFn`).
  *
  * Interpolation handling matches `processTemplatePiece`: `null`, `undefined`, and `false` add nothing; any other value
@@ -329,9 +334,13 @@ async function* processTemplatePiece(
 
   if (
     typeof piece === 'object' &&
-    typeof piece[Symbol.asyncIterator] === 'function'
+    piece !== null &&
+    typeof (piece as AsyncIterable<unknown>)[Symbol.asyncIterator] ===
+      'function'
   ) {
-    yield* piece;
+    for await (const item of piece as AsyncIterable<AsyncTemplatePiece>) {
+      yield* processTemplatePiece(item);
+    }
     return;
   }
 

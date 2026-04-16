@@ -49,6 +49,47 @@ describe('asyncTemplate', () => {
     );
   });
 
+  test('async fns', async () => {
+    const tmpl = asyncTemplate`foo${async () => {
+      return 'bar';
+    }}`;
+    await expect(concatChunks(tmpl)).resolves.toBe('foobar');
+  });
+
+  test('streams async iterables of non-string primitives with String()', async () => {
+    async function* nums() {
+      yield 1;
+      yield 2;
+      yield true;
+    }
+    await expect(concatChunks(asyncTemplate`<${nums()}>`)).resolves.toBe(
+      '<12true>',
+    );
+  });
+
+  test('async iterable chunks omit null, undefined, and false', async () => {
+    async function* mixed() {
+      yield 'a';
+      yield null;
+      yield undefined;
+      yield false;
+      yield 0;
+      yield '';
+    }
+    await expect(concatChunks(asyncTemplate`[${mixed()}]`)).resolves.toBe(
+      '[a0]',
+    );
+  });
+
+  test('awaits promise of primitive (not only string)', async () => {
+    await expect(
+      concatChunks(asyncTemplate`n=${Promise.resolve(42)}`),
+    ).resolves.toBe('n=42');
+    await expect(
+      concatChunks(asyncTemplate`ok=${Promise.resolve(true)}`),
+    ).resolves.toBe('ok=true');
+  });
+
   test('matches typical tagged-template segment layout', async () => {
     const name = 'Ada';
     await expect(concatChunks(asyncTemplate`Hello, ${name}!`)).resolves.toBe(
