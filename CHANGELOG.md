@@ -1,5 +1,11 @@
 # yummies
 
+## 7.19.2
+
+### Patch Changes
+
+- better async templates (add promises)
+
 ## 7.19.1
 
 ### Patch Changes
