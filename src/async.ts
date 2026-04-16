@@ -16,7 +16,7 @@
  * ```
  */
 
-import type { MaybePromise, Primitive } from './types.js';
+import type { MaybeFn, MaybePromise, Primitive } from './types.js';
 
 /**
  * Returns a promise that resolves after `time` milliseconds.
@@ -227,21 +227,25 @@ export function setAbortableInterval(
  * - **Arrays** are flattened recursively in order.
  * - **Promises** are awaited; the resolved value is processed the same way.
  * - **Async iterables of strings** are streamed in order (`yield*`).
+ * - **Functions** (thunks): if the piece is a function, it is invoked with **no arguments** (`piece()`), and the return
+ *   value is processed recursively—so you can defer work or return any other {@link AsyncTemplatePiece} shape
+ *   (see {@link MaybeFn}). At runtime a thunk may also return a `Promise` of a piece; that is covered by
+ *   {@link MaybePromise} on each template interpolation.
  */
-export type AsyncTemplatePiece =
-  | Primitive
-  | void
-  | AsyncIterable<string>
-  | AsyncTemplatePiece[];
+export type AsyncTemplatePiece = MaybeFn<
+  Primitive | void | AsyncIterable<string> | AsyncTemplatePiece[]
+>;
 
 /**
  * Tagged template that builds an async iterable of string chunks (like a streaming template engine).
  *
  * Static template parts are yielded as-is. Each interpolated “piece” can be a primitive, a nested array of pieces,
- * a `Promise` of a piece, or an async iterable of strings (e.g. another template or a line-by-line source).
+ * a `Promise` of a piece, an async iterable of strings (e.g. another template or a line-by-line source), or a
+ * **zero-arg function** whose result is processed the same way (see {@link AsyncTemplatePiece} / `MaybeFn`).
  *
  * Interpolation handling matches `processTemplatePiece`: `null`, `undefined`, and `false` add nothing; any other value
- * becomes text via `String(...)`. Collect chunks with `for await...of` or utilities like `Array.fromAsync` where available.
+ * becomes text via `String(...)`; functions are called once with no arguments before further processing. Collect chunks
+ * with `for await...of` or utilities like `Array.fromAsync` where available.
  *
  * @param strings - Cooked template segments from the tag (`strings[0]`, `strings[1]`, …).
  * @param pieces - Values between segments (`pieces[i]` sits between `strings[i]` and `strings[i + 1]`).
@@ -273,6 +277,14 @@ export type AsyncTemplatePiece =
  * }
  * const gen = asyncTemplate`Header\n${lines()}Footer`;
  * ```
+ *
+ * @example
+ * Lazy piece via a thunk (invoked as `piece()`):
+ * ```ts
+ * let n = 0;
+ * const gen = asyncTemplate`count=${() => ++n}`;
+ * // first consumption yields "count=1", etc.
+ * ```
  */
 export async function* asyncTemplate(
   strings: TemplateStringsArray,
@@ -282,8 +294,8 @@ export async function* asyncTemplate(
     yield strings[i];
 
     if (i < pieces.length) {
-      const value = pieces[i];
-      yield* processTemplatePiece(value);
+      const piece = pieces[i];
+      yield* processTemplatePiece(piece);
     }
   }
 }
@@ -292,35 +304,41 @@ export async function* asyncTemplate(
  * Resolves a template piece into yielded string chunks.
  *
  * Skips output when `value === null || value === undefined || value === false`.
- * Otherwise awaits promises, flattens arrays, streams async iterables, and uses `String(value)` for primitives.
+ * Otherwise awaits promises, flattens arrays, streams async iterables, invokes **functions** with no arguments and
+ * recurses on the return value, and uses `String(value)` for primitives.
  */
 async function* processTemplatePiece(
-  value: MaybePromise<AsyncTemplatePiece>,
+  piece: MaybePromise<AsyncTemplatePiece>,
 ): AsyncGenerator<string, void, unknown> {
-  if (value === null || value === undefined || value === false) {
+  if (piece === null || piece === undefined || piece === false) {
     return;
   }
 
-  if (value instanceof Promise) {
-    const resolved = await value;
+  if (piece instanceof Promise) {
+    const resolved = await piece;
     yield* processTemplatePiece(resolved);
     return;
   }
 
-  if (Array.isArray(value)) {
-    for (const item of value) {
+  if (Array.isArray(piece)) {
+    for (const item of piece) {
       yield* processTemplatePiece(item);
     }
     return;
   }
 
   if (
-    typeof value === 'object' &&
-    typeof value[Symbol.asyncIterator] === 'function'
+    typeof piece === 'object' &&
+    typeof piece[Symbol.asyncIterator] === 'function'
   ) {
-    yield* value;
+    yield* piece;
     return;
   }
 
-  yield String(value);
+  if (typeof piece === 'function') {
+    yield* processTemplatePiece(piece());
+    return;
+  }
+
+  yield String(piece);
 }

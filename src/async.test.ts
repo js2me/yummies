@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { asyncTemplate } from './async.js';
+import { type AsyncTemplatePiece, asyncTemplate } from './async.js';
 
 async function concatChunks(gen: AsyncIterable<string>): Promise<string> {
   let out = '';
@@ -53,6 +53,40 @@ describe('asyncTemplate', () => {
     const name = 'Ada';
     await expect(concatChunks(asyncTemplate`Hello, ${name}!`)).resolves.toBe(
       'Hello, Ada!',
+    );
+  });
+
+  test('invokes zero-arg function thunks and processes the return value', async () => {
+    await expect(concatChunks(asyncTemplate`x${() => 'y'}z`)).resolves.toBe(
+      'xyz',
+    );
+  });
+
+  test('thunk may return a promise or nested structure', async () => {
+    await expect(
+      concatChunks(
+        asyncTemplate`${(() => Promise.resolve('p')) as unknown as AsyncTemplatePiece}`,
+      ),
+    ).resolves.toBe('p');
+    await expect(
+      concatChunks(asyncTemplate`${() => ['a', 'b']}`),
+    ).resolves.toBe('ab');
+  });
+
+  test('recurses when thunk returns another thunk', async () => {
+    await expect(
+      concatChunks(
+        asyncTemplate`${(() => () => 'nested') as unknown as AsyncTemplatePiece}`,
+      ),
+    ).resolves.toBe('nested');
+  });
+
+  test('thunk may return an async iterable', async () => {
+    async function* inner() {
+      yield 'i';
+    }
+    await expect(concatChunks(asyncTemplate`${() => inner()}`)).resolves.toBe(
+      'i',
     );
   });
 });
