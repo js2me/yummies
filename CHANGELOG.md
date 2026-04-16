@@ -1,5 +1,11 @@
 # yummies
 
+## 7.19.1
+
+### Patch Changes
+
+- [`b83c8cd`](https://github.com/js2me/yummies/commit/b83c8cd3b0420652096badd0b87d8df2d70e4faa) Thanks [@js2me](https://github.com/js2me)! - Extend `asyncTemplate` with `MaybeFn` interpolation (zero-arg thunks invoked as `piece()`), document behavior in JSDoc (including omission of `null` / `undefined` / `false`, and `String` coercion for other values), and add unit tests.
+
 ## 7.19.0
 
 ### Minor Changes
