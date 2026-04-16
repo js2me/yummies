@@ -1,5 +1,11 @@
 # yummies
 
+## 7.19.0
+
+### Minor Changes
+
+- [`e86454c`](https://github.com/js2me/yummies/commit/e86454c1a986058b64d2ab165fdd735e26da7bc9) Thanks [@js2me](https://github.com/js2me)! - add `asyncTemplate` fn
+
 ## 7.18.0
 
 ### Minor Changes
