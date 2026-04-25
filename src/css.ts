@@ -15,24 +15,18 @@
  * ```
  */
 
-import { cva as cvaLib } from 'class-variance-authority';
-import clsx, { type ClassValue } from 'clsx';
+import { cva as cvaLib, VariantProps } from 'class-variance-authority';
+import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import type { Maybe } from 'yummies/types';
-
-type ClassProp = {
-  class?: ClassValue;
-  className?: ClassValue;
-};
-
-type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
-
 /**
  * Converts a length in **pixels** to a CSS **`rem`** string (`"<number>rem"`).
  *
  * Use when authoring component styles in JS/TS where design tokens are in px but the stylesheet
  * should scale with root font size (accessibility, user zoom). `remValue` is the assumed
  * `1rem` size in px (browser default is typically `16`).
+ *
+ * Also you can override default rem value using `toRem.defaultRemValue = 24`
  *
  * @param px - Pixel value to convert (not rounded; stringification keeps full float).
  * @param remValue - How many pixels one `rem` equals. Defaults to `16`.
@@ -49,7 +43,10 @@ type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
  * const gap = toRem(20, 10); // '2rem'
  * ```
  */
-export const toRem = (px: number, remValue = 16) => `${px / remValue}rem`;
+export const toRem = (px: number, remValue?: number): string =>
+  `${px / (remValue ?? toRem.defaultRemValue)}rem`;
+
+toRem.defaultRemValue = 16;
 
 /**
  * Composes conditional class names like {@link https://github.com/lukeed/clsx | clsx}, then runs
@@ -72,30 +69,6 @@ export const toRem = (px: number, remValue = 16) => `${px / remValue}rem`;
  * ```
  */
 export const cx = (...args: Parameters<typeof clsx>) => twMerge(clsx(...args));
-
-type ConfigSchema = Record<string, Record<string, ClassValue>>;
-type ConfigVariants<T extends ConfigSchema> = {
-  [Variant in keyof T]?: StringToBoolean<keyof T[Variant]> | null | undefined;
-};
-type ConfigVariantsMulti<T extends ConfigSchema> = {
-  [Variant in keyof T]?:
-    | StringToBoolean<keyof T[Variant]>
-    | StringToBoolean<keyof T[Variant]>[]
-    | undefined;
-};
-type Config<T> = T extends ConfigSchema
-  ? {
-      variants?: T;
-      defaultVariants?: ConfigVariants<T>;
-      compoundVariants?: (T extends ConfigSchema
-        ? (ConfigVariants<T> | ConfigVariantsMulti<T>) & ClassProp
-        : ClassProp)[];
-    }
-  : never;
-
-type Props<T> = T extends ConfigSchema
-  ? ConfigVariants<T> & ClassProp
-  : ClassProp;
 
 /**
  * {@link https://cva.style/docs | Class Variance Authority (cva)} with the same **tailwind-merge**
@@ -136,10 +109,7 @@ type Props<T> = T extends ConfigSchema
 export const cva = ((...args: any[]) => {
   const schema = cvaLib(...args);
   return (...inputArgs: any[]) => twMerge(schema(...inputArgs));
-}) as any as <T>(
-  base?: ClassValue,
-  config?: Config<T>,
-) => (props?: Props<T>) => string;
+}) as unknown as typeof cvaLib;
 
 /**
  * Utility type from `class-variance-authority`: infers the variant prop object from a `cva` instance.
