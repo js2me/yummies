@@ -1,5 +1,11 @@
 # yummies
 
+## 7.19.3
+
+### Patch Changes
+
+- [`ada5f39`](https://github.com/js2me/yummies/commit/ada5f3966ccd857742d742653ac05355581aebb5) Thanks [@js2me](https://github.com/js2me)! - fixed typings for cva
+
 ## 7.19.2
 
 ### Patch Changes
