@@ -1,5 +1,11 @@
 # yummies
 
+## 7.19.4
+
+### Patch Changes
+
+- [`6e04275`](https://github.com/js2me/yummies/commit/6e042758a4ff0377f8568e79c2d9f5e85f6321d0) Thanks [@js2me](https://github.com/js2me)! - ability to override defaults for `sanitizeHtml` funtion (+ tests)
+
 ## 7.19.3
 
 ### Patch Changes
