@@ -138,7 +138,37 @@ export const globalScrollIntoViewForY = (node: HTMLElement) => {
   });
 };
 
-const sanitizeDefaults: DOMPurifyConfig = {
+type SanitizeHtmlFn = ((
+  html: Maybe<string>,
+  config?: DOMPurifyConfig,
+) => string) & {
+  /**
+   * Default DOMPurify settings
+   */
+  defaults: DOMPurifyConfig;
+};
+/**
+ * Sanitizes HTML using the default allowlist merged with custom DOMPurify config.
+ *
+ * Default DOMPurify settings are exposed on `sanitizeHtml.defaults` and can be
+ * overridden per call via `config`.
+ *
+ * @example
+ * ```ts
+ * sanitizeHtml('<img src=x onerror=alert(1) />');
+ * ```
+ */
+export const sanitizeHtml = ((
+  html: Maybe<string>,
+  config?: DOMPurifyConfig,
+) => {
+  return DOMPurify.sanitize(html || '', {
+    ...sanitizeHtml.defaults,
+    ...config,
+  });
+}) as SanitizeHtmlFn;
+
+sanitizeHtml.defaults = {
   ALLOWED_TAGS: [
     'a',
     'article',
@@ -183,21 +213,6 @@ const sanitizeDefaults: DOMPurifyConfig = {
     'ul',
   ],
   ALLOWED_ATTR: ['href', 'target', 'name', 'src', 'class'],
-};
-
-/**
- * Sanitizes HTML using the default allowlist merged with custom DOMPurify config.
- *
- * @example
- * ```ts
- * sanitizeHtml('<img src=x onerror=alert(1) />');
- * ```
- */
-export const sanitizeHtml = (html: Maybe<string>, config?: DOMPurifyConfig) => {
-  return DOMPurify.sanitize(html || '', {
-    ...sanitizeDefaults,
-    ...config,
-  });
 };
 
 /**
