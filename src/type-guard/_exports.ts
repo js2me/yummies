@@ -189,6 +189,46 @@ export const isUndefined = createTypeGuard<undefined>(TYPE.Undefined);
 export const isObject = createTypeGuard<AnyObject>(TYPE.Object);
 
 /**
+ * Checks whether a value is object-like: non-null and `typeof value === 'object'`.
+ *
+ * This includes plain objects, arrays, `Date`, `RegExp`, boxed primitives, and other built-ins
+ * whose `typeof` is `"object"`. It is broader than `isObject`, which only matches plain objects.
+ *
+ * @template T Input value type.
+ * @param value Value to test.
+ * @returns `true` when the value is a non-null object.
+ *
+ * @example
+ * ```ts
+ * isObjectLike({ a: 1 }); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isObjectLike([]); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isObjectLike(new Date()); // true
+ * ```
+ *
+ * @example
+ * ```ts
+ * isObjectLike(null); // false
+ * ```
+ *
+ * @example
+ * ```ts
+ * isObjectLike(() => {}); // false
+ * ```
+ */
+export const isObjectLike = <T = never>(
+  value: unknown,
+): value is T extends never ? Extract<typeof value, object> : T =>
+  typeof value === 'object' && !!value;
+
+/**
  * Checks whether a value is an array.
  *
  * @param value Value to test.

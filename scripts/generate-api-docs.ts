@@ -1113,6 +1113,288 @@ function writeSidebarJson(
   );
 }
 
+/**
+ * Внутренние чанки (не публичные entry points), которые нужно пропустить при генерации
+ * документации. Их экспорты раскрываются через реэкспорт из публичных модулей.
+ * Ключ — basename без расширения, значение — публичный модуль, в который раскрываются экспорты.
+ */
+const INTERNAL_CHUNKS: Record<string, string> = {
+  'css-cx': 'css',
+  'id-nanoid': 'id',
+  'sanitize-html': 'html',
+};
+
+/**
+ * Собирает экспорты из barrel `index.ts`, раскрывая `export * from` и `export { x } from`
+ * в исходные файлы. Возвращает плоский список ExportDoc, как если бы всё было в одном файле.
+ */
+function collectExportsFromBarrelIndex(
+  indexFile: ts.SourceFile,
+  program: ts.Program,
+  sourceFiles: readonly ts.SourceFile[],
+  internalChunkExports: Map<string, ExportDoc[]>,
+): ExportDoc[] {
+  const result: ExportDoc[] = [];
+
+  for (const stmt of indexFile.statements) {
+    if (!ts.isExportDeclaration(stmt) || !stmt.moduleSpecifier) continue;
+
+    const specText = (stmt.moduleSpecifier as ts.StringLiteral).text;
+
+    // Проверяем внутренний чанк — берём экспорты из кэша
+    const specBase = path.basename(specText.replace(/\.js$/, '.ts'), '.ts');
+    const chunkExports = internalChunkExports.get(specBase);
+    if (chunkExports) {
+      result.push(...chunkExports);
+      continue;
+    }
+
+    // Разрешаем реэкспорт в исходный файл
+    const resolved = ts.resolveModuleName(
+      specText,
+      indexFile.fileName,
+      program.getCompilerOptions(),
+      ts.sys,
+    );
+    const resolvedPath = resolved.resolvedModule?.resolvedFileName;
+    if (!resolvedPath) continue;
+
+    const resolvedFile = sourceFiles.find(
+      (f) => path.resolve(f.fileName) === path.resolve(resolvedPath),
+    );
+    if (!resolvedFile) continue;
+
+    const resolvedBase = path.basename(resolvedPath, '.ts');
+    if (INTERNAL_CHUNKS[resolvedBase]) {
+      const cached = internalChunkExports.get(resolvedBase);
+      if (cached) result.push(...cached);
+      continue;
+    }
+
+    result.push(...collectExports(resolvedFile, program));
+  }
+
+  return result;
+}
+
+/** Модули-директории, где `index.ts` — barrel с `export * from`, а не barrel-namespace. */
+const BARREL_INDEX_MODULES = new Set([
+  'async',
+  'common',
+  'cookie',
+  'css',
+  'data',
+  'date-time',
+  'device',
+  'encodings',
+  'errors',
+  'file',
+  'html',
+  'id',
+  'imports',
+  'math',
+  'media',
+  'ms',
+  'number',
+  'price',
+  'random',
+  'sound',
+  'storage',
+  'text',
+  'types',
+  'vibrate',
+]);
+
+/**
+ * Предсканирование: находит все barrel index.ts и собирает имена файлов,
+ * которые реэкспортируются из них, чтобы пропустить их при основном проходе.
+ */
+function collectReExportedFileBasenames(
+  sourceFiles: readonly ts.SourceFile[],
+): Set<string> {
+  const reExportedFiles = new Set<string>();
+  for (const sourceFile of sourceFiles) {
+    const relativePath = path.relative(SRC_DIR, sourceFile.fileName);
+    if (relativePath.startsWith('..')) continue;
+    const groupPath = relativePath.replace(/\.tsx?$/, '');
+    const dirName = path.dirname(groupPath);
+    const baseName = path.basename(groupPath);
+    if (
+      baseName !== 'index' ||
+      dirName === '' ||
+      !BARREL_INDEX_MODULES.has(dirName)
+    ) {
+      continue;
+    }
+    for (const stmt of sourceFile.statements) {
+      if (!ts.isExportDeclaration(stmt) || !stmt.moduleSpecifier) continue;
+      const specText = (stmt.moduleSpecifier as ts.StringLiteral).text.replace(
+        /\.js$/,
+        '.ts',
+      );
+      const specBase = path.basename(specText, '.ts');
+      if (!INTERNAL_CHUNKS[specBase]) {
+        reExportedFiles.add(specBase);
+      }
+    }
+  }
+  return reExportedFiles;
+}
+
+/** Сортирует исходные файлы: сначала внутренние чанки, потом остальные. */
+function sortSourceFilesChunksFirst(
+  sourceFiles: readonly ts.SourceFile[],
+): ts.SourceFile[] {
+  return [...sourceFiles].sort((a, b) => {
+    const baseA = path.basename(a.fileName, '.ts');
+    const baseB = path.basename(b.fileName, '.ts');
+    const aInternal = baseA in INTERNAL_CHUNKS ? 0 : 1;
+    const bInternal = baseB in INTERNAL_CHUNKS ? 0 : 1;
+    return aInternal - bInternal;
+  });
+}
+
+/**
+ * Раскрывает реэкспорты из внутренних чанков для единых файлов
+ * (для модулей, ещё не конвертированных в директории).
+ */
+function expandInternalChunkReExports(
+  sourceFile: ts.SourceFile,
+  exportDocs: ExportDoc[],
+  internalChunkExports: Map<string, ExportDoc[]>,
+): ExportDoc[] {
+  let result = exportDocs;
+  for (const stmt of sourceFile.statements) {
+    if (!ts.isExportDeclaration(stmt) || !stmt.moduleSpecifier) continue;
+    const specText = (stmt.moduleSpecifier as ts.StringLiteral).text.replace(
+      /\.js$/,
+      '.ts',
+    );
+    const resolvedBase = path.basename(specText, path.extname(specText));
+    const chunkExports = internalChunkExports.get(resolvedBase);
+    if (chunkExports) {
+      result = [...result, ...chunkExports];
+    }
+  }
+  return result;
+}
+
+/**
+ * Обрабатывает barrel index.ts директорийного модуля
+ * (html/index.ts, css/index.ts, etc.). true — обработали.
+ */
+function tryHandleBarrelDirIndex(
+  sourceFile: ts.SourceFile,
+  dirName: string,
+  program: ts.Program,
+  sourceFiles: readonly ts.SourceFile[],
+  state: DocGenLoopState,
+  internalChunkExports: Map<string, ExportDoc[]>,
+): boolean {
+  if (!BARREL_INDEX_MODULES.has(dirName)) return false;
+  const exportDocs = collectExportsFromBarrelIndex(
+    sourceFile,
+    program,
+    sourceFiles,
+    internalChunkExports,
+  );
+  if (exportDocs.length === 0) return true;
+  emitRegularModuleDocsAndSidebar(
+    sourceFile,
+    dirName,
+    '',
+    dirName,
+    dirName,
+    exportDocs,
+    state,
+    sourceFiles,
+  );
+  return true;
+}
+
+/**
+ * Обрабатывает один исходный файл в основном цикле генерации.
+ * Возвращает true если файл был обработан или пропущен корректно.
+ */
+function processSourceFile(
+  sourceFile: ts.SourceFile,
+  program: ts.Program,
+  sourceFiles: readonly ts.SourceFile[],
+  state: DocGenLoopState,
+  collectBarrelExports: (dirName: string) => ExportDoc[],
+  internalChunkExports: Map<string, ExportDoc[]>,
+  reExportedFiles: Set<string>,
+): void {
+  const relativePath = path.relative(SRC_DIR, sourceFile.fileName);
+  if (relativePath.startsWith('..')) return;
+
+  const groupPath = relativePath.replace(/\.tsx?$/, '');
+  const dirName = path.dirname(groupPath);
+  const baseName = path.basename(groupPath);
+
+  if (shouldSkipBarrelExportsFile(baseName, dirName, sourceFiles)) return;
+
+  if (INTERNAL_CHUNKS[baseName]) {
+    const exportDocs = collectExports(sourceFile, program);
+    if (exportDocs.length > 0) {
+      internalChunkExports.set(baseName, exportDocs);
+    }
+    return;
+  }
+
+  if (reExportedFiles.has(baseName)) return;
+
+  if (baseName === 'index' && dirName !== '') {
+    if (
+      tryHandleBarrelIndexFile(
+        sourceFile,
+        dirName,
+        program,
+        sourceFiles,
+        state,
+        collectBarrelExports,
+      )
+    ) {
+      return;
+    }
+    if (
+      tryHandleBarrelDirIndex(
+        sourceFile,
+        dirName,
+        program,
+        sourceFiles,
+        state,
+        internalChunkExports,
+      )
+    ) {
+      return;
+    }
+  }
+
+  const directExports = collectExports(sourceFile, program);
+  const exportDocs = ts.isSourceFile(sourceFile)
+    ? expandInternalChunkReExports(
+        sourceFile,
+        directExports,
+        internalChunkExports,
+      )
+    : directExports;
+
+  if (exportDocs.length === 0) return;
+
+  const topDir = groupPath.split('/')[0];
+  emitRegularModuleDocsAndSidebar(
+    sourceFile,
+    groupPath,
+    dirName,
+    baseName,
+    topDir,
+    exportDocs,
+    state,
+    sourceFiles,
+  );
+}
+
 function main() {
   const { program, sourceFiles } = loadDocGenerationProgram();
   prepareApiDocsDirectories();
@@ -1122,47 +1404,19 @@ function main() {
     barrelDirs: new Set(),
   };
   const collectBarrelExports = createCollectBarrelExports(program, sourceFiles);
+  const internalChunkExports = new Map<string, ExportDoc[]>();
+  const reExportedFiles = collectReExportedFileBasenames(sourceFiles);
+  const sortedSourceFiles = sortSourceFilesChunksFirst(sourceFiles);
 
-  for (const sourceFile of sourceFiles) {
-    const relativePath = path.relative(SRC_DIR, sourceFile.fileName);
-    if (relativePath.startsWith('..')) continue;
-
-    const groupPath = relativePath.replace(/\.tsx?$/, '');
-    const dirName = path.dirname(groupPath);
-    const baseName = path.basename(groupPath);
-
-    if (shouldSkipBarrelExportsFile(baseName, dirName, sourceFiles)) {
-      continue;
-    }
-
-    if (baseName === 'index' && dirName !== '') {
-      if (
-        tryHandleBarrelIndexFile(
-          sourceFile,
-          dirName,
-          program,
-          sourceFiles,
-          state,
-          collectBarrelExports,
-        )
-      ) {
-        continue;
-      }
-    }
-
-    const exportDocs = collectExports(sourceFile, program);
-    if (exportDocs.length === 0) continue;
-
-    const topDir = groupPath.split('/')[0];
-    emitRegularModuleDocsAndSidebar(
+  for (const sourceFile of sortedSourceFiles) {
+    processSourceFile(
       sourceFile,
-      groupPath,
-      dirName,
-      baseName,
-      topDir,
-      exportDocs,
-      state,
+      program,
       sourceFiles,
+      state,
+      collectBarrelExports,
+      internalChunkExports,
+      reExportedFiles,
     );
   }
 

@@ -4,6 +4,7 @@ import { defineLibViteConfig } from 'sborshik/vite';
 
 export default defineLibViteConfig(ConfigsManager.create(), {
   omitStrangeExportEntries: true,
+  ignoredModuleNamesForExport: ['css-cx', 'id-nanoid', 'sanitize-html'],
   async customPluginBeforeFinish() {
     try {
       console.log('\n📝 Generating utility types global file...\n');

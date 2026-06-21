@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, expectTypeOf, test } from 'vitest';
 
 import { typeGuard } from './index.js';
 
@@ -67,6 +67,42 @@ describe('typeGuard', () => {
     expect(typeGuard.isObject(1)).toBe(false);
     expect(typeGuard.isObject('barbvaz')).toBe(false);
     expect(typeGuard.isObject(true)).toBe(false);
+  });
+
+  test('isObjectLike', () => {
+    expect(typeGuard.isObjectLike({})).toBe(true);
+    expect(typeGuard.isObjectLike(Object.create(null))).toBe(true);
+    expect(typeGuard.isObjectLike([])).toBe(true);
+    expect(typeGuard.isObjectLike(new Date())).toBe(true);
+    expect(typeGuard.isObjectLike(/x/)).toBe(true);
+    expect(typeGuard.isObjectLike(new Map())).toBe(true);
+
+    expect(typeGuard.isObjectLike(null)).toBe(false);
+    expect(typeGuard.isObjectLike(undefined)).toBe(false);
+    expect(typeGuard.isObjectLike(0)).toBe(false);
+    expect(typeGuard.isObjectLike(1)).toBe(false);
+    expect(typeGuard.isObjectLike('')).toBe(false);
+    expect(typeGuard.isObjectLike('s')).toBe(false);
+    expect(typeGuard.isObjectLike(true)).toBe(false);
+    expect(typeGuard.isObjectLike(false)).toBe(false);
+    expect(typeGuard.isObjectLike(Symbol())).toBe(false);
+    expect(typeGuard.isObjectLike(() => {})).toBe(false);
+
+    let mapTest: Map<any, any> | undefined | null;
+
+    if (typeGuard.isObjectLike(mapTest)) {
+      expectTypeOf(mapTest).toEqualTypeOf<Map<any, any>>();
+    } else {
+      expectTypeOf(mapTest).toEqualTypeOf<undefined | null>();
+    }
+
+    const unknownTest: unknown = '';
+
+    if (typeGuard.isObjectLike<Record<string, any>>(unknownTest)) {
+      expectTypeOf(unknownTest).toEqualTypeOf<Record<string, any>>();
+    } else {
+      expectTypeOf(unknownTest).toEqualTypeOf<unknown>();
+    }
   });
 
   test('isElement', () => {

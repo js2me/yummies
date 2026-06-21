@@ -1,0 +1,161 @@
+import { describe } from 'node:test';
+import { expect, it } from 'vitest';
+
+import {
+  flatMapDeep,
+  hasEnumerableKeys,
+  isShallowEqual,
+  isUnsafeProperty,
+} from 'yummies/data';
+
+describe('data tests', () => {
+  describe('isShallowEqual', () => {
+    it('two nulls', () => {
+      expect(isShallowEqual(null, null)).toBeTruthy();
+    });
+
+    it('two undefineds', () => {
+      expect(isShallowEqual(undefined, undefined)).toBeTruthy();
+    });
+
+    it('two empty objects', () => {
+      expect(isShallowEqual({}, {})).toBeTruthy();
+    });
+
+    it('two empty arrays', () => {
+      expect(isShallowEqual([], [])).toBeTruthy();
+    });
+
+    it('two empty arrays with different length', () => {
+      expect(isShallowEqual([1], [])).toBeFalsy();
+    });
+
+    it('two arrays with same values', () => {
+      expect(isShallowEqual([1, 2, 3], [1, 2, 3])).toBeTruthy();
+    });
+
+    it('two arrays with different order', () => {
+      expect(isShallowEqual([1, 2, 3], [3, 2, 1])).toBeFalsy();
+    });
+
+    it('two arrays with different length', () => {
+      expect(isShallowEqual([1, 2, 3], [1, 2, 3, 4])).toBeFalsy();
+    });
+
+    it('two objects with same keys and values', () => {
+      expect(isShallowEqual({ a: 1, b: 2 }, { a: 1, b: 2 })).toBeTruthy();
+    });
+
+    it('two objects with same keys and values in different order', () => {
+      expect(isShallowEqual({ a: 1, b: 2 }, { b: 2, a: 1 })).toBeTruthy();
+    });
+
+    it('two objects with different keys', () => {
+      expect(isShallowEqual({ a: 1, b: 2 }, { a: 1, c: 2 })).toBeFalsy();
+    });
+
+    it('two objects with same keys and different values', () => {
+      expect(isShallowEqual({ a: 1, b: 2 }, { a: 1, b: 3 })).toBeFalsy();
+    });
+
+    it('two objects with same keys, different values and different order', () => {
+      expect(isShallowEqual({ a: 1, b: 2 }, { b: 3, a: 1 })).toBeFalsy();
+    });
+
+    it('two objects with extra key on first object', () => {
+      expect(isShallowEqual({ a: 1, b: 2, c: 3 }, { a: 1, b: 2 })).toBeFalsy();
+    });
+
+    it('two objects with extra key on second object', () => {
+      expect(isShallowEqual({ a: 1, b: 2 }, { a: 1, b: 2, c: 3 })).toBeFalsy();
+    });
+    it('first is null, second is object', () => {
+      expect(isShallowEqual(null, { a: 1 })).toBeFalsy();
+    });
+
+    it('first is object, second is null', () => {
+      expect(isShallowEqual({ a: 1 }, null)).toBeFalsy();
+    });
+
+    it('first is undefined, second is object', () => {
+      expect(isShallowEqual(undefined, { a: 1 })).toBeFalsy();
+    });
+
+    it('first is object, second is undefined', () => {
+      expect(isShallowEqual({ a: 1 }, undefined)).toBeFalsy();
+    });
+
+    it('two objects with different class but same keys and values', () => {
+      class A {
+        constructor(
+          public a: number,
+          public b: number,
+        ) {}
+      }
+      class B {
+        constructor(
+          public a: number,
+          public b: number,
+        ) {}
+      }
+      expect(isShallowEqual(new A(1, 2), new B(1, 2))).toBeFalsy();
+    });
+  });
+
+  describe('isUnsafeProperty', () => {
+    it('returns true for unsafe keys', () => {
+      expect(isUnsafeProperty('__proto__')).toBeTruthy();
+      expect(isUnsafeProperty('prototype')).toBeTruthy();
+      expect(isUnsafeProperty('constructor')).toBeTruthy();
+    });
+
+    it('returns false for regular keys', () => {
+      expect(isUnsafeProperty('name')).toBeFalsy();
+    });
+  });
+
+  describe('hasEnumerableKeys', () => {
+    it('returns true for object with own enumerable keys', () => {
+      expect(hasEnumerableKeys({ a: 1 })).toBeTruthy();
+    });
+
+    it('returns false for empty object', () => {
+      expect(hasEnumerableKeys({})).toBeFalsy();
+    });
+
+    it('returns true for enumerable key from prototype chain', () => {
+      const proto = { inherited: 1 };
+      const value = Object.create(proto);
+
+      expect(hasEnumerableKeys(value)).toBeTruthy();
+    });
+  });
+
+  describe('flatMapDeep', () => {
+    it('flattens nested arrays and maps each value', () => {
+      const result = flatMapDeep([1, [2, [3, 4]]], (value) => value * 2);
+
+      expect(result).toEqual([2, 4, 6, 8]);
+    });
+
+    it('handles single value input', () => {
+      const result = flatMapDeep(5, (value) => value + 1);
+
+      expect(result).toEqual([6]);
+    });
+
+    it('passes normalized index and array to callback', () => {
+      const callbackArgs: Array<[number, number, number[]]> = [];
+
+      flatMapDeep([1, [2]], (value, i, arr) => {
+        callbackArgs.push([value, i, [...arr]]);
+        return value;
+      });
+
+      expect(callbackArgs).toEqual([
+        [1, 0, [1, 2]],
+        [2, 1, [1, 2]],
+      ]);
+    });
+  });
+});
