@@ -39,7 +39,7 @@
   "homepage": "https://js2me.github.io/yummies/api/async/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/js2me/yummies.git"
+    "url": "https://github.com/js2me/yummies"
   },
   "peerDependencies": {
     "mobx": "^6.12.4",
