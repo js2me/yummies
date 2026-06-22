@@ -41,8 +41,7 @@ jobs:
         continue-on-error: false
         id: pub-or-release-pr
         with:
-          # changelog-github calls GitHub GraphQL; retry on transient network errors (ERR_STREAM_PREMATURE_CLOSE)
-          version: bash -c 'for i in 1 2 3 4 5; do pnpm changeset version && exit 0; echo "changeset version failed (attempt $i), retrying in 15s..."; sleep 15; done; exit 1'
+          version: pnpm changeset:version
           publish: pnpm pub
           createGithubReleases: false
         env:
