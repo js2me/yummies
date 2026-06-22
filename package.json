@@ -1,6 +1,6 @@
 {
   "name": "yummies",
-  "version": "7.19.4",
+  "version": "7.20.0",
   "scripts": {
     "prepare": "pnpm dev:install-hooks",
     "clean": "rm -rf dist",

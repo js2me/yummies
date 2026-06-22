@@ -1,5 +1,15 @@
 # yummies
 
+## 7.20.0
+
+### Minor Changes
+
+- [`b55e516`](https://github.com/js2me/yummies/commit/b55e5163e16d9d0429935ccd6e54e62178cad00d) Thanks [@js2me](https://github.com/js2me)! - Better tree shaking for all complex deps (like dompurify)
+
+### Patch Changes
+
+- [`54560f5`](https://github.com/js2me/yummies/commit/54560f5ae4d6ad3761f5c7d4f4a008cc1fc53b0b) Thanks [@js2me](https://github.com/js2me)! - actualize all deps
+
 ## 7.19.4
 
 ### Patch Changes
