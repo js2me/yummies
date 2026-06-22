@@ -247,6 +247,17 @@ export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
   Required<Pick<T, K>>;
 
 /**
+ * Applies {@link Defined} to the value types of specified keys while keeping the rest unchanged.
+ *
+ * @template T - The original type
+ * @template K - The keys whose value types should exclude `undefined`
+ * @returns A type with specified keys excluding `undefined` from their values and others unchanged
+ */
+export type DefinedKeys<T, K extends keyof T> = Omit<T, K> & {
+  [Key in K]: Defined<T[K]>;
+};
+
+/**
  * Extracts the inner type from a Promise type.
  *
  * @deprecated use `Awaited<T>` from stdlib of TypeScript
