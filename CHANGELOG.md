@@ -1,5 +1,11 @@
 # yummies
 
+## 7.20.1
+
+### Patch Changes
+
+- [`d319017`](https://github.com/js2me/yummies/commit/d3190177d4163f6c02de3626333919da81d9486a) Thanks [@js2me](https://github.com/js2me)! - add `DefinedKeys` utility type
+
 ## 7.20.0
 
 ### Minor Changes
