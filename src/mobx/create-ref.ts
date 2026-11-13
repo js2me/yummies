@@ -101,6 +101,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
     }
 
     runInAction(() => {
+      const prevCurrentValue = ref.current;
       const prevLastValue = lastValue;
       lastValue = ref.current ?? undefined;
       ref.current = nextValue;
@@ -117,7 +118,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
 
       if (isNextValueIgnored) {
         lastValue = prevLastValue;
-        ref.current = lastValue ?? null;
+        ref.current = prevCurrentValue;
       } else if (ref.current === null && lastValue !== undefined) {
         lastValue = undefined;
       }

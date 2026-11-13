@@ -8,7 +8,7 @@
  * @internal
  */
 
-import type { AnnotationMapEntry } from 'mobx';
+import type { AnnotationMapEntry, computed, observable } from 'mobx';
 import * as mobx from 'mobx';
 
 /**
@@ -17,6 +17,10 @@ import * as mobx from 'mobx';
  * We derive it from `AnnotationMapEntry` which is public in both versions.
  */
 export type MobXAnnotation = Exclude<AnnotationMapEntry, boolean>;
+export type MobXObservableAnnotation = MobXAnnotation &
+  (typeof observable extends { ref: infer T } ? T : {});
+export type MobXComputedAnnotation = MobXAnnotation &
+  (typeof computed extends { struct: infer T } ? T : {});
 
 // --- Version capability detection ---
 
@@ -80,9 +84,9 @@ export const actionBound: MobXAnnotation =
 // --- Observable variant map for annotation.observable() ---
 
 /** Map of observable variant keys to their annotation values, compatible with both MobX 6 and 7 */
-export const observableVariantMap: Record<string, MobXAnnotation> = {
+export const observableVariantMap = {
   ref: observableRef,
   deep: observableDeep,
   shallow: observableShallow,
   struct: observableStruct,
-};
+} satisfies Record<string, MobXAnnotation>;

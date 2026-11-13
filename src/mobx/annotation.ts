@@ -26,7 +26,8 @@ import {
   compareDefault,
   compareShallow,
   compareStructural,
-  type MobXAnnotation,
+  type MobXComputedAnnotation,
+  type MobXObservableAnnotation,
   observableVariantMap,
 } from './mobx-compat.js';
 
@@ -152,16 +153,16 @@ type AnnotationObject = {
   computed(
     value?: Exclude<ComputedEqualsValue, false>,
     options?: ComputedOtherOptions,
-  ): MobXAnnotation;
-  computed(value?: ComputedEqualsValue): false | MobXAnnotation;
+  ): MobXComputedAnnotation;
+  computed(value?: ComputedEqualsValue): false | MobXComputedAnnotation;
   observable(value: Extract<ObservableTypes, false>): false;
   observable(value?: Extract<ObservableTypes, true>): typeof observable;
   observable<TValue extends Exclude<ObservableTypes, boolean>>(
     value: TValue,
-  ): MobXAnnotation;
+  ): MobXObservableAnnotation;
   observable(
     value?: ObservableTypes,
-  ): false | MobXAnnotation | typeof observable;
+  ): false | MobXObservableAnnotation | typeof observable;
 };
 
 export const annotation = {
@@ -181,6 +182,6 @@ export const annotation = {
   observable: (value?: ObservableTypes | boolean) => {
     if (value === false) return false;
     if (value === undefined || value === true) return observable;
-    return observableVariantMap[value as string];
+    return observableVariantMap[value as keyof typeof observableVariantMap];
   },
 } as AnnotationObject;

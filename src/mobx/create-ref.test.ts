@@ -68,9 +68,7 @@ describe('createRef', () => {
       onChange: () => false,
     });
     ref.set(2);
-    // When listener rejects, ref.current is set to lastValue ?? null which is null
-    // because the restore logic sets lastValue = prevLastValue (undefined) then ref.current = lastValue ?? null
-    expect(ref.current).toBeNull();
+    expect(ref.current).toBe(1);
   });
 
   it('calls onSet callback when value is set', () => {
