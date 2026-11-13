@@ -1,92 +1,75 @@
-/**
- * Compatibility layer for MobX 6 and MobX 7.
- *
- * MobX 7 removed namespaced APIs (`comparer.default`, `observable.ref`, etc.)
- * and replaced them with named exports (`compareDefault`, `observableRef`, etc.).
- * This module provides a unified API that works with both versions.
- *
- * @internal
- */
-
-import type { AnnotationMapEntry, computed, observable } from 'mobx';
+import type {
+  AnnotationMapEntry,
+  computed as MobXComputed,
+  observable as MobXObservable,
+} from 'mobx';
 import * as mobx from 'mobx';
 
-/**
- * MobX Annotation type — works across both MobX 6 and 7.
- * In MobX 6 this is `mobx.Annotation`, in MobX 7 it's only in `mobx/dist/internal`.
- * We derive it from `AnnotationMapEntry` which is public in both versions.
- */
-export type MobXAnnotation = Exclude<AnnotationMapEntry, boolean>;
-export type MobXObservableAnnotation = MobXAnnotation &
-  (typeof observable extends { ref: infer T } ? T : {});
-export type MobXComputedAnnotation = MobXAnnotation &
-  (typeof computed extends { struct: infer T } ? T : {});
+const mobxApi = mobx as any;
 
-// --- Version capability detection ---
+const resolveExport = (flatName: string, namespaceName: string, name: string) =>
+  mobxApi[flatName] ?? mobxApi[namespaceName]?.[name];
 
-/**
- * Whether the runtime MobX still supports legacy decorator application —
- * calling an annotation directly as `annotation(target, key)`.
- * MobX 6 supports it; MobX 7 removed legacy decorators entirely
- * (annotations are only callable as TC39 decorators there), so a call in that
- * form dies or no-ops depending on the build.
- *
- * Detected via the MobX 7-only flat annotation exports: `observableRef` does
- * not exist in MobX 6, where the equivalent lives at `observable.ref`.
- */
-export const supportsLegacyDecorators =
-  typeof (mobx as any).observableRef !== 'function';
+export namespace observableMap {
+  export type Annotation = Exclude<AnnotationMapEntry, boolean>;
+  export type ObservableAnnotation = Annotation &
+    (typeof MobXObservable extends { ref: infer T } ? T : {});
+  export type ComputedAnnotation = Annotation &
+    (typeof MobXComputed extends { struct: infer T } ? T : {});
+  export type Variant = {
+    [Key in keyof typeof observableMap]: (typeof observableMap)[Key] extends Annotation
+      ? Key
+      : never;
+  }[keyof typeof observableMap];
 
-// --- Comparer compat ---
+  export const supportsLegacyDecorators =
+    typeof mobxApi.observableRef !== 'function';
 
-/** `compareDefault` (MobX 7) / `comparer.default` (MobX 6) */
-export const compareDefault: (a: any, b: any) => boolean =
-  (mobx as any).compareDefault ?? (mobx as any).comparer?.default;
+  export const comparer = {
+    default: resolveExport('compareDefault', 'comparer', 'default') as (
+      a: any,
+      b: any,
+    ) => boolean,
+    structural: resolveExport(
+      'compareStructural',
+      'comparer',
+      'structural',
+    ) as (a: any, b: any) => boolean,
+    shallow: resolveExport('compareShallow', 'comparer', 'shallow') as (
+      a: any,
+      b: any,
+    ) => boolean,
+  };
 
-/** `compareStructural` (MobX 7) / `comparer.structural` (MobX 6) */
-export const compareStructural: (a: any, b: any) => boolean =
-  (mobx as any).compareStructural ?? (mobx as any).comparer?.structural;
+  export const ref = resolveExport(
+    'observableRef',
+    'observable',
+    'ref',
+  ) as ObservableAnnotation;
+  export const deep = resolveExport(
+    'observableDeep',
+    'observable',
+    'deep',
+  ) as ObservableAnnotation;
+  export const shallow = resolveExport(
+    'observableShallow',
+    'observable',
+    'shallow',
+  ) as ObservableAnnotation;
+  export const struct = resolveExport(
+    'observableStruct',
+    'observable',
+    'struct',
+  ) as ObservableAnnotation;
 
-/** `compareShallow` (MobX 7) / `comparer.shallow` (MobX 6) */
-export const compareShallow: (a: any, b: any) => boolean =
-  (mobx as any).compareShallow ?? (mobx as any).comparer?.shallow;
-
-// --- Observable variant compat ---
-
-/** `observableRef` (MobX 7) / `observable.ref` (MobX 6) */
-export const observableRef: MobXAnnotation =
-  (mobx as any).observableRef ?? (mobx as any).observable?.ref;
-
-/** `observableDeep` (MobX 7) / `observable.deep` (MobX 6) */
-export const observableDeep: MobXAnnotation =
-  (mobx as any).observableDeep ?? (mobx as any).observable?.deep;
-
-/** `observableShallow` (MobX 7) / `observable.shallow` (MobX 6) */
-export const observableShallow: MobXAnnotation =
-  (mobx as any).observableShallow ?? (mobx as any).observable?.shallow;
-
-/** `observableStruct` (MobX 7) / `observable.struct` (MobX 6) */
-export const observableStruct: MobXAnnotation =
-  (mobx as any).observableStruct ?? (mobx as any).observable?.struct;
-
-// --- Computed variant compat ---
-
-/** `computedStruct` (MobX 7) / `computed.struct` (MobX 6) */
-export const computedStruct: MobXAnnotation =
-  (mobx as any).computedStruct ?? (mobx as any).computed?.struct;
-
-// --- Action variant compat ---
-
-/** `actionBound` (MobX 7) / `action.bound` (MobX 6) */
-export const actionBound: MobXAnnotation =
-  (mobx as any).actionBound ?? (mobx as any).action?.bound;
-
-// --- Observable variant map for annotation.observable() ---
-
-/** Map of observable variant keys to their annotation values, compatible with both MobX 6 and 7 */
-export const observableVariantMap = {
-  ref: observableRef,
-  deep: observableDeep,
-  shallow: observableShallow,
-  struct: observableStruct,
-} satisfies Record<string, MobXAnnotation>;
+  export const computed = {
+    struct: resolveExport(
+      'computedStruct',
+      'computed',
+      'struct',
+    ) as ComputedAnnotation,
+  };
+  export const action = {
+    bound: resolveExport('actionBound', 'action', 'bound') as Annotation,
+  };
+}

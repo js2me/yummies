@@ -1,12 +1,7 @@
 import { makeObservable, observable } from 'mobx';
 import { describe, expect, it } from 'vitest';
 import { annotation } from './annotation.js';
-import {
-  observableDeep,
-  observableRef,
-  observableShallow,
-  observableStruct,
-} from './mobx-compat.js';
+import { observableMap } from './mobx-compat.js';
 
 describe('annotation.observable', () => {
   it('returns base observable when value is undefined', () => {
@@ -26,22 +21,22 @@ describe('annotation.observable', () => {
 
   it('returns observableRef when value is "ref"', () => {
     const result = annotation.observable('ref');
-    expect(result).toBe(observableRef);
+    expect(result).toBe(observableMap.ref);
   });
 
   it('returns observableDeep when value is "deep"', () => {
     const result = annotation.observable('deep');
-    expect(result).toBe(observableDeep);
+    expect(result).toBe(observableMap.deep);
   });
 
   it('returns observableShallow when value is "shallow"', () => {
     const result = annotation.observable('shallow');
-    expect(result).toBe(observableShallow);
+    expect(result).toBe(observableMap.shallow);
   });
 
   it('returns observableStruct when value is "struct"', () => {
     const result = annotation.observable('struct');
-    expect(result).toBe(observableStruct);
+    expect(result).toBe(observableMap.struct);
   });
 
   it('works with makeObservable for observable.ref', () => {

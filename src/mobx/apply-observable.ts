@@ -17,7 +17,7 @@
 
 import { type AnnotationMapEntry, makeObservable } from 'mobx';
 import type { AnyObject } from 'yummies/types';
-import { supportsLegacyDecorators } from './mobx-compat.js';
+import { observableMap } from './mobx-compat.js';
 
 export type ObservableAnnotationsArray<T extends AnyObject = AnyObject> = [
   AnnotationMapEntry,
@@ -58,7 +58,7 @@ export const applyObservable = <T extends AnyObject>(
     });
   });
 
-  if (useDecorators && supportsLegacyDecorators) {
+  if (useDecorators && observableMap.supportsLegacyDecorators) {
     // MobX 6 path: apply annotations eagerly (legacy decorator invocation),
     // then let makeObservable pick up the recorded annotations.
     annotationsArray.forEach(([annotation, ...fields]) => {
