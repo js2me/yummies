@@ -18,11 +18,11 @@
 import {
   type IEqualsComparer,
   makeObservable,
-  comparer as mobxComparer,
   observable,
   runInAction,
 } from 'mobx';
 import type { AnyObject, Maybe } from 'yummies/types';
+import { compareDefault, observableRef } from './mobx-compat.js';
 
 /**
  * You can return `false` if you don't want to change the value in this ref
@@ -91,7 +91,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
   cfg?: CreateRefConfig<T, TMeta>,
 ): Ref<T, TMeta> => {
   let lastValue: T | undefined;
-  const comparer = cfg?.comparer ?? mobxComparer.default;
+  const comparer = cfg?.comparer ?? compareDefault;
 
   const setValue: Ref<T, TMeta>['set'] = (value) => {
     const nextValue = value ?? null;
@@ -144,7 +144,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
   ref.meta = cfg?.meta ?? ({} as TMeta);
 
   makeObservable(ref, {
-    current: observable.ref,
+    current: observableRef,
     meta: observable,
   });
 

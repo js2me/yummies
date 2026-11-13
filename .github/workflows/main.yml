@@ -12,6 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         node-version: [24]
+        # mobx is an optional peer dependency: devDependency pins ^7 (the newest major),
+        # the mobx@^6 job swaps it in via pnpm add to keep backward compatibility covered.
+        mobx-version: ["^7.0.0", "^6.12.4"]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout tree
@@ -26,6 +29,10 @@ jobs:
       - run: corepack enable
 
       - run: pnpm i
+
+      - name: Install mobx ${{ matrix.mobx-version }}
+        if: matrix.mobx-version != '^7.0.0'
+        run: pnpm add -D mobx@${{ matrix.mobx-version }}
 
       - run: pnpm check
 
