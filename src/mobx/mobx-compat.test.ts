@@ -10,17 +10,21 @@ describe('observableMap', () => {
     expect(observableMap.comparer.shallow({ a: 1 }, { a: 1 })).toBe(true);
   });
 
-  it('resolves observable, computed, and action annotations', () => {
+  it('resolves observable annotations', () => {
     for (const annotation of [
       observableMap.ref,
       observableMap.deep,
       observableMap.shallow,
       observableMap.struct,
-      observableMap.computed.struct,
-      observableMap.action.bound,
     ]) {
       expect(typeof annotation.make_).toBe('function');
+      expect(typeof annotation.extend_).toBe('function');
     }
+  });
+
+  it('resolves computed and action annotations', () => {
+    expect(typeof observableMap.computed.struct.make_).toBe('function');
+    expect(typeof observableMap.action.bound.make_).toBe('function');
   });
 
   it('resolves annotation instances from the installed MobX version', () => {
