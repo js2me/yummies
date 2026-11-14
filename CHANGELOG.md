@@ -1,5 +1,11 @@
 # yummies
 
+## 7.23.0
+
+### Minor Changes
+
+- [#126](https://github.com/js2me/yummies/pull/126) [`9afa94e`](https://github.com/js2me/yummies/commit/9afa94e839fb6fadaf8451b62b68740ac0083a78) Thanks [@js2me](https://github.com/js2me)! - Replace the `annotation` factory with a namespace of direct MobX annotations: `annotation.observableRef`, `annotation.observableDeep`, `annotation.observableShallow`, `annotation.observableStruct`, `annotation.computed`, `annotation.computedStruct`, `annotation.computedShallow`, `annotation.computedEquals`, `annotation.actionBound`, and `annotation.comparer`.
+
 ## 7.22.0
 
 ### Minor Changes
