@@ -24,4 +24,4 @@ export * from './deep-observable-struct.js';
 export * from './flush-pending-reactions.js';
 export * from './get-mobx-administration.js';
 export * from './lazy-observe.js';
-export { observableMap } from './mobx-compat.js';
+export * from './mobx-compat.js';

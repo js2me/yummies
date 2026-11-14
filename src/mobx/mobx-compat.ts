@@ -5,71 +5,41 @@ import type {
 } from 'mobx';
 import * as mobx from 'mobx';
 
-const mobxApi = mobx as any;
+export type Annotation = Exclude<AnnotationMapEntry, boolean>;
+export type ObservableAnnotation = Annotation &
+  (typeof MobXObservable extends { ref: infer T } ? T : {});
+export type ComputedAnnotation = Annotation &
+  (typeof MobXComputed extends { struct: infer T } ? T : {});
+export type Variant = 'ref' | 'deep' | 'shallow' | 'struct';
 
-const resolveExport = (flatName: string, namespaceName: string, name: string) =>
-  mobxApi[flatName] ?? mobxApi[namespaceName]?.[name];
+export const supportsLegacyDecorators =
+  typeof (mobx as any).observableRef !== 'function';
 
-export namespace observableMap {
-  export type Annotation = Exclude<AnnotationMapEntry, boolean>;
-  export type ObservableAnnotation = Annotation &
-    (typeof MobXObservable extends { ref: infer T } ? T : {});
-  export type ComputedAnnotation = Annotation &
-    (typeof MobXComputed extends { struct: infer T } ? T : {});
-  export type Variant = {
-    [Key in keyof typeof observableMap]: (typeof observableMap)[Key] extends Annotation
-      ? Key
-      : never;
-  }[keyof typeof observableMap];
+export const comparer = {
+  default: (mobx as any).compareDefault ?? (mobx as any).comparer?.default,
+  structural:
+    (mobx as any).compareStructural ?? (mobx as any).comparer?.structural,
+  shallow: (mobx as any).compareShallow ?? (mobx as any).comparer?.shallow,
+};
 
-  export const supportsLegacyDecorators =
-    typeof mobxApi.observableRef !== 'function';
+export const observableRef =
+  (mobx as any).observableRef ?? (mobx as any).observable?.ref;
+export const observableDeep =
+  (mobx as any).observableDeep ?? (mobx as any).observable?.deep;
+export const observableShallow =
+  (mobx as any).observableShallow ?? (mobx as any).observable?.shallow;
+export const observableStruct =
+  (mobx as any).observableStruct ?? (mobx as any).observable?.struct;
 
-  export const comparer = {
-    default: resolveExport('compareDefault', 'comparer', 'default') as (
-      a: any,
-      b: any,
-    ) => boolean,
-    structural: resolveExport(
-      'compareStructural',
-      'comparer',
-      'structural',
-    ) as (a: any, b: any) => boolean,
-    shallow: resolveExport('compareShallow', 'comparer', 'shallow') as (
-      a: any,
-      b: any,
-    ) => boolean,
-  };
+/** Indexable map for dynamic observable flavour selection (e.g. from config). */
+export const observableVariants = {
+  ref: observableRef,
+  deep: observableDeep,
+  shallow: observableShallow,
+  struct: observableStruct,
+} as Record<Variant, ObservableAnnotation>;
 
-  export const ref = resolveExport(
-    'observableRef',
-    'observable',
-    'ref',
-  ) as ObservableAnnotation;
-  export const deep = resolveExport(
-    'observableDeep',
-    'observable',
-    'deep',
-  ) as ObservableAnnotation;
-  export const shallow = resolveExport(
-    'observableShallow',
-    'observable',
-    'shallow',
-  ) as ObservableAnnotation;
-  export const struct = resolveExport(
-    'observableStruct',
-    'observable',
-    'struct',
-  ) as ObservableAnnotation;
-
-  export const computed = {
-    struct: resolveExport(
-      'computedStruct',
-      'computed',
-      'struct',
-    ) as ComputedAnnotation,
-  };
-  export const action = {
-    bound: resolveExport('actionBound', 'action', 'bound') as Annotation,
-  };
-}
+export const computedStruct =
+  (mobx as any).computedStruct ?? (mobx as any).computed?.struct;
+export const actionBound =
+  (mobx as any).actionBound ?? (mobx as any).action?.bound;

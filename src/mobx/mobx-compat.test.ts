@@ -1,21 +1,30 @@
 import * as mobx from 'mobx';
 import { describe, expect, it } from 'vitest';
-import { observableMap } from './index.js';
+import {
+  actionBound,
+  comparer,
+  computedStruct,
+  observableDeep,
+  observableRef,
+  observableShallow,
+  observableStruct,
+  supportsLegacyDecorators,
+} from './index.js';
 
-describe('observableMap', () => {
+describe('mobx compat', () => {
   it('resolves comparer equivalents on any MobX major', () => {
-    expect(observableMap.comparer.default(1, 1)).toBe(true);
-    expect(observableMap.comparer.default(1, 2)).toBe(false);
-    expect(observableMap.comparer.structural({ a: 1 }, { a: 1 })).toBe(true);
-    expect(observableMap.comparer.shallow({ a: 1 }, { a: 1 })).toBe(true);
+    expect(comparer.default(1, 1)).toBe(true);
+    expect(comparer.default(1, 2)).toBe(false);
+    expect(comparer.structural({ a: 1 }, { a: 1 })).toBe(true);
+    expect(comparer.shallow({ a: 1 }, { a: 1 })).toBe(true);
   });
 
   it('resolves observable annotations', () => {
     for (const annotation of [
-      observableMap.ref,
-      observableMap.deep,
-      observableMap.shallow,
-      observableMap.struct,
+      observableRef,
+      observableDeep,
+      observableShallow,
+      observableStruct,
     ]) {
       expect(typeof annotation.make_).toBe('function');
       expect(typeof annotation.extend_).toBe('function');
@@ -23,25 +32,25 @@ describe('observableMap', () => {
   });
 
   it('resolves computed and action annotations', () => {
-    expect(typeof observableMap.computed.struct.make_).toBe('function');
-    expect(typeof observableMap.action.bound.make_).toBe('function');
+    expect(typeof computedStruct.make_).toBe('function');
+    expect(typeof actionBound.make_).toBe('function');
   });
 
   it('resolves annotation instances from the installed MobX version', () => {
     const mobxNs = mobx as any;
-    if (observableMap.supportsLegacyDecorators) {
-      expect(observableMap.ref).toBe(mobxNs.observable.ref);
-      expect(observableMap.struct).toBe(mobxNs.observable.struct);
-      expect(observableMap.computed.struct).toBe(mobxNs.computed.struct);
+    if (supportsLegacyDecorators) {
+      expect(observableRef).toBe(mobxNs.observable.ref);
+      expect(observableStruct).toBe(mobxNs.observable.struct);
+      expect(computedStruct).toBe(mobxNs.computed.struct);
     } else {
-      expect(observableMap.ref).toBe(mobxNs.observableRef);
-      expect(observableMap.struct).toBe(mobxNs.observableStruct);
-      expect(observableMap.computed.struct).toBe(mobxNs.computedStruct);
+      expect(observableRef).toBe(mobxNs.observableRef);
+      expect(observableStruct).toBe(mobxNs.observableStruct);
+      expect(computedStruct).toBe(mobxNs.computedStruct);
     }
   });
 
   it('detects legacy decorator support from the installed API', () => {
     const hasFlatExports = typeof (mobx as any).observableRef === 'function';
-    expect(observableMap.supportsLegacyDecorators).toBe(!hasFlatExports);
+    expect(supportsLegacyDecorators).toBe(!hasFlatExports);
   });
 });
