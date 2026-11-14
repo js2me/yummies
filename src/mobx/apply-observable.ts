@@ -17,7 +17,7 @@
 
 import { type AnnotationMapEntry, makeObservable } from 'mobx';
 import type { AnyObject } from 'yummies/types';
-import { observableMap } from './mobx-compat.js';
+import { supportsLegacyDecorators } from './mobx-compat.js';
 
 export type ObservableAnnotationsArray<T extends AnyObject = AnyObject> = [
   AnnotationMapEntry,
@@ -50,7 +50,7 @@ export const applyObservable = <T extends AnyObject>(
   annotationsArray: ObservableAnnotationsArray<T>,
   useDecorators?: boolean,
 ) => {
-  if (useDecorators && observableMap.supportsLegacyDecorators) {
+  if (useDecorators && supportsLegacyDecorators) {
     annotationsArray.forEach(([annotation, ...fields]) => {
       fields.forEach((field) => {
         // @ts-expect-error — annotation invocation, not a decorator literal
