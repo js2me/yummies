@@ -1,5 +1,11 @@
 # yummies
 
+## 7.22.0
+
+### Minor Changes
+
+- [#124](https://github.com/js2me/yummies/pull/124) [`7f76027`](https://github.com/js2me/yummies/commit/7f7602717401b9e508325bc2dac11c7e508c7722) Thanks [@js2me](https://github.com/js2me)! - Export the MobX 6/7-compatible observableMap namespace from yummies/mobx.
+
 ## 7.21.0
 
 ### Minor Changes
