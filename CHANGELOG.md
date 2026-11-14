@@ -1,5 +1,11 @@
 # yummies
 
+## 7.21.0
+
+### Minor Changes
+
+- [#122](https://github.com/js2me/yummies/pull/122) [`47dbe82`](https://github.com/js2me/yummies/commit/47dbe82fda1231146e0c77903f32070221c0f048) Thanks [@js2me](https://github.com/js2me)! - support MobX 7 alongside MobX 6: compatibility layer for renamed exports (`comparer.default`, `observable.ref`, `computed.struct`, `action.bound`), peer dependency range widened to `^6.12.4 || ^7.0.0`
+
 ## 7.20.1
 
 ### Patch Changes
