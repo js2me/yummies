@@ -12,7 +12,7 @@
  * ## Usage
  *
  * ```ts
- * import { annotation, applyObservable, createRef } from "yummies/mobx";
+ * import { annotation, applyObservable, observableMap, createRef } from "yummies/mobx";
  * ```
  */
 
@@ -24,3 +24,4 @@ export * from './deep-observable-struct.js';
 export * from './flush-pending-reactions.js';
 export * from './get-mobx-administration.js';
 export * from './lazy-observe.js';
+export { observableMap } from './mobx-compat.js';

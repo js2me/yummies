@@ -1,6 +1,6 @@
 import * as mobx from 'mobx';
 import { describe, expect, it } from 'vitest';
-import { observableMap } from './mobx-compat.js';
+import { observableMap } from './index.js';
 
 describe('observableMap', () => {
   it('resolves comparer equivalents on any MobX major', () => {
