@@ -16,13 +16,13 @@
  */
 
 import {
-  comparer,
   computed,
   type IComputedValueOptions,
   type IEqualsComparer,
   observable,
 } from 'mobx';
 import type { AnyObject } from 'yummies/types';
+import { observableMap } from './mobx-compat.js';
 
 /**
  * How MobX should compare the previous and next computed value before notifying observers.
@@ -40,9 +40,9 @@ export type ComputedEqualsValue =
   | IEqualsComparer<any>;
 
 const computedEqualsResolvers: AnyObject = {
-  true: comparer.default,
-  shallow: comparer.shallow,
-  struct: comparer.structural,
+  true: observableMap.comparer.default,
+  shallow: observableMap.comparer.shallow,
+  struct: observableMap.comparer.structural,
 } satisfies Record<
   Exclude<ComputedEqualsValue, Function | boolean> | 'true',
   any
@@ -57,9 +57,7 @@ export type ComputedOtherOptions = Omit<IComputedValueOptions<any>, 'equals'>;
  * Observable flavour keys returned by {@link annotation.observable}: `ref`, `deep`, `shallow`, `struct`.
  * Also supported: `true` (base `observable`) and `false` (no annotation).
  */
-export type ObservableTypes =
-  | keyof Pick<typeof observable, 'ref' | 'deep' | 'shallow' | 'struct'>
-  | boolean;
+export type ObservableTypes = observableMap.Variant | boolean;
 
 /**
  * MobX annotation factories for `makeObservable` and tuple-style wiring ({@link applyObservable}).
@@ -148,16 +146,18 @@ type AnnotationObject = {
   computed(
     value?: Exclude<ComputedEqualsValue, false>,
     options?: ComputedOtherOptions,
-  ): typeof computed.struct;
-  computed(value?: ComputedEqualsValue): false | typeof computed.struct;
+  ): observableMap.ComputedAnnotation;
+  computed(
+    value?: ComputedEqualsValue,
+  ): false | observableMap.ComputedAnnotation;
   observable(value: Extract<ObservableTypes, false>): false;
   observable(value?: Extract<ObservableTypes, true>): typeof observable;
   observable<TValue extends Exclude<ObservableTypes, boolean>>(
     value: TValue,
-  ): (typeof observable)[TValue];
+  ): observableMap.ObservableAnnotation;
   observable(
     value?: ObservableTypes,
-  ): false | (typeof observable)[Exclude<ObservableTypes, boolean>];
+  ): false | observableMap.ObservableAnnotation | typeof observable;
 };
 
 export const annotation = {
@@ -171,12 +171,12 @@ export const annotation = {
           ? value
           : (computedEqualsResolvers[
               value as keyof typeof computedEqualsResolvers
-            ] ?? comparer.default),
+            ] ?? observableMap.comparer.default),
     });
   },
   observable: (value?: ObservableTypes | boolean) => {
     if (value === false) return false;
     if (value === undefined || value === true) return observable;
-    return observable[value];
+    return observableMap[value as observableMap.Variant];
   },
 } as AnnotationObject;

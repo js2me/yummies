@@ -15,9 +15,10 @@
  * ```
  */
 
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable } from 'mobx';
 import { typeGuard } from 'yummies/type-guard';
 import type { AnyObject } from 'yummies/types';
+import { observableMap } from './mobx-compat.js';
 
 /**
  * Wraps a plain object into a deeply observable structure and allows
@@ -44,7 +45,7 @@ export class DeepObservableStruct<TData extends AnyObject> {
     this.data = data;
 
     makeObservable(this, {
-      data: observable.deep,
+      data: observableMap.deep,
       set: action,
     });
   }

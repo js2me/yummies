@@ -18,11 +18,11 @@
 import {
   type IEqualsComparer,
   makeObservable,
-  comparer as mobxComparer,
   observable,
   runInAction,
 } from 'mobx';
 import type { AnyObject, Maybe } from 'yummies/types';
+import { observableMap } from './mobx-compat.js';
 
 /**
  * You can return `false` if you don't want to change the value in this ref
@@ -91,7 +91,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
   cfg?: CreateRefConfig<T, TMeta>,
 ): Ref<T, TMeta> => {
   let lastValue: T | undefined;
-  const comparer = cfg?.comparer ?? mobxComparer.default;
+  const comparer = cfg?.comparer ?? observableMap.comparer.default;
 
   const setValue: Ref<T, TMeta>['set'] = (value) => {
     const nextValue = value ?? null;
@@ -101,6 +101,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
     }
 
     runInAction(() => {
+      const prevCurrentValue = ref.current;
       const prevLastValue = lastValue;
       lastValue = ref.current ?? undefined;
       ref.current = nextValue;
@@ -117,7 +118,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
 
       if (isNextValueIgnored) {
         lastValue = prevLastValue;
-        ref.current = lastValue ?? null;
+        ref.current = prevCurrentValue;
       } else if (ref.current === null && lastValue !== undefined) {
         lastValue = undefined;
       }
@@ -144,7 +145,7 @@ export const createRef = <T = any, TMeta = AnyObject>(
   ref.meta = cfg?.meta ?? ({} as TMeta);
 
   makeObservable(ref, {
-    current: observable.ref,
+    current: observableMap.ref,
     meta: observable,
   });
 

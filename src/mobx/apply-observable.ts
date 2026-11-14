@@ -17,6 +17,7 @@
 
 import { type AnnotationMapEntry, makeObservable } from 'mobx';
 import type { AnyObject } from 'yummies/types';
+import { observableMap } from './mobx-compat.js';
 
 export type ObservableAnnotationsArray<T extends AnyObject = AnyObject> = [
   AnnotationMapEntry,
@@ -31,6 +32,8 @@ export type ObservableAnnotationsArray<T extends AnyObject = AnyObject> = [
  * @param context Object that should become observable.
  * @param annotationsArray Tuples of annotation followed by annotated field names.
  * @param useDecorators Enables decorator-style application before calling `makeObservable`.
+ *   Note: In MobX 7, legacy decorators are removed, so this flag falls back to the
+ *   annotation map form automatically.
  *
  * @example
  * ```ts
@@ -47,24 +50,24 @@ export const applyObservable = <T extends AnyObject>(
   annotationsArray: ObservableAnnotationsArray<T>,
   useDecorators?: boolean,
 ) => {
-  if (useDecorators) {
+  if (useDecorators && observableMap.supportsLegacyDecorators) {
     annotationsArray.forEach(([annotation, ...fields]) => {
       fields.forEach((field) => {
-        // @ts-expect-error
+        // @ts-expect-error — annotation invocation, not a decorator literal
         annotation(context, field);
       });
     });
 
-    makeObservable(context);
-  } else {
-    const annotationsObject: AnyObject = {};
-
-    annotationsArray.forEach(([annotation, ...fields]) => {
-      fields.forEach((field) => {
-        annotationsObject[field] = annotation;
-      });
-    });
-
-    makeObservable(context, annotationsObject);
+    (makeObservable as any)(context);
+    return;
   }
+
+  const annotationsObject: AnyObject = {};
+  annotationsArray.forEach(([annotation, ...fields]) => {
+    fields.forEach((field) => {
+      annotationsObject[field] = annotation;
+    });
+  });
+
+  makeObservable(context, annotationsObject);
 };
