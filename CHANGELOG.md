@@ -1,5 +1,11 @@
 # yummies
 
+## 7.23.1
+
+### Patch Changes
+
+- [#128](https://github.com/js2me/yummies/pull/128) [`24dbf88`](https://github.com/js2me/yummies/commit/24dbf8898625cd69d5b6b79b67b2a2f97d66d14b) Thanks [@js2me](https://github.com/js2me)! - Add explicit `ObservableAnnotation` / `ComputedAnnotation` / `Annotation` type casts to the MobX compatibility exports so consumers get proper annotation types instead of `any`.
+
 ## 7.23.0
 
 ### Minor Changes
