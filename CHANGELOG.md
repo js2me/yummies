@@ -1,5 +1,11 @@
 # yummies
 
+## 7.23.2
+
+### Patch Changes
+
+- [#130](https://github.com/js2me/yummies/pull/130) [`1226c94`](https://github.com/js2me/yummies/commit/1226c946c89b554fccc4e0a7e5f435742e1e2b31) Thanks [@js2me](https://github.com/js2me)! - Resolve MobX 6/7 compatibility exports via bracket access so bundlers (webpack/next.js) don't rewrite them into named imports that MobX 6 lacks.
+
 ## 7.23.1
 
 ### Patch Changes
